@@ -21,6 +21,4 @@ public class DetailController extends HttpServlet{
         out.print("나의 서블릿으로 한글 출력");
 
     }
-    
-
 }
