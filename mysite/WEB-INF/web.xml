@@ -39,11 +39,21 @@
             즉, 정해져 있다.(암기해야 한다.)
   -->
   <servlet>
+    <servlet-name>ListServlet</servlet-name>
+    <servlet-class>src.board.ListServlet</servlet-class>   <!-- 실제적으로 동작할 클래스의 정확한 경로 -->
+  </servlet>
+  <servlet-mapping>
+    <url-pattern>/test</url-pattern>    <!-- http://나의ip:7979/test -->
+    <servlet-name>ListServlet</servlet-name>       <!-- 이 주소로 유저가 들어오면 어떤 클래스가 동작할지 결정 -->
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>DetailController</servlet-name>
     <servlet-class>src.notice.DetailController</servlet-class>   <!-- 실제적으로 동작할 클래스의 정확한 경로 -->
   </servlet>
   <servlet-mapping>
-    <url-pattern>/test</url-pattern>    <!-- http://나의ip:7979/test -->
+    <url-pattern>/test2</url-pattern>    <!-- http://나의ip:7979/test -->
     <servlet-name>DetailController</servlet-name>       <!-- 이 주소로 유저가 들어오면 어떤 클래스가 동작할지 결정 -->
   </servlet-mapping>
+
 </web-app>
