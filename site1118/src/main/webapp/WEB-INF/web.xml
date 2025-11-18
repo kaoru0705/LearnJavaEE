@@ -14,4 +14,13 @@
 		<servlet-name>controller</servlet-name>
 		<url-pattern>/main</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>list</servlet-name>
+		<servlet-class>com.ch.site1118.controller.ListController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>list</servlet-name>
+		<url-pattern>/table</url-pattern>
+	</servlet-mapping>
 </web-app>
