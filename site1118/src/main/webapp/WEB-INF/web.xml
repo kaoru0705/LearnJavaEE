@@ -23,4 +23,14 @@
 		<servlet-name>list</servlet-name>
 		<url-pattern>/table</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>registServlet</servlet-name>
+		<servlet-class>com.ch.site1118.controller.RegistController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>registServlet</servlet-name>
+		<url-pattern>/member/regist</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
