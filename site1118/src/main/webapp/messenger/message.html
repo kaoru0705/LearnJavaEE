@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	function send() {
+		let form = document.getElementById("form");
+		form.method = "post";
+		form.action = "/messenger/message";
+		form.submit();
+	}
+</script>
+<style>
+	.content{
+		width: 100%;
+		max-width: 700px;
+		height: 700px;
+		margin: auto;
+	}
+	#form{
+		width: 100%;
+		height: 100%;
+	}
+	.message{
+		width: 100%;
+		height: 200px;
+	}
+	h2{
+		text-align: center;
+	}
+	.sendButton{
+		text-align: center;
+	}
+
+</style>
+</head>
+<body>
+	<h2>사랑과 감동과 우정의 메신저</h2>
+	<div class = "content">
+		<form id="form">
+			<div>
+				<input type="text" placeholder="성함을 입력하세요." name = "name">
+			</div>
+			<div>
+				<input type="text" placeholder="상대 연락처" name = "contactNumber">
+			</div>
+			<div>
+				<input class="message" type="text" placeholder="보낼 메시지" name = "message"> 
+			</div>
+			<div class = "sendButton">
+				<button onClick="send()">전송</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

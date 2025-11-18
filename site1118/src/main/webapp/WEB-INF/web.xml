@@ -33,4 +33,12 @@
 		<url-pattern>/member/regist</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>messageServlet</servlet-name>
+		<servlet-class>com.ch.site1118.controller.MessageController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>messageServlet</servlet-name>
+		<url-pattern>/messenger/message</url-pattern>
+	</servlet-mapping>
 </web-app>
