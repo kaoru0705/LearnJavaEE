@@ -34,6 +34,33 @@ public class MyServlet extends HttpServlet{ // 상속관계는 is a
 	// service는 doGet이 자동으로 실행됨
 	// doget 메소드 수행 완료
 	// 고양이가 response로 html을 이용해서 서버로 보내서 출력 
+	/*
+		 * 사용자 요청
+		 → Tomcat이 request/response 생성
+		 → Tomcat 스레드 하나 배정
+		 → 서블릿 인스턴스 존재 확인(init 실행 여부 결정)
+		 → 스레드가 service() 호출
+		 → service()가 doGet()/doPost() 실행
+		 → response를 클라이언트에게 돌려줌
+		 → 스레드는 풀로 반환
+		고양이(톰캣)가 손님(요청)을 받는다
+	
+		주문서(request)/응답서(response)를 만든다
+		
+		일꾼 스레드를 하나 호출한다
+		
+		일꾼이 사용할 서블릿 인스턴스 준비 (없으면 새로 만들고 init 실행)
+		
+		일꾼이 “서비스(service)” 호출
+		
+		서비스가 알아서 doGet/doPost 고른다
+		
+		일꾼이 HTML 출력 작성
+		
+		고양이가 응답서(response)를 손님에게 돌려준다
+		
+		일꾼은 다시 쉬러감 (스레드풀 복귀)
+	 */
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
