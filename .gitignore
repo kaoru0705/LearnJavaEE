@@ -23,10 +23,12 @@
 hs_err_pid*
 replay_pid*
 
+Servers/
 /.metadata/
 /.recommenders/
 .classpath
 .project
 .gitignore
 .settings/
-/Servers/
+/Servers
+/Servers
