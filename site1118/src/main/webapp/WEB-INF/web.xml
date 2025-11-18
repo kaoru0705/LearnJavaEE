@@ -4,7 +4,7 @@
 	
 	<!--
 		웹브라우저로 클래스명을 직접 접근할 수 없으므로, 가상의 url 주소로 매핑하여 우리의 서블릿을 실행해볼 수 있다.. 서블릿 매핑
-		http://localhost:7979/site1118/main
+		http://localhost:7979/main
 	-->
 	<servlet>
 		<servlet-name>controller</servlet-name>
