@@ -9,6 +9,8 @@ package src;
     /WEB-INF    : 웹브라우저를 통해서는 절대로 접근하지 못하는 보안된 디렉토리..
         - classes: 컴파일된 클래스들...
         - lib : .jar 들이 위치
+        C:\apache-tomcat-9.0.112\lib servlet-api.jar 가져와서
+        lib안에 넣기
  */
 
  // 아래의 클래스가 javaee 서버에서 실행되려면 반드시 서블릿 클래스를 상속받아야 한다..
