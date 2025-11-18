@@ -23,7 +23,6 @@
 hs_err_pid*
 replay_pid*
 
-Servers/
 /.metadata/
 /.recommenders/
 .classpath
@@ -31,4 +30,4 @@ Servers/
 .gitignore
 .settings/
 /Servers
-/Servers
+Servers/Tomcat v9.0 Server at localhost-config/server.xml
