@@ -2,6 +2,9 @@ package com.ch.site1118.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +30,42 @@ public class JoinController extends HttpServlet{
 		// JDBC를 오라클에 insert
 		// 드라이버가 있어야 오라클을 제어할 수 있다. 따라서 드라이버 jar 파일을 클래스패스에 등록하자
 		// 하지만, 현재 사용중인 IDE가 이클립스라면, 굳이 환경변수까지 등록할 필요 없고, 이클립스에 등록하면 된다.
+		
+		Connection con = null;
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			out.print("드라이버 로드 성공");
+			
+			// 오라클에 접속
+			String url = "jdbc:oracle:thin:@localhost:1521:XE";
+			String user = "servlet";
+			String password = "1234";
+			
+			// 접속 후, 접속이 성공했는지 알기 위해서는, Connection 인터페이스가 null인지 여부를 판단한다.
+			// Connection 은 접속 성공 후 그 정보를 가진 객체이므로, 추후 그 접속을 끊을 수도 있다..
+			con = DriverManager.getConnection(url, user, password);
+			if(con == null) {
+				out.print("접속실패");
+			} else {
+				out.print("접속성공");
+			}
+		} catch (ClassNotFoundException e) {
+			out.print("드라이버 로드 실패");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		
 		
 	}
