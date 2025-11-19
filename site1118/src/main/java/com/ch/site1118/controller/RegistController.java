@@ -85,7 +85,7 @@ public class RegistController extends HttpServlet{
 				// JDBC 객체 중 쿼리수행을 담당하는 객체가 바로 PreparedStatement 인터페이스이다!
 				// 그리고 이 객체는 접속을 성공을 해야, 얻을 수 있다.(당연 이치=접속해야 쿼리문 수행할 수 있으니)
 				
-				pstmt=con.prepareStatement("insert into member(id, pw, name) values('"+ id +"', '"+pwd+"', '"+name+"')");		// 쿼리문 준비
+				pstmt=con.prepareStatement("insert into member(id, pwd, name) values('"+ id +"', '"+pwd+"', '"+name+"')");		// 쿼리문 준비
 				
 				// 준비된 쿼리문을 실행하자
 				int result = pstmt.executeUpdate();	// DML, 메서드 실행 후 반환되는 값은 이 메서드에 의해 영향을 받은 레코드 수가 반환됨..
