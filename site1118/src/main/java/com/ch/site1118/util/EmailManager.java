@@ -1,5 +1,5 @@
 package com.ch.site1118.util;
-// activation-1.1.1.jar, mail-1.5.5-b01.jar
+// activation-1.1.1.jar, mail-1.5.0-b01.jar
 
 import java.util.Properties;
 
@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 public class EmailManager {
 	String host = "smtp.gmail.com";			// 사용하고자 하는 메일 서버 주소
 	String user = "kaoru9875@gmail.com";	// 메일 서버의 사용자 계정
-	String password = "nour ncur yrep nsqu";	// 앱 비밀번호
+	String password = "";							// 앱 비밀번호 googleAppPassword.txt에 있음
 	Properties props = new Properties();		// java.util.map의 자식 key-value 쌍을 갖는 데이터 형식
 	
 	// 메일 발송 메서드
@@ -34,7 +34,7 @@ public class EmailManager {
 //		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		props.put("mail.smtp.ssl.protocols", "TLSv1.2");		// TLS 버전 강제
 		
-		// Session 생성 javax.mail
+		// Session 생성 javax.mail - mail.jar api
 		Session session = Session.getDefaultInstance(props, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
