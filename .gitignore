@@ -32,5 +32,3 @@ replay_pid*
 /Servers
 Servers/Tomcat v9.0 Server at localhost-config/server.xml
 /Servers
-
-*.png
