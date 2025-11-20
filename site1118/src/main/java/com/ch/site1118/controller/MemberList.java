@@ -12,6 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.tagext.Tag;
+
+import org.eclipse.jdt.internal.compiler.ast.WhileStatement;
 
 /*오라클에 들어있는 회원의 목록을 가져와서 화면에 출력*/
 public class MemberList extends HttpServlet{
@@ -35,7 +38,7 @@ public class MemberList extends HttpServlet{
 		try {
 			// 드라이버 로드
 			Class.forName("oracle.jdbc.driver.OracleDriver");	// 드라이버 로드
-			out.print("드라이버 로드 성공");
+			out.print("드라이버 로드 성공<br>");
 			
 			// 오라클에 접속
 			con = DriverManager.getConnection(url, user, pass);
@@ -57,6 +60,39 @@ public class MemberList extends HttpServlet{
 				// 즉 생성 즉시엔 어떠한 레코드도 가리키지 않은 상태이므로, 개발자가 첫 번째 레코드로 접근하려면 포인터를
 				// 한칸 내려야 한다.
 				
+				
+				// rs.getString("id");	// 현재 커서가 위치한 row 한 줄 내에서 칼럼명이 id인 칼럼의 값을 반환
+				
+				StringBuffer tag = new StringBuffer();
+				tag.append("<table width=\"100%\" border=\"1px\">");
+	            tag.append("<thead>");
+	            tag.append("<tr>");
+	            tag.append("<th>member_id</th>");
+	            tag.append("<th>id</th>");
+	            tag.append("<th>pwd</th>");
+	            tag.append("<th>name</th>");
+	            tag.append("<th>regdate</th>");
+	            tag.append("<th>email</th>");
+	            tag.append("</tr>");
+	            tag.append("</thead>");
+	            tag.append("<tbody>");
+	            
+	            while(rs.next()) {	// 기존 커서의 위치보다 한 칸 전진
+	                tag.append("<tr>");
+	                tag.append("<td>" + rs.getInt("member_id") + "</td>");
+	                tag.append("<td>" + rs.getString("id") + "</td>");
+	                tag.append("<td>" + rs.getString("pwd") + "</td>");
+	                tag.append("<td>" + rs.getString("name") + "</td>");
+	                tag.append("<td>" + rs.getString("regdate") + "</td>");
+	                tag.append("<td>" + rs.getString("email") + "</td>");
+	                tag.append("</tr>");
+	            }
+
+	            tag.append("</tbody>");
+	            tag.append("</table>");
+	            
+	            out.print(tag.toString());
+	            out.print("<a href= '/member/join.html'>가입하기</a>");
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -64,6 +100,28 @@ public class MemberList extends HttpServlet{
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		
 	}

@@ -42,7 +42,7 @@ public class JoinController extends HttpServlet{
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			out.print("드라이버 로드 성공");
+			out.print("드라이버 로드 성공<br>");
 			
 			// 오라클에 접속
 			String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -53,9 +53,9 @@ public class JoinController extends HttpServlet{
 			// Connection 은 접속 성공 후 그 정보를 가진 객체이므로, 추후 그 접속을 끊을 수도 있다..
 			con = DriverManager.getConnection(url, user, password);
 			if(con == null) {
-				out.print("접속 실패");
+				out.print("접속 실패<br>");
 			} else {
-				out.print("접속 성공");
+				out.print("접속 성공<br>");
 				
 				// 쿼리수행
 				// JDBC는 데이터베이스 제품의 종류가 무엇이든 상관없이 DB를 제어할 수 있는 코드가 동일함..(일관성 유지 가능)
@@ -92,25 +92,24 @@ public class JoinController extends HttpServlet{
 				// executeUpdate() 는 반환 값이 int, 그리고 이 int의 의미는 현재 쿼리문에 의해 영향을 받은 레코드의 수를 반환..
 				
 				if(result != 0) {
-					out.print("가입 성공");
+					out.print("가입 성공<br>");
 					emailManager.send(email);
 					
 					// 회원 목록 페이지 보여주기
-					
-					
-					out.print("<div>"+name+"님 가입을 축하드립니다. </div>");
+					response.sendRedirect("/member/list");		// 브라우저로 하여금 지정한 url로 다시 접속(들어오라)하라는 명령
+																				// 바로 돌아가지 않는다. finally까지 다 수행하고 톰캣이 joinController의 html을 수행하고 초기화
+
 				}else {
-					out.print("가입 실패");
+					out.print("가입 실패<br>");
 				}
 			}
 			
 		} catch (ClassNotFoundException e) {
-			out.print("드라이버 로드 실패");
+			out.print("드라이버 로드 실패<br>");
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			
 			if(con != null) {
 				try {
 					con.close();
@@ -126,8 +125,5 @@ public class JoinController extends HttpServlet{
 				}
 			}
 		}
-		
-		
-		
 	}
 }
