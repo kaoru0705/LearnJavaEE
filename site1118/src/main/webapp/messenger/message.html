@@ -10,6 +10,18 @@
 		form.action = "/messenger/message";
 		form.submit();
 	}
+	
+	function init() {
+		let bt = document.getElementsByTagName("button")[0];
+		bt.addEventListener("click", () => {
+			send();
+		});
+	}
+	
+	window.addEventListener("load", () => {
+		init();
+	});
+	
 </script>
 <style>
 	.content{
@@ -29,14 +41,14 @@
 	h2{
 		text-align: center;
 	}
-	.sendButton{
+	.send{
 		text-align: center;
 	}
 
 </style>
 </head>
 <body>
-	<h2>사랑과 감동과 우정의 메신저</h2>
+	<h2>사랑과 우정과 낭만의 메신저</h2>
 	<div class = "content">
 		<form id="form">
 			<div>
@@ -48,8 +60,8 @@
 			<div>
 				<input class="message" type="text" placeholder="보낼 메시지" name = "message"> 
 			</div>
-			<div class = "sendButton">
-				<button onClick="send()">전송</button>
+			<div class = "send">
+				<button>전송</button>
 			</div>
 		</form>
 	</div>
