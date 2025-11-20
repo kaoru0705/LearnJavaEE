@@ -30,12 +30,13 @@ public class MyServlet extends HttpServlet{ // 상속관계는 is a
 //	 1. request과 response 객체가 동시에 만들어짐
 //	 2. 설정 파일을 참고하여 매핑할 Servlet을 확인
 //	 3. 고양이가 해당 서블릿 인스턴스 존재 유무를 확인하여 없으면 생성 init
-//	 4. servlet container에 스레드를 생성하고 res, req 를 인자로 service 실행
+//	 4. servlet container에 스레드를 생성하고 request, response를 인자로 service 실행
 //	 		고양이는 요청을 처리해야 하는데 직접하지 않고 스레드에게 맡김
 //	 		service는 우리가 정의한 doGet doPost가 실행됨
 //			고양이가 response로 html을 이용해서 클라이언트에게 출력
 //	 5. response객체와 request객체를 소멸시키고 끝이 난다.
 //	 서블릿 객체는 싱글톤이므로 소멸시키지 않는다. 다음번 같은 요청이 왔을 때 서블릿 컨테이너(여기선 톰캣)에 의해 또 호출된다.
+//	 다만 웹 어플리케이션 서버가 종료되거나 서블릿의 변경사항이 있을 경우 destroy() 메소드가 호출돼서 종료된다.
 	/*
 		 * 사용자 요청
 		 → Tomcat이 request/response 생성
