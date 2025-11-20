@@ -49,24 +49,24 @@ public class MessageController extends HttpServlet{
 				System.out.println("접속 실패");
 			}else {
 				System.out.println("접속 성공");
+			
+				pstmt = con.prepareStatement("insert into message(name, contactNumber, message) values ('"+name+"', '"+contactNumber+"', '"+message+"')");
+				
+				int result = pstmt.executeUpdate();
+				
+				if(result < 1) {
+					System.out.println("등록 실패");
+					out.print("<script>");
+					out.print("alert('등록 실패');");
+					out.print("</script>");
+				}else {
+					System.out.println("등록 성공");
+					out.print("<script>");
+					out.print("alert('등록 성공');");
+					out.print("</script>");
+				}
 			}
-			
-			pstmt = con.prepareStatement("insert into message(name, contactNumber, message) values ('"+name+"', '"+contactNumber+"', '"+message+"')");
-			
-			int result = pstmt.executeUpdate();
-			
-			if(result < 1) {
-				System.out.println("등록 실패");
-				out.print("<script>");
-				out.print("alert('등록 실패');");
-				out.print("</script>");
-			}else {
-				System.out.println("등록 성공");
-				out.print("<script>");
-				out.print("alert('등록 성공');");
-				out.print("</script>");
-			}
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			if(pstmt != null) {
