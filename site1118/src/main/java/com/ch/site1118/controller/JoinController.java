@@ -97,7 +97,7 @@ public class JoinController extends HttpServlet{
 					
 					// 회원 목록 페이지 보여주기
 					response.sendRedirect("/member/list");		// 브라우저로 하여금 지정한 url로 다시 접속(들어오라)하라는 명령
-										// 바로 돌아가지 않는다. finally까지 다 수행하고 톰캣이 joinController의 html을 수행하고 res req 소멸시키고 끝
+										// response.sendRedirect()는 응답을 설정하는 행위이지, Java 메서드의 실행을 종료시키는 제어문이 아니다.
 
 				}else {
 					out.print("가입 실패<br>");
