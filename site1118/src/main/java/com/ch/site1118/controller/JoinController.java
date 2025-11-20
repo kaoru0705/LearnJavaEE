@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -32,6 +33,7 @@ public class JoinController extends HttpServlet{
 		// 하지만, 현재 사용중인 IDE가 이클립스라면, 굳이 환경변수까지 등록할 필요 없고, 이클립스에 등록하면 된다.
 		
 		Connection con = null;
+		PreparedStatement pstmt = null;
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -50,6 +52,32 @@ public class JoinController extends HttpServlet{
 			} else {
 				out.print("접속성공");
 			}
+			
+			// 쿼리수행
+			// JDBC는 데이터베이스 제품의 종류가 무엇이든 상관없이 DB를 제어할 수 있는 코드가 동일함..(일관성 유지 가능)
+			// 가능한 이유? 사실 JDBC 드라이버를 제작하는 주체는 벤더사이기 때문에... 모든 벤더사는 java언어를 제작한 오라클사에서 제시한
+			// JDBD 기준 스펙을 따르기 때문에 가능하다..
+			// 오라클 사는 javaEE에 대한 스펙만을 명시하고, 실제 서버는 개발하지 않는다. 결국 javaEE 스펙에 따라 서버를 개발하는 벤더사들
+			// 모두가 각자 고유의 기술로 서버는 개발하지만, 반드시 javaEE에서 명시된 객체명을 즉 api를 유지해야 하므로, java 개발자들은
+			// 어떠한 종류의 서버이던 상관없이 그 코드가 언제나 유지됨.
+			
+			request.setCharacterEncoding("utf-8");
+			String id = request.getParameter("id");
+			String pwd = request.getParameter("pwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			
+			String sql = "insert into member(member_id, id, pwd, name, email)";
+			sql += " values(seq_member.nextval, ?, ?, ?, ?)";		// 바인드 변수
+			pstmt = con.prepareStatement(sql);
+			
+			// 바인드 변수를 사용하게 되면, 물음표의 값이 무엇인지 개발자가 PreparedStatement에게 알려줘야함
+			// 클라이언트가 전송한 파라미터 받기 
+			pstmt.setString(1, id);
+			pstmt.setString(1, pwd);
+			pstmt.setString(1, name);
+			pstmt.setString(1, email);
+			
 		} catch (ClassNotFoundException e) {
 			out.print("드라이버 로드 실패");
 			e.printStackTrace();
