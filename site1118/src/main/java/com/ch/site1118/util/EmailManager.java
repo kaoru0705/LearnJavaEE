@@ -1,8 +1,8 @@
 package com.ch.site1118.util;
+// activation-1.1.1.jar, mail-1.5.5-b01.jar
 
 import java.util.Properties;
 
-import javax.activation.MailcapCommandMap;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,7 +16,6 @@ import javax.mail.internet.MimeMessage;
 
 // 이메일을 발송해주는 객체 정의
 // javase 기반에서 이미 메일을 발송할 수 있는 api가 지원됨.. jar 형태의 라이브러리
-// activation-1.1.1.jar, mail-1.5.5-b01.jar
 public class EmailManager {
 	String host = "smtp.gmail.com";			// 사용하고자 하는 메일 서버 주소
 	String user = "kaoru9875@gmail.com";	// 메일 서버의 사용자 계정
@@ -31,7 +30,7 @@ public class EmailManager {
 		props.put("mail.smtp.host",host);
 		props.put("mail.smtp.port", "465");		// 구글 smtp(보내는 메일 서버)의 포트번호
 		props.put("mail.smtp.auth", "true");
-		props.put("main.smtp.ssl.enable", "true");
+		props.put("mail.smtp.ssl.enable", "true");
 //		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		props.put("mail.smtp.ssl.protocols", "TLSv1.2");		// TLS 버전 강제
 		
