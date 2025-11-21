@@ -1,8 +1,13 @@
 package com.ch.gallery.controller;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +19,9 @@ import com.oreilly.servlet.MultipartRequest;
 
 // 클라이언트의 업로드를 처리할 서블릿
 public class UploadServlet extends HttpServlet{
+	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	String user = "servlet";
+	String pass = "1234";
 	
 	// 클라이언트의 post 요청을 처리할 메서드
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +37,13 @@ public class UploadServlet extends HttpServlet{
 		// 용량은 기본인 바이트 단위이다...(최소단위 - bit, 기본단위 - byte)
 		int maxSize = 1024 * 1024 * 3;
 		MultipartRequest multi = new MultipartRequest(req, "C:\\upload", maxSize, "utf-8");
+		
+		// 클라이언트가 전송한 데이터 중 텍스트 기반의 데이터를 파라미터를 이용하여 받아보자
+		// 클라이언트가 전송한 데이터 인코딩 형식이 multipart/form-data 일 때는 기존에 파라미터를 받는 코드인
+		// request.getParameter()는 동작하지 못함.. 대신 업로드를 처리한 컴포넌트를 통해서 파라미터값들을
+		// 추출해야 한다.
+		String title = multi.getParameter("title");
+		out.println("클라이언트가 전송한 제목은 " + title);
 		
 		// 이미 업로드된 파일은, 사용자가 정한 파일명이므로, 웹브라우저에서 표현 시 불안할 수 있음
 		// 해결책? 파일명을 개발자가 정한 규칙, 또는 알고르짐으로 변경한다
@@ -60,10 +75,63 @@ public class UploadServlet extends HttpServlet{
 		
 		// File 클래스 메서드 중 파일명을 바꾸는 메서드 사용
 		// renameTo() 메서드의 매개변수에는 새롭게 생성될 파일의 경로를 넣어야 한다
-		boolean result = file.renameTo(new File("C:/upload/" + time + "." + extend));
+		String filename = time + "." + extend;		// 여러 군데에서 사용할 예정이므로, 변수로 받아놓자
+		boolean uploadResult = file.renameTo(new File("C:/upload/" + filename));
 		out.print("<br>");
-		if(result) {
+		if(uploadResult) {
 			out.print("업로드 성공");
+			
+			Connection con = null;
+			PreparedStatement pstmt = null;		// 쿼리 수행 객체
+			
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				con = DriverManager.getConnection(url, user, pass);
+				
+				if(con == null) {
+					out.println("접속 실패");
+				}else {
+					out.println("접속 성공");
+					String sql = "insert into gallery(gallery_id, title, filename) values(seq_gallery.nextval, ?, ?)";
+					pstmt = con.prepareStatement(sql);		// 접속 객체로부터 쿼리수행 인스턴스 얻기
+					
+					// 쿼리문 수행에 앞서 바인드 변수값을 결정하자
+					pstmt.setString(1,  title);
+					pstmt.setString(2, filename);
+					
+					// 쿼리 수행 DML임로 executeUpdate() 사용해야 함
+					// executeUpdate() 는 쿼리수행 후 영향을 받은 레코드 수를 반환하므로, insert 성공이라면 0이
+					// 아니어야 한다.
+					int n = pstmt.executeUpdate();
+					if(n < 1) {
+						out.println("등록 실패");
+					}else {
+						out.println("등록 성공");
+						// 목록으로 자동 전환...
+						resp.sendRedirect("/upload/list.jsp");		// 그냥 톰캣에게 하라고 예약한 거다. finally 끝나고 
+					}
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if(pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if(con != null) {
+					try {
+						con.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
 		}else {
 			out.print("업로드 실패");
 		}

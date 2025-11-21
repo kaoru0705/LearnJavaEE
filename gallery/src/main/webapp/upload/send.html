@@ -34,12 +34,11 @@
 		
 		<form name = "form1" method="post" enctype="multipart/form-data" action = "/upload">
 			<div>
-				<input type="text" placeholder="사진 제목을 입력..."> <br>
+				<input type="text" placeholder="사진 제목을 입력..." name = "title"> <br>
 			</div>
 			
 			<div>
-				<!--  파일 컴포넌트에 이름을 부여하지 않으면 서버측에서 파라미터가 없다고 간주하여
-				업로드 수행이 불가함  -->
+				<!--  파일 컴포넌트에 이름을 부여하지 않으면 서버측에서 파라미터가 없다고 간주하여 업로드 수행이 불가함  -->
 				이미지를 선택하세요 <input type="file" name="photo"> <br>
 			</div>
 			

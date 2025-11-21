@@ -1,8 +1,42 @@
-<%@ page contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.DriverManager"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page import = "java.sql.Connection" %>
+<%@ page import = "java.sql.PreparedStatement" %>
+<%!
+	// 선언부는 서블릿으로 변환될 때 자동으로 멤버영역으로 자리잡는다.
+	Connection con;
+	PreparedStatement pstmt;
+	ResultSet rs;	// 해당 객체위에 ctrl space 
+	
+	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	String user = "servlet";
+	String pass = "1234";
+%>
+
 <%
 	// page 지식 영역에서 contentType() 명시한 것은, 이 jsp가 서블릿으로 변환되어질 때
 	// response 객체의 메서드 중 setContentType("text/html;charset=utf-8")
+	
+	// 오라클 연동하기
+	// 아래의 코드는 원래 순수 java 클래스에서 작성할 경우, 예외처리가 강제되지만,
+	// 현재 우리의 jsp 영역은 실행직전 tomcat에 의해 서블릿으로 변환되어지며 특히 스크립틀릿 영역은
+	// service() method로 코드가 작성되고, 이 때 tomcat이 예외처리까지 해버렸으므로, jsp에서는 예외처리할 것을
+	// 강요당하지 않음...
+	
+	// 1단계) 드라이버 로드
+	Class.forName("oracle.jdbc.driver.OracleDriver");
+	
+	// 2단계) 접속
+	con = DriverManager.getConnection(url, user, pass);
+	
+	// 3단계) 쿼리실행
+	String sql="select * from gallery";
+	pstmt = con.prepareStatement(sql);		// 쿼리 수행 객체 생성
+	
+	// 쿼리문이 select인 경우, 그 결과표를 받는 객체가 ResultSet
+	rs = pstmt.executeQuery();
+	
 %>
 <%!
 	/*
@@ -77,15 +111,23 @@ tr:nth-child(even) {
     <th>Last Name</th>
     <th>Points</th>
   </tr>
-
-<%for(int i = 0; i < 10; i++){%>
+ <% 	
+ 		// rs 객체의 next() 메서드를 호출할 때마다, 커서가 밑으로 한 칸씩 전진하는데, 이때
+ 		// 커서가 위치한 행의 레코드가 존재할 경우는 true를 반환하지만, 존재하지 않으면 false를 반환
+ 		// 따라서 모든 레코드만큼 반복문을 수행하려면 next()가 참인 동안 반복하면 된다...
+ %>
+<%while(rs.next()) {%>
   <tr>
-    <td>Jill</td>
-    <td>Smith</td>
-    <td>50</td>
+    <td><%out.print(rs.getInt("gallery_id")); %></td>
+    <td><%out.print(rs.getString("title")); %></td>
+    <td><%out.print(rs.getString("filename")); %></td>
   </tr>
 <%} %>
 </table>
-
 </body>
 </html>
+<%
+	rs.close();
+	pstmt.close();
+	con.close();
+%>
