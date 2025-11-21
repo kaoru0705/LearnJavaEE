@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	// 이 라인에서는 아직 실행부가 버튼에 도달하지 못했으므로, 문서가 모두 로드된 시점에 이벤트 연결하자
+	addEventListener("load", function() {
+		// 이 시점부터는 문서가 모두 로드된 시점이므로, 원하는 요소를 접근할 수 있다.
+		document.getElementById("bt_send").addEventListener("click", function() {
+			// 폼을 서버로 전송하자
+			window.document.form1.submit();
+		});
+	});
+</script>
 </head>
 <body>
 	<pre>
@@ -22,17 +32,19 @@
 		반드시 POST 방식으로 전송해야 하며, 특히나 인코딩 타입도 multipart/form-data 라는 형식을 지정해야 한다..
 		이때 multipart의 의미는 서버로 전송하고자 하는 미디어 타입이 텍스트뿐만 아니라, 바이너리도 섞여 있는 복합유형을 의미
 		
-		<form method="post" encoding="multipart/form-data">
+		<form name = "form1" method="post" enctype="multipart/form-data" action = "/upload">
 			<div>
 				<input type="text" placeholder="사진 제목을 입력..."> <br>
 			</div>
 			
 			<div>
-			이미지를 선택하세요 <input type="file"> <br>
+				<!--  파일 컴포넌트에 이름을 부여하지 않으면 서버측에서 파라미터가 없다고 간주하여
+				업로드 수행이 불가함  -->
+				이미지를 선택하세요 <input type="file" name="photo"> <br>
 			</div>
 			
 			<div>
-			<button type = "button">서버로 업로드</button>
+				<button type = "button" id = "bt_send">서버로 업로드</button>
 			</div>
 		</form>
 	</div>
