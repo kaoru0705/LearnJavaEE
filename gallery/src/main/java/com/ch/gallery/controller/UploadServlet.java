@@ -1,5 +1,6 @@
 package com.ch.gallery.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ch.gallery.util.StringUtil;
 import com.oreilly.servlet.MultipartRequest;
 
 // 클라이언트의 업로드를 처리할 서블릿
@@ -30,7 +32,40 @@ public class UploadServlet extends HttpServlet{
 		
 		// 이미 업로드된 파일은, 사용자가 정한 파일명이므로, 웹브라우저에서 표현 시 불안할 수 있음
 		// 해결책? 파일명을 개발자가 정한 규칙, 또는 알고르짐으로 변경한다
+		// 방법) 예 - 현재 시간(밀리세컨드까지 표현), 해시-16진수 문자열..
+		long time = System.currentTimeMillis();
+		
+		out.print(time);
+		
+		out.print("<br>");
 		
 		out.print("업로드 성공");
+		
+		// 방금 업로드된 파일명을 조사하여, 현재 시간과 확장자를 조합하여 새로운 파일명 만들기
+		// 이미 업로드된 파일 정보는 파일컴포넌트 스스로 알고 있다. 우리의 경우 multi이다.
+		String oriName = multi.getOriginalFileName("photo");
+		out.print("<br>");
+		out.print(oriName);
+		
+		String extend = StringUtil.getExtendFrom(oriName);
+		
+		out.print("<br>");
+		out.print("추출된 확장자는 " + extend);
+		
+		// 파일명과 확장자를 구했으니, 업로드된 파일의 이름을 변경하자
+		// 자바에서는 파일명을 변경하거나, 삭제 등을 처리하면 java.io.File 클래스를 이용해야 한다..
+		File file = multi.getFile("photo");		// 서버에 업로드된 파일을 반환해줌!!
+		out.print("<br>");
+		out.print(file);
+		
+		// File 클래스 메서드 중 파일명을 바꾸는 메서드 사용
+		// renameTo() 메서드의 매개변수에는 새롭게 생성될 파일의 경로를 넣어야 한다
+		boolean result = file.renameTo(new File("C:/upload/" + time + "." + extend));
+		out.print("<br>");
+		if(result) {
+			out.print("업로드 성공");
+		}else {
+			out.print("업로드 실패");
+		}
 	}
 }
