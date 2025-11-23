@@ -110,16 +110,16 @@ public class JoinController extends HttpServlet{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(con != null) {
+			if(pstmt != null) {
 				try {
-					con.close();
+					pstmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			if(pstmt != null) {
+			if(con != null) {
 				try {
-					pstmt.close();
+					con.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

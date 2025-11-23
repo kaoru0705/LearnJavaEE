@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.container{
+		width: 100%;
+		height: 900px;
+	}
+	.privacyContent{
+		width: 100%;
+	}
+	.inner{
+		width: 500px;
+		height: 100%;
+		margin: auto;
+	}
+	.contentBox{
+		width: 100%;
+		height: 700px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+	.title{
+		text-align: center;
+	}
+	.contentBox pre {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	.buttonWrap{
+        margin-top: 20px;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+        line-height: 50px;
+	}
+    .buttonWrap button{
+        border: none;
+        color: white;
+        padding: 14px 100px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #04AA6D;
+        border-radius: 5px;
+    }
+	.footer{
+		height: 50px;
+		text-align: center;
+		line-height: 50px;
+        color:darkgray;
+	}
+
+</style>
+<script>
+	function next(){
+		/*https://www.w3schools.com/jsref/prop_loc_href.asp*/
+		location.href = "http://localhost:8888/site1234/create/join.html";
+	}
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="privacyContent">
+			<div class="inner">
+				<h1 class="title">개인정보 수집 이용 동의</h1>
+				<div class="contentBox">
+					<pre>개인정보보호법에 따라 Donguru에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.</pre>
+                    <br>
+					<pre style = "font-weight: bold; font-size: 16px;">1. 수집하는 개인정보</pre>
+                    <pre>이용자는 회원가입을 하지 않아도 정보 검색, 뉴스 보기 등 대부분의 Donguru 서비스를 회원과 동일하게 이용할 수 있습니다. 이용자가 메일, 캘린더, 카페, 블로그 등과 같이 개인화 혹은 회원제 서비스를 이용하기 위해 회원가입을 할 경우, Donguru는 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.</pre>
+                    <br>
+                    <pre style = "font-weight: bold; font-size: 12px;">회원가입 시점에 Donguru가 이용자로부터 수집하는 개인정보는 아래와 같습니다.</pre>
+                    <pre>- 회원 가입 시 필수항목으로 아이디, 비밀번호, 닉네임, 성별, 휴대전화번호를 수집합니다.</pre>
+                    <pre>개별 서비스 이용, 이벤트 응모 및 경품 신청 과정에서 해당 서비스의 이용자에 한해 추가 개인정보 수집이 발생할 수 있습니다. 추가로 개인정보를 수집할 경우에는 해당 개인정보 수집 시점에서 이용자에게 ‘수집하는 개인정보 항목, 개인정보의 수집 및 이용목적, 개인정보의 보관기간’에 대해 안내 드리고 동의를 받습니다.</pre>
+                    <br>
+                    <pre style = "font-weight: bold; font-size: 16px;">2. 수집하는 개인정보의 이용</pre>
+                    <pre>- 회원 가입 의사의 확인, 연령 확인 및 법정대리인 동의 진행, 이용자 및 법정대리인의 본인 확인, 이용자 식별, 회원탈퇴 의사의 확인 등 회원관리를 위하여 개인정보를 이용합니다.</pre>
+                    <br>
+                    <pre style = "font-weight: bold; font-size: 16px;">3. 개인정보 보관기간</pre>
+                    <pre style = "font-weight: bold; font-size: 12px;">회사는 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체없이 파기하고 있습니다. 단, 이용자에게 개인정보 보관기간에 대해 별도의 동의를 얻은 경우, 또는 법령에서 일정 기간 정보보관 의무를 부과하는 경우에는 해당 기간 동안 개인정보를 안전하게 보관합니다. 이용자에게 개인정보 보관기간에 대해 회원가입 시 또는 서비스 가입 시 동의를 얻은 경우는 아래와 같습니다.</pre>
+                    <pre> - 부정 가입 및 이용 방지 부정 이용자의 DI (만 14세 미만의 경우 법정대리인DI): 탈퇴일로부터 6개월 보관 탈퇴한 이용자의 휴대전화번호(휴대전화 인증 시, 복호화가 불가능한 일방향 암호화(해시)하여 보관),
+DI(아이핀 인증 시) : 탈퇴일로부터 6개월 보관 - 서비스 제공을 위한 본인 확인 통신사 정보, 휴대전화번호 : 수집 시점으로부터 1년 보관</pre>
+				</div>
+				<div class="buttonWrap">
+					<button type="button" class="buttonConfirm" onClick="next()">동의하고 계속</button>
+				</div>
+				<div class="footer">Donguru</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

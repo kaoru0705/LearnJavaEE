@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.container{
+		width: 100%;
+		height: 900px;
+	}
+	.content{
+		width: 100%;
+	}
+	.inner{
+		width: 500px;
+		height: 100%;
+		border: 2px solid #f1f1f1;
+		margin: auto;
+		border-radius: 5px;
+	}
+	hr{
+		border: 1px solid #f1f1f1;
+		margin-bottom: 25px;
+	}
+	#joinForm{
+		width: 80%;
+		padding: 16px;
+		margin: auto;
+	}
+	input[type=text], input[type=password] {
+		width: 90%;
+		padding: 15px;
+		margin: 5px 0 22px 0;
+		display: inline-block;
+		border: none;
+		background: #f1f1f1;
+	}
+	input[type=text]:focus, input[type=password]:focus {
+		background-color: #ddd;
+		outline: none;
+	}
+
+	.title{
+		text-align: center;
+	}
+	.buttonWrap{
+        margin-top: 20px;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+        line-height: 50px;
+	}
+    .buttonRegister{
+        border: none;
+        color: gray;
+        padding: 14px 100px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+	.footer{
+		height: 50px;
+		text-align: center;
+		line-height: 50px;
+        color:darkgray;
+	}
+	.errorText{
+		color:crimson;
+		margin-bottom: 22px;
+	}
+</style>
+<script>
+	let button = null;
+	let joinForm = null;
+	
+	let memberInfo = {
+		email: "이메일",
+		password: "비밀번호",
+		nickname: "닉네임",
+		phone: "휴대폰번호"
+	}
+	
+	let memberIsValid = {
+		email: false,
+		password: false,
+		nickname: false,
+		phone: true
+	}
+
+	async function inputFocusOut(check){
+		let checkId = document.getElementById(check);
+		let memberTag = document.getElementById(check + "Msg");
+
+		if(checkId.value == "" && check != "phone") {
+			memberTag.innerHTML = "&middot; [필수] " + memberInfo[check];
+			memberTag.style.display = "block";
+			checkId.style.border = "1px solid crimson";
+			memberIsValid[check] = false;
+			setRegisterButton(false);
+			return;
+		}
+		if(check != "password") {
+			let firstUppercase = check.substring(0, 1).toUpperCase() + check.substring(1, check.length);
+			let checkSite = "http://localhost:8888/site1234/create/check"+ firstUppercase +".jsp?" + check + "=" + checkId.value;
+			let res = await fetch(checkSite);
+			let data = await res.text();
+			/* 기본으로 공백이 들어가 있어 지워야 한다.*/
+			let trimmedData = data.trim();
+			let postposition = (check === "phone") ? "를" : "을";
+			if(trimmedData === "invalid") {
+				memberTag.innerHTML = "&middot; 사용할 수 없는 " + memberInfo[check] + "입니다. 다른 " + memberInfo[check] + postposition + " 입력해주세요.";
+				memberTag.style.display = "block";
+				checkId.style.border = "1px solid crimson";
+				memberIsValid[check] = false;
+				setRegisterButton(false);
+				return;
+			}
+		}
+		
+		memberTag.style.display = "none";
+		checkId.style.border = "none";	
+		memberIsValid[check] = true;
+		
+		let isValid = true;
+		for(let value of Object.values(memberIsValid)) {
+			if(!value) {
+				isValid = false;
+				return;
+			}
+		}
+		
+		setRegisterButton(isValid);
+		
+	}
+	function setRegisterButton(set){
+		button = document.querySelector(".buttonRegister");
+		if(set) {
+			button.disabled = false;
+			button.style.backgroundColor = "#04AA6D";
+			button.style.color = "white";
+		}else {
+			button.disabled = true;
+			button.style.backgroundColor = "#f1f1f1";
+			button.style.color = "gray";
+		}
+	}
+	function sendMemberInfo(){
+		joinForm.method = "post";
+		joinForm.action = "/site1234/create/register";
+		joinForm.submit();
+	}
+	function init() {
+		button = document.querySelector(".buttonRegister");
+		
+		joinForm = document.getElementById("joinForm");
+		
+
+		button.addEventListener("click", function(){
+			sendMemberInfo();
+		});
+	}
+	
+	window.addEventListener("load", () => {
+		init();
+	});
+
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="content">
+			<div class="inner">
+				<h1 class="title">Donguru</h1>
+				<form id="joinForm">
+					<hr>
+					<div><b>이메일</b></div>
+					<input type="text" placeholder="이메일" name="email" id="email" onFocusOut="inputFocusOut('email')">
+					<div class="errorText" id="emailMsg" style="font-size:12px; display: none"></div>
+					<div><b>비밀번호</b></div>
+					<input type="password" placeholder="비밀번호" name="password" id="password" onFocusOut="inputFocusOut('password')">
+					<div class="errorText" id="passwordMsg" style="font-size:12px; display: none"></div>
+					<div><b>닉네임</b></div>
+					<input type="text" placeholder="닉네임" name="nickname" id="nickname" onFocusOut="inputFocusOut('nickname')">
+					<div class="errorText" id="nicknameMsg" style="font-size:12px; display: none"></div>
+					<div><b>휴대폰번호</b></div>
+					<input type="text" placeholder="[선택] 휴대폰번호" name="phone" id="phone" onFocusOut="inputFocusOut('phone')">
+					<div class="errorText" id="phoneMsg" style="font-size:12px; display: none"></div>
+					<hr>
+				</form>
+				<div class="buttonWrap">
+					<button type="button" class="buttonRegister" disabled>가입하기</button>
+				</div>
+				<div class="footer">Donguru</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
