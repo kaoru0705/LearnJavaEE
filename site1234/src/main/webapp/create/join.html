@@ -101,8 +101,10 @@
 			return;
 		}
 		if(check != "password") {
-			let firstUppercase = check.substring(0, 1).toUpperCase() + check.substring(1, check.length);
-			let checkSite = "http://localhost:8888/site1234/create/check"+ firstUppercase +".jsp?" + check + "=" + checkId.value;
+			//let firstUppercase = check.substring(0, 1).toUpperCase() + check.substring(1, check.length);
+			//let checkSite = "http://localhost:8888/site1234/create/check"+ firstUppercase +".jsp?" + check + "=" + checkId.value;
+			let checkSite = "http://localhost:8888/site1234/create/checkMember.jsp?" + check + "=" + checkId.value;
+			
 			let res = await fetch(checkSite);
 			let data = await res.text();
 			/* 기본으로 공백이 들어가 있어 지워야 한다.*/
