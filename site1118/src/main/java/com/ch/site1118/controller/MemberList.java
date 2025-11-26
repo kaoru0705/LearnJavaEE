@@ -92,7 +92,7 @@ public class MemberList extends HttpServlet{
 	            tag.append("</table>");
 	            
 	            out.print(tag.toString());
-	            out.print("<a href= '/member/join.html'>가입하기</a>");
+	            out.print("<a href= '/site1118/member/join.html'>가입하기</a>");
 			}
 			
 		} catch (ClassNotFoundException e) {
