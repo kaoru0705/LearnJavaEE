@@ -75,28 +75,54 @@ button:hover {
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-
+	/*
+		JQuery의 문법 구조는 그냥 아래아 같이 단순
+		형식(Syntax) : $(누구를).어떻게();
+							'누구'를 자리에 올 수 있는 주제는 바로 CSS의 선택자
+	$(document);
+	$(document).ready(function(){
+		alert("문서 로드되었어");
+	});
+	
+	위 표현을 더 줄이면?
+	*/
+	$(function(){
+		//alert("단축식으로 로드");
+		$("#bt_signup").click(function(){
+			// 폼양식을 서버로 전송하자
+			/*
+			$("#form1").action="/memberapp/member/signup";
+			$("#form1").method="post";
+			$("#form1").submit();
+			*/
+			$("#form1").attr({
+				action: "/member/signup",
+				method: "post"
+			});
+			$("#form1").submit();
+		})
+	});
 
 </script>
 <body>
 
-<form action="/action_page.php" style="border:1px solid #ccc">
+<form id="form1" style="border:1px solid #ccc">
   <div class="container">
     <h1>Sign Up</h1>
     <p>Please fill in this form to create an account.</p>
     <hr>
 
     <label for="email"><b>ID</b></label>
-    <input type="text" placeholder="Enter Your ID" name="email" required>
+    <input type="text" placeholder="Enter Your ID" name="id" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="pwd" required>
 
     <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+    <input type="password" placeholder="Repeat Password" name="pwd-repeat" required>
     
     <label for="psw-repeat"><b>Your Name</b></label>
-    <input type="text" placeholder="Your Name..." name="psw-repeat" required>
+    <input type="text" placeholder="Your Name..." name="name" required>
     
     <label>
       <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
@@ -106,7 +132,7 @@ button:hover {
 
     <div class="clearfix">
       <button type="button" class="cancelbtn">Cancel</button>
-      <button type="submit" class="signupbtn">Sign Up</button>
+      <button type="button" class="signupbtn" id="bt_signup">Sign Up</button>
     </div>
   </div>
 </form>
