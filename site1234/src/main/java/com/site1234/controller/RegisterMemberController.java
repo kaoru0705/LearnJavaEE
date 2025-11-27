@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+// 이거 디자인때문에 jsp로 만드는 게 맞다.
 public class RegisterMemberController extends HttpServlet{
 	
 	@Override
@@ -54,10 +54,10 @@ public class RegisterMemberController extends HttpServlet{
 				
 				if(result != 0) {
 					out.print("가입 성공<br>");
+					out.print("<button onClick=\"location.href='/site1234/upload/list.jsp'\">다음</button>");
 				}else {
 					out.print("가입 실패<br>");
 				}
-				
 			}
 			
 		} catch (ClassNotFoundException e) {
