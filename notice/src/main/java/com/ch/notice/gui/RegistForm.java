@@ -1,9 +1,16 @@
 package com.ch.notice.gui;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -32,6 +39,68 @@ public class RegistForm extends JFrame{
 		
 		this.setSize(400, 300);		// 너비와 높이를 부여
 		this.setVisible(true);		// default 가 안 보이므로 보이게
+		
+		// 버튼에 클릭 이벤트 연결하기
+//		bt.addActionListener((e)->{
+//			System.out.println("나 눌렀어?");
+//		});
+		bt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("나 눌렀어?");
+				regist();
+			}
+		});
+	}
+	
+	// 게시물 등록!!
+	public void regist() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("드라이버 로드 성공");
+			
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java", "servlet", "1234");
+			System.out.println(con);
+			
+			String sql = "insert into notice(title, writer, content) values(?, ?, ?)";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title.getText());
+			pstmt.setString(2,  writer.getText());
+			pstmt.setString(3,  content.getText());
+			
+			int result = pstmt.executeUpdate();		// DML 수행
+			if(result < 1) {
+				JOptionPane.showMessageDialog(this, "등록 실패");
+			}else {
+				JOptionPane.showMessageDialog(this, "등록 성공");
+			}
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("드라이버 로드 실패");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("접속 실패");
+			e.printStackTrace();
+		}finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
