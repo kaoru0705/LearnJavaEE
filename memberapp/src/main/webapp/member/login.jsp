@@ -73,29 +73,44 @@ button:hover {
   }
 }
 </style>
+<!-- 이 자리는 외부로 저장해놓고, 실행타임에 동적으로 코드가 들어오도록 처리하는 include -->
+<%@ include file="../inc/header_link.jsp"%>
+<script>
+	$(function(){
+		// .clearfix라는 클래스 안에 들어 있는 두 개의 버튼들 중 두 번째 버튼에 click 이벤트 연결하기
+		$($(".clearfix button")[1]).click(function(){
+			// 유저가 작성한 폼을 전송하자
+			$("#form1").attr({
+				action:"/member/login",
+				method:"post",
+			})
+			$("#form1").submit();
+		});
+	});
+</script>
 <body>
 
-<form action="/action_page.php" style="border:1px solid #ccc">
+<form style="border:1px solid #ccc" id="form1">
   <div class="container">
     <h1>Login</h1>
     <hr>
 
     <label for="email"><b>ID</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+    <input type="text" placeholder="Your ID" name="id" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="pwd" required>
 
     <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+    <input type="password" placeholder="Repeat Password" name="pwd2" required>
     
     <label>
       <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
     </label>
     
     <div class="clearfix">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <button type="submit" class="signupbtn">Sign Up</button>
+      <button type="button" class="cancelbtn">Sing Up</button>
+      <button type="button" class="signupbtn">Login</button>
     </div>
   </div>
 </form>

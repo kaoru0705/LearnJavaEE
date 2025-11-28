@@ -60,6 +60,8 @@ public class RegistServlet extends HttpServlet{
 					tag.append("location.href='/member/login.jsp';");
 				}
 				tag.append("</script>");
+				
+				out.print(tag.toString());	
 			}
 			
 		} catch (ClassNotFoundException e) {
