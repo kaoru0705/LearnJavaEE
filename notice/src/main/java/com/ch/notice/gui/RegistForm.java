@@ -14,7 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.ch.notice.repository.MemberDAO;
+import com.ch.notice.domain.Notice;
+import com.ch.notice.repository.NoticeDAO;
 
 public class RegistForm extends JFrame{
 	
@@ -23,7 +24,7 @@ public class RegistForm extends JFrame{
 	JTextField writer;
 	JTextArea content;		// 내용 입력 박스
 	JButton bt;		// 등록버튼
-	MemberDAO dao;
+	NoticeDAO dao;
 	
 	
 	public RegistForm() {
@@ -31,7 +32,7 @@ public class RegistForm extends JFrame{
 		writer = new JTextField(30);
 		content = new JTextArea(10, 30);
 		bt = new JButton("등록");
-		dao = new MemberDAO();
+		dao = new NoticeDAO();
 		
 		// 컴포넌트를 부착하기 전에 레이아웃을 결정짓자. css div로 레이아웃을 적용하는 것과 비슷
 		setLayout(new FlowLayout());		// 수평이나 수직으로 흐르는 레이아웃
@@ -59,7 +60,12 @@ public class RegistForm extends JFrame{
 	
 	// 게시물 등록!!
 	public void regist() {
-		int result = dao.regist(title.getText(), writer.getText(), content.getText());
+		Notice notice = new Notice();		// empty
+		notice.setTitle(title.getText());	// DTO에 제목 주입
+		notice.setWriter(writer.getText());
+		notice.setContent(content.getText());
+		
+		int result = dao.regist(notice);		// db에 insert
 		
 		if(result < 1) {
 			JOptionPane.showMessageDialog(this, "실패");
