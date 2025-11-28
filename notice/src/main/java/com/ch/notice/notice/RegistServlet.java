@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ch.notice.domain.Notice;
 import com.ch.notice.repository.NoticeDAO;
 
 // html로부터 글쓰기 요청을 받는 서블릿 정의
@@ -20,7 +21,7 @@ import com.ch.notice.repository.NoticeDAO;
 // 현재 이 서블릿에서는 디자인이 필요 없기 때문에, 굳이 jsp를 사용할 필요가 없다.
 public class RegistServlet extends HttpServlet{
 	
-	NoticeDAO noticeDAO;		// 다른 로직은 포함되어 있지 않고, 오직 DB와 관련 CRUD만을 담당하는 중립적 객체를 사용하보자
+	NoticeDAO noticeDAO = new NoticeDAO();		// 다른 로직은 포함되어 있지 않고, 오직 DB와 관련 CRUD만을 담당하는 중립적 객체를 사용하보자
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("요청 감지");	// 서버의 톰캣 콘솔에 출력
@@ -49,5 +50,22 @@ public class RegistServlet extends HttpServlet{
 		// 				src/animal.Dog.java 작성 후, bin/animal.Dog.class에 대해
 		//				직접 javac -d 경로 대상클래스
 		
+		Notice notice = new Notice();
+		
+		notice.setTitle(title);
+		notice.setWriter(writer);
+		notice.setContent(content);
+		
+		int result = noticeDAO.regist(notice);
+		
+		out.print("<script>");
+		if(result < 1) {
+			out.print("alert('등록실패');");
+			out.print("history.back();");
+		}else {
+			out.print("alert('등록성공');");
+			out.print("location.href='/notice/list.jsp'");
+		}
+		out.print("</script>");
 	}
 }
