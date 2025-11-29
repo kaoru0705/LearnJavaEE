@@ -1,10 +1,12 @@
-package com.site1234.dto;
+package com.site1234.member.domain;
 
-public class MemberDto {
-	int memberId;
-	String email;
-	String password;
-	String phone;
+public class Member {
+	private int memberId;
+	private String email;
+	private String password;
+	private String nickname;
+	private String phone;
+	private String createdAt;
 	
 	public int getMemberId() {
 		return memberId;
@@ -24,10 +26,23 @@ public class MemberDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	public String getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+	
 }

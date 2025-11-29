@@ -22,7 +22,7 @@
 		border: 1px solid #f1f1f1;
 		margin-bottom: 25px;
 	}
-	#joinForm{
+	#signupForm{
 		width: 80%;
 		padding: 16px;
 		margin: auto;
@@ -50,7 +50,7 @@
 		text-align: center;
         line-height: 50px;
 	}
-    .buttonRegister{
+    .buttonSignup{
         border: none;
         color: gray;
         padding: 14px 100px;
@@ -88,6 +88,7 @@
 		phone: true
 	}
 
+	// member 중복성 검사
 	async function inputFocusOut(check){
 		let checkId = document.getElementById(check);
 		let memberTag = document.getElementById(check + "Msg");
@@ -97,13 +98,11 @@
 			memberTag.style.display = "block";
 			checkId.style.border = "1px solid crimson";
 			memberIsValid[check] = false;
-			setRegisterButton(false);
+			setSignupButton(false);
 			return;
 		}
 		if(check != "password") {
-			//let firstUppercase = check.substring(0, 1).toUpperCase() + check.substring(1, check.length);
-			//let checkSite = "http://localhost:8888/site1234/create/check"+ firstUppercase +".jsp?" + check + "=" + checkId.value;
-			let checkSite = "http://localhost:8888/create/checkMember.jsp?" + check + "=" + checkId.value;
+			let checkSite = "http://localhost:8888/member/signup/check.jsp?" + check + "=" + checkId.value;
 			
 			let res = await fetch(checkSite);
 			let data = await res.text();
@@ -115,7 +114,7 @@
 				memberTag.style.display = "block";
 				checkId.style.border = "1px solid crimson";
 				memberIsValid[check] = false;
-				setRegisterButton(false);
+				setSignupButton(false);
 				return;
 			}
 		}
@@ -132,11 +131,10 @@
 			}
 		}
 		
-		setRegisterButton(isValid);
-		
+		setSignupButton(isValid);
 	}
-	function setRegisterButton(set){
-		button = document.querySelector(".buttonRegister");
+	function setSignupButton(set){
+		button = document.querySelector(".buttonSignup");
 		if(set) {
 			button.disabled = false;
 			button.style.backgroundColor = "#04AA6D";
@@ -148,14 +146,14 @@
 		}
 	}
 	function sendMemberInfo(){
-		joinForm.method = "post";
-		joinForm.action = "/create/register";
-		joinForm.submit();
+		signupForm.method = "post";
+		signupForm.action = "/member/signup";
+		signupForm.submit();
 	}
 	function init() {
-		button = document.querySelector(".buttonRegister");
+		button = document.querySelector(".buttonSignup");
 		
-		joinForm = document.getElementById("joinForm");
+		signupForm = document.getElementById("signupForm");
 		
 
 		button.addEventListener("click", function(){
@@ -174,7 +172,7 @@
 		<div class="content">
 			<div class="inner">
 				<h1 class="title">Donguru</h1>
-				<form id="joinForm">
+				<form id="signupForm">
 					<hr>
 					<div><b>이메일</b></div>
 					<input type="text" placeholder="이메일" name="email" id="email" onFocusOut="inputFocusOut('email')">
@@ -191,7 +189,7 @@
 					<hr>
 				</form>
 				<div class="buttonWrap">
-					<button type="button" class="buttonRegister" disabled>가입하기</button>
+					<button type="button" class="buttonSignup" disabled>가입하기</button>
 				</div>
 				<div class="footer">Donguru</div>
 			</div>

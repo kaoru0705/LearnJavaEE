@@ -2,12 +2,11 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>site1234</display-name>
 	<servlet>
-		<servlet-name>registerMemberServlet</servlet-name>
-		<servlet-class>com.site1234.controller.RegisterMemberController</servlet-class>
+		<servlet-name>signupMemberServlet</servlet-name>
+		<servlet-class> com.site1234.member.member.SignupServlet</servlet-class>
 	</servlet>
-	<!-- 와 여기는 site1234가 기본이다. /create/register라고 적는 게 맞다. -->
 	<servlet-mapping>
-		<servlet-name>registerMemberServlet</servlet-name>
-		<url-pattern>/create/register</url-pattern>
+		<servlet-name>signupMemberServlet</servlet-name>
+		<url-pattern>/member/signup</url-pattern>
 	</servlet-mapping>
 </web-app>

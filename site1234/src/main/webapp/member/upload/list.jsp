@@ -1,6 +1,7 @@
+<%@page import="com.site1234.member.domain.Member"%>
+<%@page import="com.site1234.member.repository.MemberDAO"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.site1234.dto.MemberDto"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -8,22 +9,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%!
-	Connection con;
-	PreparedStatement pstmt;
-	ResultSet rs;
-	
-	String url = "jdbc:mysql://localhost:3306/myjava";
-	String user = "myuser";
-	String pass = "1234";
-	List<MemberDto> memberList = new ArrayList<>();
+	MemberDAO memberDAO;
+	List<Member> memberList = new ArrayList<>();
 %>
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	con = DriverManager.getConnection(url, user, pass);
-	
-	String sql = "select * from member";
-	pstmt = con.prepareStatement(sql);
-	rs = pstmt.executeQuery();
+	memberDAO = new MemberDAO();
+	memberList = memberDAO.findAll();
 %>
 <!DOCTYPE html>
 <html>
@@ -55,24 +46,21 @@ tbody tr:nth-child(odd) {
     <th>Password</th>
     <th>Nickname</th>
     <th>Phone</th>
+    <th>CreatedAt</th>
   </tr>
  </thead>
  <tbody>
-<%while(rs.next()) {%>
+<%for(Member member : memberList) {%>
   <tr>
-    <td><%out.print(rs.getInt("member_id")); %></td>
-    <td><%out.print(rs.getString("email")); %></td>
-    <td><%out.print(rs.getString("password")); %></td>
-    <td><%out.print(rs.getString("nickname")); %></td>
-    <td><%out.print(rs.getString("phone")); %></td>
+    <td><%out.print(member.getMemberId()); %></td>
+    <td><%out.print(member.getEmail()); %></td>
+    <td><%out.print(member.getPassword()); %></td>
+    <td><%out.print(member.getNickname()); %></td>
+    <td><%out.print(member.getPhone()); %></td>
+    <td><%out.print(member.getCreatedAt()); %></td>
   </tr>
 <%} %>
 </tbody>
 </table>
 </body>
 </html>
-<%
-	rs.close();
-	pstmt.close();
-	con.close();
-%>
