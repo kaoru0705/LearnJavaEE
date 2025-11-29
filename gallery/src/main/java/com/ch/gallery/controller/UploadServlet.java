@@ -108,7 +108,7 @@ public class UploadServlet extends HttpServlet{
 					}else {
 						out.println("등록 성공");
 						// 목록으로 자동 전환...
-						resp.sendRedirect("/gallery/upload/list.jsp");		// 그냥 톰캣에게 하라고 예약한 거다. finally 끝나고 
+						resp.sendRedirect("/upload/list.jsp");		// 그냥 톰캣에게 하라고 예약한 거다. finally 끝나고 
 					}
 				}
 			} catch (ClassNotFoundException e) {

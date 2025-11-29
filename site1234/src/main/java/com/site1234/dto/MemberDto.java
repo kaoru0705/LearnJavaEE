@@ -6,39 +6,28 @@ public class MemberDto {
 	String password;
 	String phone;
 	
-	MemberDto(int meberId, String email, String password, String phone) {
-		this.memberId = memberId;
-		this.email = email;
-		this.password = password;
-		this.phone = phone;
-	}
-	
-	int getMemberId() {
+	public int getMemberId() {
 		return memberId;
 	}
-	void setMemberId(int memberId) {
+	public void setMemberId(int memberId) {
 		this.memberId = memberId;
 	}
-	
-	String getEmail() {
+	public String getEmail() {
 		return email;
 	}
-	void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	String getPassword() {
+	public String getPassword() {
 		return password;
 	}
-	void setPassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	String getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	void setPhone(String phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
 }

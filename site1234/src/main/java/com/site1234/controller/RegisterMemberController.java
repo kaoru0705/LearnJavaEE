@@ -23,11 +23,11 @@ public class RegisterMemberController extends HttpServlet{
 		PrintWriter out = resp.getWriter();
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			out.print("드라이버 로드 성공<br>");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521:XE";
-			String user = "myjava";
+			String url = "jdbc:mysql://localhost:3306/myjava";
+			String user = "myuser";
 			String password = "1234";
 			
 			con = DriverManager.getConnection(url, user, password);
@@ -36,8 +36,8 @@ public class RegisterMemberController extends HttpServlet{
 			} else {
 				out.print("접속 성공<br>");
 				
-				String sql = "insert into member(member_id, email, password, nickname, phone)";
-				sql+= " values(seq_member.nextval, ?, ?, ?, ?)";
+				String sql = "insert into member(email, password, nickname, phone)";
+				sql+= " values(?, ?, ?, ?)";
 				pstmt = con.prepareStatement(sql);
 				
 				String email = req.getParameter("email");
@@ -54,7 +54,7 @@ public class RegisterMemberController extends HttpServlet{
 				
 				if(result != 0) {
 					out.print("가입 성공<br>");
-					out.print("<button onClick=\"location.href='/site1234/upload/list.jsp'\">다음</button>");
+					out.print("<button onClick=\"location.href='/upload/list.jsp'\">다음</button>");
 				}else {
 					out.print("가입 실패<br>");
 				}

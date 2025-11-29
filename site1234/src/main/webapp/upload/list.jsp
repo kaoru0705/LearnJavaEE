@@ -12,13 +12,13 @@
 	PreparedStatement pstmt;
 	ResultSet rs;
 	
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String user = "myjava";
+	String url = "jdbc:mysql://localhost:3306/myjava";
+	String user = "myuser";
 	String pass = "1234";
 	List<MemberDto> memberList = new ArrayList<>();
 %>
 <%
-	Class.forName("oracle.jdbc.driver.OracleDriver");
+	Class.forName("com.mysql.cj.jdbc.Driver");
 	con = DriverManager.getConnection(url, user, pass);
 	
 	String sql = "select * from member";
