@@ -86,7 +86,14 @@ input[type=button]:hover {
 
 		// 글삭제 버튼에 이벤트 연결
 		$("#bt_del").click(function(){
-			
+			if(confirm("삭제하시겠어요?")){
+				$("form").attr({
+					action: "/board/delete",
+					method: "POST"	// 이미 form 태그의 hidden 값으로 파라미터가 있기 때문에, post로 전송하자
+				});
+				
+				$("form").submit();
+			}
 		});
 
 		// 목록 버튼에 이벤트 연결

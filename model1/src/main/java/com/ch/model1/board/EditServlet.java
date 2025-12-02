@@ -43,7 +43,7 @@ public class EditServlet extends HttpServlet{
 			out.print("history.back();");
 		} else {
 			out.print("alert('성공');");
-			out.print("location.href='/board/list.jsp';");
+			out.print("location.href='/board/detail.jsp?board_id=" +boardId+ "';");
 		}
 		out.print("</script>");
 	}

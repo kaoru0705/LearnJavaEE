@@ -188,4 +188,25 @@ public class BoardDAO {
 		
 		return result;
 	}
+	
+	public int delete(int boardId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		con = pool.getConnection();
+		String sql = "delete from board where board_id = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardId);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return result;
+	}
 }
