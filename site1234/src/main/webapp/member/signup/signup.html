@@ -102,10 +102,20 @@
 			return;
 		}
 		if(check != "password") {
-			let checkSite = "http://localhost:8888/member/signup/check.jsp?" + check + "=" + checkId.value;
+			//let checkSite = "http://localhost:8888/member/signup/check.jsp?" + check + "=" + checkId.value;
 			
-			let res = await fetch(checkSite);
+			//let res = await fetch(checkSite);
+			//let data = await res.text();
+			let checkSite = "http://localhost:8888/member/signup/check.jsp";
+			let res = await fetch(checkSite, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: `${check}=${checkId.value}`
+			});
 			let data = await res.text();
+			console.log(data);
 			/* 기본으로 공백이 들어가 있어 지워야 한다.*/
 			let trimmedData = data.trim();
 			let postposition = (check === "phone") ? "를" : "을";
