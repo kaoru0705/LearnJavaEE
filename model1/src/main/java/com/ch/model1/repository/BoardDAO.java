@@ -13,6 +13,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.omg.CORBA.BAD_INV_ORDER;
+
 import com.ch.model1.dto.Board;
 import com.ch.model1.util.PoolManager;
 
@@ -116,32 +118,47 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(rs != null) {
-				try {
-					rs.close();		// 이건 닫음
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(pstmt != null) {
-				try {
-					pstmt.close();		// 이건 닫음
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(con != null) {
-				try {
-					// 주의 기존 JDBC코드는 다 사용한 커넥션을 닫았지만, 풀로부터 얻어온 커넥션은 닫으면 안 됨..
-					// 이 객체는 DataSource 구현체로부터 얻어온 Connection이기 때문에 일반적 JDBC의 닫는 close()가 아님. 닫는 게 아니라 반납
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}		
-				
-			}
+			pool.freeConnection(con, pstmt, rs);
 		}
 		
 		return boardList;
+	}
+	
+	// 레코드 한 건 가져오기
+	public Board select(int boardId) {
+		// 쿼리 실행을 하기 위한 데이터베이스 접속은 현재 코드에서 시도하지 말고,
+		// 서버 가동과 동시에 확보해놓은 커넥션 풀로부터 가져오자!!
+		Connection con = pool.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Board board = null;
+		
+		try {
+			String sql = "select * from board where board_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardId);
+			rs=pstmt.executeQuery();		// select문 실행!!
+			
+			// rs가 죽어도 상관없으려면 , 게시물 1건을 표현할 수 있는 대체제를 사용해야 함
+			// DB의 레코드 1건은 java의 DTO 인스턴스 1개와 매핑..
+			if(rs.next()) {
+				board = new Board();
+				
+				board.setBoardId(rs.getInt("board_id"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegdate(rs.getString("regdate"));
+				board.setHit(rs.getInt("hit"));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return board;
 	}
 }
