@@ -74,12 +74,12 @@ a{text-decoration:none;}
 		<%} %>
 		<tr>
 			<td colspan="5" align="center">
-			<a href="/paging/list.jsp?currentPage=<%=firstPage-1%>">prev</a>
+			<a href="/paging/list.jsp?currentPage=<%=Math.max(firstPage-1, 1)%>">prev</a>
 			<%for(int i = firstPage; i <= lastPage; i++) { %>
 			<%if(i > totalPage) break;	// 총 페이지 수를 넘어설 경우 더 이상 반복문 수행하면 안 됨..%>
 			<a <%if(currentPage == i){ %>class="numStyle" <%} %> href="/paging/list.jsp?currentPage=<%=i%>">[<%=i%>]</a>
 			<%} %>
-			<a href="/paging/list.jsp?currentPage=<%=lastPage+1%>">next</a>
+			<a href="/paging/list.jsp?currentPage=<%=Math.min(lastPage+1, totalPage)%>">next</a>
 			</td>
 		</tr>
 	</table>
