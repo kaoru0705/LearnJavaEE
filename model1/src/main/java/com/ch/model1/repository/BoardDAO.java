@@ -161,4 +161,31 @@ public class BoardDAO {
 		
 		return board;
 	}
+	
+	// record 한 건 수정
+	public int update(Board board) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;		// 쿼리 실행 결과를 반환할 지역변수, 지역변수이다보니 개발자가 직접 초기화해야 한다.
+		
+		con = pool.getConnection();	// 새로운 접속이 아니라, 이미 접속이 확보된 풀로부터 대여!!
+		String sql= "update board set title=?, writer=?, content=? where board_id = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getWriter());
+			pstmt.setString(3, board.getContent());
+			pstmt.setInt(4, board.getBoardId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
 }
