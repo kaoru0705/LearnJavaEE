@@ -7,15 +7,29 @@
 <%!
 	// !를 표기하면, 선언부를 의미... 선언부란 이 jsp가 추후 서블릿으로 변경될 때 멤버영역
 	BoardDAO boardDAO = new BoardDAO();
-	List<Board> boardList = null;
+	List<Board> list = null;
 %>
 <%
 	// 이 영역은 스크립틀릿이기 때문에, 이 jsp파일이 서블릿으로 변환될 때 service() 영역이므로
 	// 얼마든지 DB연동 가능하다...
 	// 하지만 하면 안 됨!! 그 이유?? 디자인 코드와 데이터베이스 연동코드가 하나로 합쳐(스파게티)져 있으면
 	// 추후 DB 연동 코드를 재사용할 수 없다.
-	boardList = boardDAO.selectAll();
-	out.print("등록된 게시물 수는 " + boardList.size());
+	list = boardDAO.selectAll();
+	out.print("등록된 게시물 수는 " + list.size());
+	
+	int totalRecord=list.size();
+	int pageSize = 10;	// 총 레코드 수만큼 출력하면 스크롤이 생기므로, 한 페이지당 보여질 레코드 수 정한다(입맛에 맞게 바꿀 수 있음)
+	int totalPage = (int)Math.ceil((float)totalRecord/pageSize);	// pageSize를 적용해버리면 26건일 경우, 나머지 16건은 볼 기회가 없기 때문에, 나머지 페이지를 보여줄 링크를 
+																						// 만들어야 하므로, 총 페이지 수를 구해야 한다.
+	int blockSize = 10;		// 총 페이지 수만큼 반복문을 수행하면, 화면에 너무나 많은 페이지가 출력되므로, 블락의 개념을 도입하여 블럭당 보여질 페이지 수를 제한
+	int currentPage = 1;
+	if(request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	int firstPage = currentPage - (currentPage - 1) % blockSize;
+	int lastPage = firstPage + (blockSize - 1);
+	int curPos = (currentPage - 1) * pageSize; 		// 페이지당 List의 가져올 시작 인덱스
+	int num = totalRecord - curPos;
 %>
 <!DOCTYPE html>
 <html>
@@ -53,16 +67,30 @@ tr:nth-child(even) {
   <%
   	// rs에 들어있는 레코드들을 한 칸씩 이동하면서 꺼내자 출력하자
   	// rs.next()가 true인 동안(즉, 레코드가 존재하는 만큼)
-  	for(Board board : boardList) {
+  	for(int i = 0; i < pageSize; i++) {
+  		if(num < 1) break;		// 게시물 번호가 1보다 작아지면 더이상 데이터가 없으므로 만일 break를 걸지 않으면 List에서 존재하지 않는 데이터를 접근하려고 함 out of bounds
+  		Board board =(Board)list.get(curPos++);
   %>
   	<tr>
-	  <td><%=board.getBoardId() %></td>
+	  <td><%=num--%></td>
 	  <td><a href="/board/detail.jsp?board_id=<%=board.getBoardId()%>"><%=board.getTitle() %></a></td>
 	  <td><%=board.getWriter() %></td>
 	  <td><%=board.getRegdate() %></td>
 	  <td><%=board.getHit() %></td>
 	</tr>
 	<%} %>
+	<tr>
+		<td>
+			<button onClick="location.href='/board/write.jsp';">글등록</button>
+		</td>
+		<td colspan = "4">
+		<%for(int i = firstPage; i<=lastPage; i++) {%>
+			<%if(i > totalPage) break; // 총 페이지 수만큼만 돌아라... 즉, 넘어서면 빠져나오기%>
+			<a href="/board/list.jsp?currentPage=<%=i%>">[<%=i %>]</a>
+		<%} %>
+		</td>
+	</tr>
+	
 </table>
 
 </body>
