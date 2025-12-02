@@ -70,6 +70,7 @@ input[type=button]:hover {
 		$("#writer").val("<%=board.getWriter()%>");
 		
 		// 서머노트에 동적으로 데이터 넣기
+		// textarea는 value가 존재한다. 이건 그냥 일반 textarea가 아님. 자체 api로 값을 넣어야 함
 		$("#summernote").summernote("code", "<%=board.getContent()%>");
 		
 		// 글수정 버튼에 이벤트 연결
