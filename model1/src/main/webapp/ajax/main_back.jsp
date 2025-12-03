@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,10 +33,10 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-        /*
-            문서가 로드가 되면, 두 개의 버튼에 대해 이벤트 연결
-            화살표 함수 - 기존 함수정의 기법을 줄여서 표현...
-        */
+    	/*
+		    문서가 로드가 되면, 두 개의 버튼에 대해 이벤트 연결
+		    화살표 함수 - 기존 함수정의 기법을 줄여서 표현...
+		*/
         $(()=>{
             // 동기 버튼에 클릭 이벤트 연결
             $($("form button")[0]).click(()=>{
@@ -49,7 +50,7 @@
 
             // 비동기 버튼에 클릭 이벤트 연결
             $($("form button")[1]).click(()=>{
-                alert("비동기 방식의 요청 시도");
+                alert("ë¹ëê¸° ë°©ìì ìì²­ ìë");
             });
         });
 
