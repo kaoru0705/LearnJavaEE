@@ -8,7 +8,7 @@ import com.ch.model1.util.PoolManager;
 
 /* 이 클래스는 오직 데이터베이스 관련된 로직만 담당하는 DAO 클래스임 */
 public class Member2DAO {
-	PoolManager pool = new PoolManager();
+	PoolManager pool = PoolManager.getInstance();
 	
 	// insert - 레코드 1건
 	public void insert() {

@@ -15,14 +15,29 @@ import javax.sql.DataSource;
 
 
 public class PoolManager {
+	private static PoolManager instance;		// instance라는 변수명은 강제사항은 아니지만, 개발자들 사이에서는 싱글턴에 의해
+															// 인스턴스를 얻어갈 수 있다는 약속 때문에 많이 선언...
 	DataSource ds; 
-	public PoolManager() {		 
+	
+	// 외부에서 아무도 직접 new 못하게 막자
+	private PoolManager() {		 
 		try {
 			InitialContext context = new InitialContext();
 			ds = (DataSource)context.lookup("java:comp/env/jndi/mysql");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static PoolManager getInstance() {
+		// 클래스 변수인 instance 변수에 아무것도 존재하지 않을 때는 아직 인스턴스가 없는 것이므로
+		// 그때 한 번만 new 해주자
+		// PoolManager를 싱글턴으로 선언하면, 자바엔터프리지 개발에서 수많은 DAO들이 PoolManager를 매번 인스턴스 생성하는
+		// 낭비를 방지할 수 있다..
+		if(instance == null) {
+			instance = new PoolManager();
+		}
+		return instance;
 	}
 	
 	// 외부의 DAO 들이 직접 Connection을 얻는 코드를 작성하게 하지 않으려면, 이 PoolManager 클래스에서

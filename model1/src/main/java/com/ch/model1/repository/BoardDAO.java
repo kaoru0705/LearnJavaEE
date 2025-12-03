@@ -21,7 +21,7 @@ import com.ch.model1.util.PoolManager;
 // 데이터베이스의 Board table에 대한 CRUD를 수행하는 객체
 public class BoardDAO {
 	
-	PoolManager pool = new PoolManager();
+	PoolManager pool = PoolManager.getInstance();	// 직접 new하지 않고 싱글턴 메서드에 의해 인스턴스 얻기
 	
 	public int insert(Board board) {	// 개발 시 파라미터 수가 많을 때는 낱개로 처리하지 않음,
 													// 특히 데이터베이스 연동 로직에서는 DTO를 이용.
