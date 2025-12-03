@@ -19,9 +19,6 @@ public class SignupServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 
