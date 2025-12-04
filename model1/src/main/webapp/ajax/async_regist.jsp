@@ -40,7 +40,7 @@
 	// 해결책 - 서버에서는 화면 전체를 보내지 말고, 순수하게 목록 데이터만을 전송해주면, 클라이언트는 그 데이터를 js로 동적 처리.
 	
 	// 게시물 목록 가져오기!!
-	List<Member2> list = dao.selectAll();
+	//List<Member2> list = dao.selectAll();
 	
 	// 클라언트에게 목록 데이터 보내기
 	//out.print(list);
@@ -61,13 +61,34 @@
 	*/
 	
 	// 아래의 json문자열은 말 그대로 문자열이므로, java는 String으로 처리한다..
-	StringBuffer data = new StringBuffer();
-	data.append("{");
-	data.append("\"name\": \"동훈\",");
-	data.append("\"email\": \"google\"");
-	data.append("}");
+	//StringBuffer data = new StringBuffer();
+		
+	
+/* 
+	data.append("[");
+	for(int i = 0; i < list.size(); i++){
+		Member2 obj = list.get(i);
+		data.append("{");
+		data.append("\"member2_id\": "+obj.getMember2Id()+",");
+		data.append("\"id\": \""+obj.getId()+"\", ");
+		data.append("\"name\": \""+obj.getName()+"\", ");
+		data.append("\"email\": \""+obj.getEmail()+"\" ");
+		data.append("}");
+		
+		if(i != list.size() - 1) {			
+			data.append(",");
+		}
+	}
+	data.append("]");
 	
 	System.out.println(data.toString());
 	
-	out.print(data.toString());		// 클라이언트인 웹브라우저에게 보내기
+	out.print(data.toString());		// 클라이언트인 웹브라우저에게 보내기 */	
+	
+	// 만일 요청의 유형이 동기방식이었다면, 유저는 목록화면을 보아야 하므로, 아래와 같은 코드를 작성해야 함
+	// out.print("location.href='list.jsp';");	브라우저로 하여금 list.jsp로 다시 들어오라는 명령이므로, 유저의 브라우저는
+	// 새로운 html을 화면에 렌더링 하게 되어, 유저가 느끼기에는 새로고침(깜빡임)이 발생해버림..
+	// 따라서 비동기 요청이 들어오면 서버는 절대로 문서 또는 링크를 보내면 안되고, 순수한 데이터만을 보내야 한다..
+	// 어떤 데이터를 봉내야 하나? 응답을 받은 html은 자바스크림트 코드가 관여되기 때문에, js에서 객체를 다룰 수 있는 형태일 경우
+	// 개발자에게 많은 이점이 있다.. 그렇다면.. 보내야 할 데이터의 유형은?? xml--> json이 대세다.
 %>

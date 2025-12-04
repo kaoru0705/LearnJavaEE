@@ -66,17 +66,19 @@
     			// 해결책? 어떤 문자열이 JSON의 표기법을 준수하여 작성되어 있다면, 자바스크립트는 내장 객체인 JSON 내장객체를 이용하여
     			// 문자열을 해석하여 실제 자바스크립트 객체 리터럴로 전환해줄수 있다....
     			
-    			let obj = JSON.parse(xhttp.responseText);	// 문자열을 해석하여 JSON 구문 형식에 맞을 경우만, 객체 리터럴로 전환해준다!
+    			let memberList = JSON.parse(xhttp.responseText);	// 문자열을 해석하여 JSON 구문 형식에 맞을 경우만, 객체 리터럴로 전환해준다!
     			// 정말로 obj가 자바스크립트의 인스턴스라면, 객체.속성을 접근할 수 있어야 한다.
     			// 따라서 검증해보자
-    			console.log("email 은 ", obj.email);
-    			
+    			//console.log("email 은 ", obj.email);
     			// console.log("서버로부터 받은 응답 정보는 ", xhttp.responseText);
-    			
     			// 서버로부터 전송되어온 문자열을 대상으로 원하는 값 추출하기
     			
+    			// 서버가 보내온 데이터가 다행히도, JSON 표기법을 준수했으므로, 지금부터는 객체화 시켜서 화면에 렌더링 해보자
+    			console.log("서버로부터 받은 데이터는", xhttp.responseText);
+    			console.log("서버가 보낸 문자열을 파싱한 결과 (객체화)", memberList);
     			
-    			
+    			// 화면에 보여주기!!
+    			// 문서 내의 
     		}
 
     		
