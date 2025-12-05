@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.Data;
+
 // 페이징 처리 로직을 일일이 변수 선언하여 사용하면 효율성이 떨어지므로,
 // 재사용 가능한 객체로 정의한다.
+@Data
 public class PagingUtil {
 	int totalRecord;		// 총 레코드 수
 	int pageSize = 10;	// 한 페이지 당 보여질 레코드 수(참고로 이 변수명은 SQLPlus 접속기에서 사용하는 변수명임)
