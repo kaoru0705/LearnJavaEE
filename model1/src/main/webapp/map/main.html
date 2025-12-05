@@ -31,12 +31,42 @@
     function init() {
         let mapProp= {
         center:new google.maps.LatLng(51.508742,-0.120850),
-        zoom:15,
+        zoom:18,
         };
 
         map = new google.maps.Map(document.querySelector(".content"),mapProp);
     }
+	
+    // 서버로부터 받아온 데이터를 파싱 결과인 객체를 이용하여, 화면에 표현
+    function render(data) {
+    	console.log("렌더링 전 넘겨받은 객체는 ", data);
+    	
+    	// 구글맵에 마커 표시하기 (벤더사가 제작했으므로, 각 벤더사에서 제공하는 API 이용해야 함, google, naver, kakao...)
+    	let lat = data.response.body.items.item[0].lat;	// 위도
+    	let lot = data.response.body.items.item[0].lot;	// 경도
+    	
+    	// 먼저 카메라의 위치부터 수정(맵의 중앙부를 교체)
+    	let pos = new google.maps.LatLng(lat, lot);
+    	
+    	map.setCenter(pos);
+    	let marker = new google.maps.Marker({
+    		position: pos,
+    		animation:google.maps.Animation.BOUNCE
+    	});
 
+    	// 생성된 마커를 원하는 맵 객체에 적용하기
+    	marker.setMap(map);
+    	
+    	// 팝업 윈도우 띄우기
+    	let info = data.response.body.items.item[0].frtrlNm;	// 산의 이름
+    	
+    	let infowindow = new google.maps.InfoWindow({
+    		  content: info
+    	});
+		
+    	infowindow.open(map, marker);		// 어떤 맵 객체에, 어떤 마커 위로 띄울지 결정
+    }
+    
     // map 같은 앱은 새로고침이 발생하면 이용할 때 굉장히 불편하기 때문에, 서버로부터 데이터를 비동기(백그라운드)로 가져와야한다.
     function getList() {
         let xhttp = new XMLHttpRequest();
@@ -45,7 +75,12 @@
         xhttp.onload = function() {
 			// 서버에서 전송한 문자열 받기
 			console.log("서버로부터 받은 문자열은", this.responseText);
+			let obj = JSON.parse(this.responseText);	// 서버에서 가져온 데이터는 직접 사용이 불편한 문자열이므로, 객체로 전환
+			console.log("문자열 파싱 결과는 ", obj);
+			
+			render(obj);
         };
+        
         xhttp.open("GET", "/map/list.jsp");  // Servlet, jsp 둘 다 가능하지만 디자인이 포함되지 않으므로 원칙상 Servlet이 맞지만 바빠서 그냥 jsp로 
         xhttp.send();   // 비동기 요청 발생
     }
