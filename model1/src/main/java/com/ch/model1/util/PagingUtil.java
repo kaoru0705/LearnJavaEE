@@ -31,9 +31,8 @@ public class PagingUtil {
 		}
 		
 		this.firstPage = this.currentPage - (this.currentPage - 1) % this.blockSize;
-		this.lastPage = this.firstPage - (this.blockSize - 1);		// 언제나 첫 페이지와 blockSize -1만큼의 간격을 둠
+		this.lastPage = this.firstPage + (this.blockSize - 1);		// 언제나 첫 페이지와 blockSize -1만큼의 간격을 둠
 		this.curPos = (this.currentPage - 1) * this.pageSize;
 		this.num = this.totalRecord - this.curPos;
 	}
 }
-
