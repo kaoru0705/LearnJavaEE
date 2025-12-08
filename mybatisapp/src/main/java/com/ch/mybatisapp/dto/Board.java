@@ -3,8 +3,8 @@ package com.ch.mybatisapp.dto;
 import lombok.Data;
 
 @Data
-public class News {
-	private int news_id;
+public class Board {
+	private int board_id;
 	private String title;
 	private String writer;
 	private String content;
