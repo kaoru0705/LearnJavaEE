@@ -1,4 +1,6 @@
+<%@page import="com.ch.mvcframework.movie.model.MovieManager"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%! MovieManager movieManager = new MovieManager(); %>
 <%
 	/*
 		하나의 페이지로 모든 기능과 디자인을 합쳐놓은 프로그램의 장단점
@@ -7,26 +9,23 @@
 		
 	*/
 
-
+	// 이건 모델 1이다.
+	// m은 getAdvice를 통해 로직을 분리하는 데 성공했지만 
+	// c와 v가 합쳐져 있다.
+	// model2 mvc 구조가 되기 위해서는 m, v, c가 독립적으로 구성되어야 한다. m은 .java v는 html, jsp c는 servlet
+	
 	// 클라이언트가 전송한 파라미터를 받아 영화에 대한 피드백 메시지 만들기
 	request.setCharacterEncoding("utf-8");		// 파라미터에 대한 한글 인코딩 
 	String movie = request.getParameter("movie");	
 	out.print(movie);
 	
+	// 영화에 대한 판단을 해주는 코드가 별도의 모델 객체로 분리되었다!!
+	// 분리 시킨 이유? 웹뿐만 아니라, 다른 플랫폼에서도 재사용하기 위해, 재사용 = 시간 = 돈
 	// 각 영화에 대한 메시지 만들기
-	String msg = "선택한 영화가 없음";
 	
-	if(movie != null) {		// 파라미터가 있을 때만
-		if(movie.equals("귀멸의 칼날")){
-			msg="최신 일본 애니메이션 개봉작";
-		}else if(movie.equals("공각기동대")){
-			msg="SF";
-		}else if(movie.equals("에이리언")){
-			msg="외계 생명체 SF 시리즈";
-		}else if(movie.equals("소울")){
-			msg="pixar 애니메이션";
-		}
-	}
+	String msg = movieManager.getAdvice(movie);
+	
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -35,7 +34,7 @@
 <title>Insert title here</title>
 <script>
 	function request(){
-		document.querySelector("form").action = "/movie/script/form.jsp";
+		document.querySelector("form").action = "/movie/model1/form.jsp";
 		document.querySelector("form").method = "post";
 		document.querySelector("form").submit();
 	}
