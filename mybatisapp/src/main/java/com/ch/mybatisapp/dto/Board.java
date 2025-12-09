@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Board {
-	private int board_id;
+	private int boardId;
 	private String title;
 	private String writer;
 	private String content;
