@@ -27,10 +27,10 @@ import com.ch.mvcframework.movie.model.MovieManager;
  * 				주의) jsp도 사실 서블릿이므로 Controller 역할을 수행할 수는 있지만, jsp가 주로 디자인에 사용되므로,
  * 					컨트롤러로서의 역할은 주로 서블릿으로 구현함
  */
-public class MovieController extends HttpServlet{
+public class MovieController{
 	MovieManager manager = new MovieManager();
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8"); 
 		String movie = request.getParameter("movie");
 		
