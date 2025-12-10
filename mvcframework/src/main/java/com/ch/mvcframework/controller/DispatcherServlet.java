@@ -3,6 +3,7 @@ package com.ch.mvcframework.controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -70,18 +71,51 @@ public class DispatcherServlet extends HttpServlet{
 		 * 각 요청을 조건문이 아닌 객체로 처리해야 함 = GOF(디자인 패턴 저자들)는 Command Pattern + Factory Pattern을 이용함
 		 * Factory Pattern 이란? 객체의 생성 방법에 대해서는 감추어놓고, 개발자로 하여금 객체의 인스턴스를 얻어갈 수 있는 객체 정의 기법
 		 * */
-		if(uri.equals("/movie.do")) {			// 클라이언트가 영화에 대한 조언을 구함
+		//if(uri.equals("/movie.do")) {			// 클라이언트가 영화에 대한 조언을 구함
 			// 영화 전담 컨트롤러에게 요청 전달
 			//MovieController controller = new MovieController();
 			//controller.execute(request, response);
-			String controllerPath = props.getProperty(uri);
-			System.out.println("영화에 동작할 하위 전문 컨트롤러는 " +controllerPath);
-		}else if(uri.equals("/food.do")) {	// 클라이언트가 음식에 대한 조언을 구함
+			//String controllerPath = props.getProperty(uri);
+			//System.out.println("영화에 동작할 하위 전문 컨트롤러는 " +controllerPath);
+		//}else if(uri.equals("/food.do")) {	// 클라이언트가 음식에 대한 조언을 구함
 			// 음식 전담 컨트롤러에게 요청 전달
 			//FoodController controller = new FoodController();
-			//controller.handle(request, response);
-			String controllerPath = props.getProperty(uri);
-			System.out.println("음식에 동작할 하위 전문 컨트롤러는 " +controllerPath);
+			//controller.execute(request, response);
+		//}
+		String controllerPath = props.getProperty(uri);
+		System.out.println(uri + "에 동작할 하위 전문 컨트롤러는 " +controllerPath);
+		
+		// 여기까지는 하위 컨트롤러의 이름만을 추출한 상태이고 실제 동작하는 클래스 및 인스턴스는 아니다!!
+		// 동적으로 클래스가 로드 된다... (static=method 영역에..)
+		try {
+			// 클래스에 대한 정보를 가진 클래스... 현재 이 클래스가 보유한 메서드명, 생성자, 속성들...
+			Class clazz = Class.forName(controllerPath);			// static 영역에 동적으로 클래스의 코드 올리기
+			Object obj = clazz.getConstructor().newInstance(); 	// static 영역에 올라온 클래스 원본 코드를 대상으로 인스턴스 1개 생성하기
+																					// new 연산자만이 인스턴스를 만들 수 있는 것은 아니다.
+			// 메모리에 올라온 하위 컨트롤러 객체의 메서드 호출
+			// 현재 시점에 메모리에 올라온 객체가 MovieController or FoodController인지 알 수 없기 때문에,
+			// 이들의 최상위 객체인 Controller로 형변환한다!!
+			Controller controller = (Controller)obj;
+			
+			// 아래의 메서드 호출의 경우, 분명 부모 형인 Controller형이 변수로 메서드로 호출하고는 있으나,
+			// 자바의 문법 규칙상 자식이 부모의 메서드를 오버라이드 한 경우(업그레이드 한 것으로 간주하여) 자식의 메서드를 호출한다.
+			// 즉, 자료형은 부모형이지만 동작은 자식 자료형으로할 경우 현실의 생물의 다양성을 반영하였다고 하여 다형성(=polymorphism)이라 함.
+			controller.execute(request, response);	// 메서드 호출
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
 		}
 		
 	}
