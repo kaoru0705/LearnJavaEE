@@ -128,7 +128,7 @@ public class DispatcherServlet extends HttpServlet{
 				RequestDispatcher dis = request.getRequestDispatcher(viewPage);
 				dis.forward(request, response);
 			} else {
-				response.sendRedirect(viewPage);		// 클라이언트로 하여금 재접속할 것을 응답 정보에 추가				
+				response.sendRedirect(viewPage);		// 클라이언트로 하여금 재접속할 것을 응답 정보에 추가
 			}
 			
 		} catch (ClassNotFoundException e) {
