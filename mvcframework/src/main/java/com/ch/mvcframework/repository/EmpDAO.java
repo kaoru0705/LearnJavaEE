@@ -11,17 +11,10 @@ public class EmpDAO {
 	
 	// 1명 등록
 	// throws가 명시된 메서드를 호출한 사람은 throws에 명시된 예외를 처리할 것을 강요받는다!!
-	public void insert(Emp emp) throws EmpException{
-		SqlSession sqlSession = mybatisConfig.getSqlSession();
-		
-		
-		try {
-			// 강요된 예외(try ~~catch)	- 개발자가 예외처리를 하지 않으면 IDE 빨간줄 가면서, 컴파일 불가능...
-			// 런타임 예외
+	public void insert(SqlSession sqlSession, Emp emp) throws EmpException{
 
+		try {
 			int result = sqlSession.insert("Emp.insert", emp);
-			System.out.println("사원 등록 결과: " + result);
-			sqlSession.commit();	// 트랜잭션 확정
 		}catch(Exception e) {
 			e.printStackTrace();	// error의 정보를 개발자나, 시스템관리자가 알 수 있도록 로그
 			// throw는 예외를 일으키는 코드!! 이기 때문에 개발자는 다음의 2가지 중 하나를 선택해야 한다.
@@ -29,7 +22,5 @@ public class EmpDAO {
 			// 2) 여기서 발생한 예외를 이 메서드 호출자에게 책임 전가
 			throw new EmpException("사원 등록 실패",  e);
 		}
-		
-		mybatisConfig.release(sqlSession);
 	}
 }
