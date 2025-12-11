@@ -12,7 +12,7 @@
   <script>
   	$(()=>{
   		$("button").click(()=>{
-  			$("form").atrr({
+  			$("form").attr({
   				action: "/emp/regist.do",
   				method: "post"
   			});

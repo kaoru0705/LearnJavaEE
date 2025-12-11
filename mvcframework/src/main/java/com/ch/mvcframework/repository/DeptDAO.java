@@ -11,6 +11,12 @@ public class DeptDAO {
 	// 1건 등록
 	public void insert(Dept dept) {
 		SqlSession sqlSession = mybatisConfig.getSqlSession(); 
-		sqlSession.insert("Dept.insert", dept);
+		int result = sqlSession.insert("Dept.insert", dept);
+		
+		System.out.println("부서 등록 결과: " + result);
+		
+		sqlSession.commit();		// 트랜잭션의 확정
+		mybatisConfig.release(sqlSession);
+		
 	}
 }
