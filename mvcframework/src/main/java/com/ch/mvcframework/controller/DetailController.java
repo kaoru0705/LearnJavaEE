@@ -22,9 +22,7 @@ public class DetailController implements Controller{
 		System.out.println("게시물이 들어 있는 DTO " + board);
 		
 		// board를 결과 페이지인 (MVC 중 View)까지 살려서 가져가려면,
-		// request에 담고
-		// 포워딩해야 한다..
-		
+		// request에 담고 포워딩해야 한다..
 		request.setAttribute("board", board);
 	}
 

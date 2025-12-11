@@ -62,7 +62,7 @@ public class DispatcherServlet extends HttpServlet{
 	
 	// 클라이언트의 요청 방식이 다양하므로, 어떤 요청 방식으로 들어오더라도, 아래의 메서드 하나로 몰아넣으면, 코드는 메서드마다 재작성할 필요가 없다.
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");		// 추후 필터 단계로 올릴 예정
+		//request.setCharacterEncoding("utf-8");		// 추후 필터 단계로 올릴 예정
 		
 		System.out.println("클라이언트이 요청 감지");
 		/*
