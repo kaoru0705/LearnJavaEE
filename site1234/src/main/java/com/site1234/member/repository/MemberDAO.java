@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.site1234.member.domain.Member;
+import com.site1234.member.dto.Member;
 import com.site1234.util.PoolManager;
 
 public class MemberDAO {
@@ -58,7 +58,7 @@ public class MemberDAO {
 
 			while (rs.next()) {
 				Member member = new Member();
-				member.setMemberId(rs.getInt("member_id"));
+				member.setMember_id(rs.getInt("member_id"));
 				member.setEmail(rs.getString("email"));
 				member.setPassword(rs.getString("password"));
 				member.setNickname(rs.getString("nickname"));

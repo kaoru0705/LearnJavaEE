@@ -1,0 +1,6 @@
+#멤버 컨트롤러 매핑
+/member/regist.do=com.site1234.controller.RegistController
+
+#글등록 요청 처리 시의 뷰매핑
+/member/regist/result=/member/list.jsp
+

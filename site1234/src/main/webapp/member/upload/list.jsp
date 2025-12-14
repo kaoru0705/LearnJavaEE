@@ -1,4 +1,4 @@
-<%@page import="com.site1234.member.domain.Member"%>
+<%@page import="com.site1234.member.dto.Member"%>
 <%@page import="com.site1234.member.repository.MemberDAO"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.util.ArrayList"%>
@@ -52,7 +52,7 @@ tbody tr:nth-child(odd) {
  <tbody>
 <%for(Member member : memberList) {%>
   <tr>
-    <td><%out.print(member.getMemberId()); %></td>
+    <td><%out.print(member.getMember_id()); %></td>
     <td><%out.print(member.getEmail()); %></td>
     <td><%out.print(member.getPassword()); %></td>
     <td><%out.print(member.getNickname()); %></td>

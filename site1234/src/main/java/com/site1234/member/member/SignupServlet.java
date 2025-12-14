@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.site1234.member.domain.Member;
+import com.site1234.member.dto.Member;
 import com.site1234.member.repository.MemberDAO;
 
 public class SignupServlet extends HttpServlet {
