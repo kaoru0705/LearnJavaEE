@@ -3,12 +3,14 @@ package com.ch.shop.config.spring;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.ch.shop.test.food.Cook;
 import com.ch.shop.test.food.FriPan;
 import com.ch.shop.test.food.Induction;
 import com.ch.shop.test.food.Pan;
 import com.ch.shop.test.school.Bell;
+import com.ch.shop.test.school.BellAspect;
 import com.ch.shop.test.school.Student;
 
 /* 스프링에서 전통적으로 DI를 구현하기 위해서, 개발자가 필요로 하는 자바의 클래스(빈=bean)들을 XML에서 해왔다..
@@ -19,6 +21,7 @@ import com.ch.shop.test.school.Student;
  * 이때 이 역할을 수행하는 스프링의 객체를 가리켜 ApplicaitonContext라 하며, 일명 스프링 컨테이너라 부르기도 함
  * */
 @Configuration	// 아래의 클래스는 로직용이 아닌 설정용 클래스임을  선언
+@EnableAspectJAutoProxy
 public class AppConfig {
 	/* 애플리케이션에서 사용할 모든 객체들을 등록하자 */
 	@Bean
@@ -45,5 +48,11 @@ public class AppConfig {
 	@Bean
 	public Student student() {
 		return new Student();
+	}
+	
+	/* 관점 객체 올리기 */
+	@Bean
+	public BellAspect bellAspect(Bell bell) {
+		return new BellAspect(bell);
 	}
 }
