@@ -43,7 +43,7 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public Student student(Bell bell) {
-		return new Student(bell);
+	public Student student() {
+		return new Student();
 	}
 }
