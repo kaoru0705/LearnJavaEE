@@ -14,10 +14,10 @@
   </build>
   
 <dependencies>
-	<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+	<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 	<dependency>
 	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-core</artifactId>
+	    <artifactId>spring-webmvc</artifactId>
 	    <version>4.3.30.RELEASE</version>
 	</dependency>
 	
