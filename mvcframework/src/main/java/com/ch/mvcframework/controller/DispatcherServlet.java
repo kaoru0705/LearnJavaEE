@@ -64,7 +64,7 @@ public class DispatcherServlet extends HttpServlet{
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//request.setCharacterEncoding("utf-8");		// 추후 필터 단계로 올릴 예정
 		
-		System.out.println("클라이언트이 요청 감지");
+		System.out.println("클라이언트의 요청 감지");
 		/*
 		 * 모든 컨트롤러의 5대 업무
 		 * 1) 요청을 받는다.
