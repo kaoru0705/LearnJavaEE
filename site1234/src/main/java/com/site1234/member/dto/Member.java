@@ -9,6 +9,6 @@ public class Member {
 	private String password;
 	private String nickname;
 	private String phone;
-	private String createdAt;
+	private String created_at;
 	
 }

@@ -8,13 +8,8 @@
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%!
-	MemberDAO memberDAO;
-	List<Member> memberList = new ArrayList<>();
-%>
 <%
-	memberDAO = new MemberDAO();
-	memberList = memberDAO.findAll();
+	List<Member> list = (List)request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html>
@@ -50,14 +45,14 @@ tbody tr:nth-child(odd) {
   </tr>
  </thead>
  <tbody>
-<%for(Member member : memberList) {%>
+<%for(Member member : list) {%>
   <tr>
     <td><%out.print(member.getMember_id()); %></td>
     <td><%out.print(member.getEmail()); %></td>
     <td><%out.print(member.getPassword()); %></td>
     <td><%out.print(member.getNickname()); %></td>
     <td><%out.print(member.getPhone()); %></td>
-    <td><%out.print(member.getCreatedAt()); %></td>
+    <td><%out.print(member.getCreated_at()); %></td>
   </tr>
 <%} %>
 </tbody>

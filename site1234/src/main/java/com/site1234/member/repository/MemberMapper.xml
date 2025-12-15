@@ -4,4 +4,9 @@
 	<insert id="insert" parameterType="Member">
 		insert into member(email, password, nickname, phone) values(#{email}, #{password}, #{nickname}, #{phone})
 	</insert>
+	
+	<select id="selectAll" resultType="Member">
+		select member_id, email, password, nickname, phone, created_at
+		from member order by member_id desc
+	</select>
 </mapper>

@@ -147,10 +147,10 @@ public class DispatcherServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 		
-		// 서블릿의 생명주기 메서드 중, 서블릿이 소멸할 때 호출되는 메서드인 destroy() 재정의
-		// 반드시 닫아야 할 자원등을 해제할 때 중요하게 사용..
 	}
 	
+	// 서블릿의 생명주기 메서드 중, 서블릿이 소멸할 때 호출되는 메서드인 destroy() 재정의
+	// 반드시 닫아야 할 자원등을 해제할 때 중요하게 사용..
 	public void destroy() {
 		if(fis!=null) {
 			try {
