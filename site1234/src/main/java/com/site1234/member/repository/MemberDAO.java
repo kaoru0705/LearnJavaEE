@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import java.util.ArrayList;
 
+import com.site1234.exception.MemberException;
 import com.site1234.member.dto.Member;
 import com.site1234.mybatis.MybatisConfig;
 import com.site1234.util.PoolManager;
@@ -18,13 +19,14 @@ import com.site1234.util.PoolManager;
 public class MemberDAO {
 	MybatisConfig mybatisConfig = MybatisConfig.getInstance();
 	
-	public int insert(SqlSession sqlSession, Member member) {
+	public void insert(SqlSession sqlSession, Member member) throws MemberException{
 		int result = 0;
-		result = sqlSession.insert("Member.insert", member);
-		
-		sqlSession.commit();
-		
-		return result;
+		try {
+			result = sqlSession.insert("Member.insert", member);			
+		} catch (Exception e) {
+			System.out.println("멤버가 등록되지 않았습니다.");
+			throw new MemberException("멤버 등록 실패", e);
+		}
 	}
 
 	public List selectAll() {

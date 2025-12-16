@@ -53,6 +53,16 @@ public class DispatcherServlet extends HttpServlet{
 	}
 	
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
+		 	클라이언트의 요청 감지
+			클라이언트가 요청 시 사용한 uri는 /member/regist.do
+			/member/regist.do에 동작할 하위 전문 컨트롤러는 com.site1234.member.controller.RegistController
+			이 요청에 의해 보여질 응답페이지는 /member/list.do
+			클라이언트의 요청 감지
+			클라이언트가 요청 시 사용한 uri는 /member/list.do
+			/member/list.do에 동작할 하위 전문 컨트롤러는 com.site1234.member.controller.ListController
+			이 요청에 의해 보여질 응답페이지는 /member/upload/list.jsp
+		 */
 		System.out.println("클라이언트의 요청 감지");
 		
 		String uri = request.getRequestURI();

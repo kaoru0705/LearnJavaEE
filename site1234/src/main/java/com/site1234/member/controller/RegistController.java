@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.site1234.controller.Controller;
+import com.site1234.exception.MemberException;
 import com.site1234.member.dto.Member;
 import com.site1234.member.model.MemService;
 
@@ -29,8 +30,13 @@ public class RegistController implements Controller{
 		member.setNickname(nickname);
 		member.setPhone(phone);
 		
-		memService.regist(member);
-		viewName = "/member/regist/result";
+		
+		try {
+			memService.regist(member);
+			viewName = "/member/regist/result";
+		} catch (MemberException e) {
+			viewName = "/member/error";
+		}
 	}
 
 	@Override

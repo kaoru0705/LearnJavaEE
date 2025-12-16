@@ -107,7 +107,7 @@ public class BoardController {
 			log.error(e.getMessage());	// 개발자를 위한 것임..
 			// 실패의 메시지 관련 처리...(에러 페이지)
 			mav.addObject("msg", e.getMessage());		// request.setAttribute("msg", e.getMessage())
-			mav.setViewName("/error/result");		// redirect를 개발자가 명시하지 않으면 스프링에서는 디폴트가 forwarding 임	
+			mav.setViewName("error/result");		// redirect를 개발자가 명시하지 않으면 스프링에서는 디폴트가 forwarding 임	
 		}
 		
 		return mav;
