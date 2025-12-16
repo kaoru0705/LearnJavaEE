@@ -147,8 +147,8 @@ public class UserWebConfig extends WebMvcConfigurerAdapter{
         	</init-param>
         	<load-on-startup>1</load-on-startup>
     	</servlet>
-    	web.xml in Tomcat
-    	이거랑 web.xml DispatcherServlet가 먼저 관여해서 /resources/adminlte/index.html를 못 찾았다.
+    	web.xml in Tomcat가 있는데 
+    	web.xml DispatcherServlet이 먼저 관여해서 /resources/adminlte/index.html를 못 찾았다.
 	 */
 	// WebMvcConfigurerAdapter 이걸 상속 받아라
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
