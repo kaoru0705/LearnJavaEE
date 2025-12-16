@@ -1,0 +1,10 @@
+#멤버 컨트롤러 매핑
+/member/regist.do=com.site1234.member.controller.RegistController
+/member/list.do=com.site1234.member.controller.ListController
+
+#멤버 등록 요청 처리 시의 뷰매핑
+/member/regist/result=/member/list.do
+/member/error=/member/error.jsp
+
+#목록보기 요청 처리 시의 뷰매핑
+/member/list/result=/member/upload/list.jsp

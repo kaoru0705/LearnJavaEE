@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+    @font-face {
+        font-family: 'pretendardRegularFont';
+        src: url(../../resources/fonts/Pretendard-Regular.otf) format('opentype');
+    }
+    body{
+        font-family: 'pretendardRegularFont';
+    }
+	.container{
+		width: 100%;
+		height: 900px;
+	}
+	.content{
+		width: 100%;
+	}
+	.inner{
+		width: 500px;
+		height: 100%;
+		border: 2px solid #f1f1f1;
+		margin: auto;
+		border-radius: 5px;
+	}
+	hr{
+		border: 1px solid #f1f1f1;
+		margin-bottom: 25px;
+	}
+	#signupForm{
+		width: 80%;
+		padding: 16px;
+		margin: auto;
+	}
+	input[type=text], input[type=password] {
+		width: 90%;
+		padding: 15px;
+		margin: 5px 0 22px 0;
+		display: inline-block;
+		border: none;
+		background: #f1f1f1;
+	}
+	input[type=text]:focus, input[type=password]:focus {
+		background-color: #ddd;
+		outline: none;
+	}
+
+	.title{
+		text-align: center;
+	}
+	.buttonWrap{
+        margin-top: 20px;
+		width: 100%;
+		height: 50px;
+		text-align: center;
+        line-height: 50px;
+	}
+    .buttonSignup{
+        border: none;
+        color: gray;
+        padding: 14px 100px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+	.footer{
+		height: 50px;
+		text-align: center;
+		line-height: 50px;
+        color:darkgray;
+	}
+	.errorText{
+		color:crimson;
+		margin-bottom: 22px;
+	}
+</style>
+<script src = "singupValidation.js"></script>
+<script>
+	let signupForm = null;
+	
+	function sendMemberInfo(){
+		signupForm.method = "post";
+		signupForm.action = "/member/regist.do";
+		signupForm.submit();
+	}
+	function init() {
+		button = document.querySelector(".buttonSignup");
+		
+		signupForm = document.getElementById("signupForm");
+		
+
+		button.addEventListener("click", function(){
+			sendMemberInfo();
+		});
+	}
+	
+	window.addEventListener("load", () => {
+		init();
+	});
+
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="content">
+			<div class="inner">
+				<h1 class="title">Donguru</h1>
+				<form id="signupForm">
+					<hr>
+					<div><b>이메일</b></div>
+					<input type="text" placeholder="이메일" name="email" id="email" onFocusOut="validateMember('email')">
+					<div class="errorText" id="emailMsg" style="font-size:12px; display: none"></div>
+					<div><b>비밀번호</b></div>
+					<input type="password" placeholder="비밀번호" name="password" id="password" onFocusOut="validateMember('password')">
+					<div class="errorText" id="passwordMsg" style="font-size:12px; display: none"></div>
+					<div><b>닉네임</b></div>
+					<input type="text" placeholder="닉네임" name="nickname" id="nickname" onFocusOut="validateMember('nickname')">
+					<div class="errorText" id="nicknameMsg" style="font-size:12px; display: none"></div>
+					<div><b>휴대폰번호</b></div>
+					<input type="text" placeholder="[선택] 휴대폰번호" name="phone" id="phone" onFocusOut="validateMember('phone')">
+					<div class="errorText" id="phoneMsg" style="font-size:12px; display: none"></div>
+					<hr>
+				</form>
+				<div class="buttonWrap">
+					<button type="button" class="buttonSignup" disabled>가입하기</button>
+				</div>
+				<div class="footer">Donguru</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
