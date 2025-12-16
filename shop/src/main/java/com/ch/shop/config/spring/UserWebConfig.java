@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.ch.shop.controller.shop.BoardController;
+import com.ch.shop.model.board.BoardDAO;
+import com.ch.shop.model.board.BoardService;
 
 /*
  * 이 클래스는 로직을 작성하기 위함이 아니라, 애플리케이션에서 사용할 빈(객체) 들 및 그들간의 관계(weaving)을 명시하기 위한 
@@ -30,7 +33,7 @@ import com.ch.shop.controller.shop.BoardController;
 // MVC에서의 DAO는 @Repository 를 붙임
 // MVC에서의 DAO는 @Service 를 붙임
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
-@ComponentScan(basePackages = "com.ch.shop.controller")
+@ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
 
 public class UserWebConfig {
 	
@@ -76,16 +79,17 @@ public class UserWebConfig {
 	 * 			그리고 이 모든 트랜잭션 매니저의 최상단 객체가 바로 PlatformTransactionManager 이다.
 	 *----------------------------------------------------------------*/
 	@Bean
-	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager();
+	public PlatformTransactionManager transactionManager(SqlSessionFactory sqlSessionFactory) {
+		return new DataSourceTransactionManager(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource());
 	}
 	
 	
 	/*----------------------------------------------------------------
-	 * 3) SqlSession을 관리하는 mybatis의 SqlSessionFactory를 빈으로 등록
+	 * 3) SqlSession을 관리하는 mybatis의 SqlSessionFactory(순수 mybatis에서 SqlSession들을 다루는)를 빈으로 등록
 	 *----------------------------------------------------------------*/
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception{
+		
 		// 순수 mybatis 프레임워크 자체에서 지원하는 객체가 아니라, mybatis-spring에서 지원하는 객체인
 		// SqlSessionFactoryBean (끝에 Bean)을 이용하여 설정 xml 파일을 로드한다.
 		
@@ -93,6 +97,30 @@ public class UserWebConfig {
 		
 		// 패키지에 포함된 파일의 유형이 클래스가 아닌 경우 더 이상 패키지로 표현하지 말고, 일반 디렉토리로 취급해야 한다..
 		sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("com/ch/shop/config/mybatis/config.xml"));
+		
+		sqlSessionFactoryBean.setDataSource(dataSource());
+		
 		return sqlSessionFactoryBean.getObject();
 	}
+	
+	/*----------------------------------------------------------------
+	 * 4) SqlSessionTemplate 빈으로 등록
+	 * mybatis 사용 시 쿼리문 수행을 위해서는 SqlSession을 이용했으나, mybatis-spring에서는 SqlSessionTemplate 객체를 사용해야 함
+	 *----------------------------------------------------------------*/
+	@Bean
+	public SqlSessionTemplate sqlSessionTemplate() throws Exception{
+		return new SqlSessionTemplate(sqlSessionFactory());
+	}
+	
+	// 스프링프레임웍을 지배하는 개발원리 중 하나인 DI를 구현하려면 개발자는 사용할 객체들을 미리 빈으로 등록해야 한다..
+	
+	// Autowired를 안 했다면 weaving을 해야 한다.
+//	@Bean
+//	public BoardDAO boardDAO() {
+//		return new BoardDAO();
+//	}
+//	@Bean
+//	public BoardService boardService(BoardDAO boardDAO) {
+//		return new BoardService(boardDAO);
+//	}
 }

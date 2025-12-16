@@ -1,10 +1,16 @@
 package com.ch.shop.controller.shop;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.shop.dto.Board;
+import com.ch.shop.exception.BoardException;
+import com.ch.shop.model.board.BoardService;
+
+import lombok.extern.slf4j.Slf4j;
+
 
 /*
  * 우리가 제작한 MVC 프레임웍에서는 모든 요청마다 1:1 대응하는 컨트롤러를 매핑하는 방식이었으나,
@@ -12,8 +18,17 @@ import com.ch.shop.dto.Board;
  * 왜? 모든 요청마다 1:1 대응하는 클래스 기반이 아니라, 메서드 기반이기 때문...
  * @Controller 만 붙여도 @Bean에 자동으로 등록 다만 BoardController가 어디사는지는 등록해야 한다. @ComponentScan
  * */
-@Controller
+@Slf4j
+@Controller	// ComponentScan의 대상이 되어 자동으로 인스턴스 Bean 생성
 public class BoardController {
+	
+	@Autowired
+	private BoardService boardService;
+	
+	public void setBoardService(BoardService boardService) {
+		this.boardService = boardService;
+	}
+	
 	
 	// 글쓰기 폼 요청 처리 - jsp가 WEB-INF 밑의 위치하였으므로, 브라우저에서 jsp를 직접 접근할 수 없다.
 	// 따라서 아래의 컨트롤러의 메서드에서 /board/write.jsp를 매핑 걸자
@@ -62,11 +77,29 @@ public class BoardController {
 	// 받는 것이 목적이라면, DTO보다는 VO를 사용해야 한다..
 	@RequestMapping("/board/regist")
 	public ModelAndView regist(Board board) {
-		System.out.println("제목은 " + board.getTitle());
-		System.out.println("작성자는 " + board.getWriter());
-		System.out.println("내용은 " + board.getContent());
+//		System.out.println("제목은 " + board.getTitle());
+//		System.out.println("작성자는 " + board.getWriter());
+//		System.out.println("내용은 " + board.getContent());
 		
-		return null;
+		log.debug("제목은 " + board.getTitle());
+		log.debug("작성자는 " + board.getWriter());
+		log.debug("내용은 " + board.getContent());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		try {	
+			boardService.regist(board); 		//3단계: 모델 영역에게 일시키기
+			// 성공의 메시지 관련 처리(목록을 보여주기)
+			mav.setViewName("redirect:/board/list");			// 요청을 끊고, 새로 목록을 들어오라고 명령..
+		} catch(BoardException e){
+			log.error(e.getMessage());	// 개발자를 위한 것임..
+			// 실패의 메시지 관련 처리...(에러 페이지)
+			mav.addObject("msg", e.getMessage());		// request.setAttribute("msg", e.getMessage())
+			mav.setViewName("/error/result");		// redirect를 개발자가 명시하지 않으면 스프링에서는 디폴트가 forwarding 임
+			
+		}
+		
+		return mav;
 	}
 	
 	// 글 상세보기 요청 처리
