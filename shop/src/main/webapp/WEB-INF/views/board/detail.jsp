@@ -32,7 +32,7 @@ $(()=>{
 	$("#bt_edit").click(()=>{
 		if(confirm("수정하시겠어요? ")){
 			$("#form1").attr({
-				action:"/board/edit.do",
+				action:"/board/edit",
 				method:"post"
 			});
 			
@@ -42,19 +42,19 @@ $(()=>{
 
 	$("#bt_del").click(()=>{
 		if(confirm("삭제하시겠어요? ")){
-			location.href="/board/delete.do?board_id=<%=board.getBoard_id()%>";
+			location.href="/board/delete?board_id=<%=board.getBoard_id()%>";
 		}
 	});
 	
 	$("#bt_list").click(()=>{
-		location.href="/board/list.do";
+		location.href="/board/list";
 	});
 	
 	// 등록 버튼에 이벤트 연결
 	document.getElementById("bt_regist").addEventListener("click", function(){
 		// 서버에 전송
 		let form1 = document.getElementById("form1");
-		form1.action="/board/regist.do";		// .do로 끝나기 때문에 DispatcherServlet을 만나게 됨
+		form1.action="/board/regist";		// .do로 끝나기 때문에 DispatcherServlet을 만나게 됨
 		form1.method="post";
 		form1.submit();
 	});

@@ -1,13 +1,20 @@
 package com.ch.shop.controller.shop;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.shop.dto.Board;
 import com.ch.shop.exception.BoardException;
 import com.ch.shop.model.board.BoardService;
+import com.ch.shop.model.board.BoardServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,11 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 	
 	@Autowired
-	private BoardService boardService;
+	private BoardService boardService;	// DI 준수해야 하므로, 상위객체를 보유
 	
-	public void setBoardService(BoardService boardService) {
-		this.boardService = boardService;
-	}
+//	public void setBoardService(BoardServiceImpl boardService) {
+//		this.boardService = boardService;
+//	}
 	
 	
 	// 글쓰기 폼 요청 처리 - jsp가 WEB-INF 밑의 위치하였으므로, 브라우저에서 jsp를 직접 접근할 수 없다.
@@ -61,11 +68,16 @@ public class BoardController {
 	@RequestMapping("/board/list")
 	public ModelAndView getList() {
 		// 3단계 수행
-		System.out.println("클라이언트의 목록 요청 감지");
+		List list = boardService.selectAll();
 		
-		// 4단계: 결과 저장..
+		// 4단계: 결과 저장.. select 문의 경우 저장할 결과가 있다.
+		// 현재 컨트롤러에서는 디자인을 담당하면 안되므로, 디자인 영역인 View에서 보여질 결과를 저장해놓자(request 객체에)
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", list );	// jsp에서 기다리고 있는 키값을 넣어야 함...
+		//WEB-INF/views/board/list.jsp 
+		mav.setViewName("board/list");
 		
-		return null;
+		return mav;
 	}
 	
 	// 글 쓰기 요청 처리
@@ -95,17 +107,69 @@ public class BoardController {
 			log.error(e.getMessage());	// 개발자를 위한 것임..
 			// 실패의 메시지 관련 처리...(에러 페이지)
 			mav.addObject("msg", e.getMessage());		// request.setAttribute("msg", e.getMessage())
-			mav.setViewName("/error/result");		// redirect를 개발자가 명시하지 않으면 스프링에서는 디폴트가 forwarding 임
-			
+			mav.setViewName("/error/result");		// redirect를 개발자가 명시하지 않으면 스프링에서는 디폴트가 forwarding 임	
 		}
 		
 		return mav;
 	}
 	
 	// 글 상세보기 요청 처리
+	// ModelAndView 말고도 이렇게 할 수 있다
+	@RequestMapping("/board/detail")
+	public String getDetail(int board_id, Model model)	{	// 클라이언트가 전송한 파라미터명과 동일해야 매핑해줌
+		// 3단계: 일 시키기
+		Board board = boardService.select(board_id);
+		model.addAttribute("board", board);		// jsp에서의 key 값과 일치해야 함
+		
+		return "board/detail";
+	}
 	
-	// 글 수정 요청 처리
-	
+	// 글 수정 요청 처리 RequestMapping과 비슷 Get방식이면 @GetMapping
+	@PostMapping("/board/edit")
+	public String edit(Board board, Model model) {
+		String viewName=null;
+		
+		log.debug("title is " + board.getTitle());
+		log.debug("writer is " + board.getWriter());
+		log.debug("content is " + board.getContent());
+		log.debug("board_id is " + board.getBoard_id());
+		
+		
+		try {
+			boardService.update(board);
+			viewName = "redirect:/board/detail?board_id=" + board.getBoard_id();
+		} catch (BoardException e) {
+			e.printStackTrace();
+			model.addAttribute("msg", e.getMessage());	// 에러 정보 저장
+			viewName="error/result";
+		}
+		
+		return viewName;
+	}
 	// 글 삭제 요청 처리
+	// 예외 처리 여기서 안 하는 방법
+	@GetMapping("/board/delete")
+	public String delete(int board_id) {
+		log.debug("삭제 요청 시 날아온 파라미터값은 " + board_id);
+		
+		boardService.delete(board_id);
+		
+		return "redirect:/board/list";
+	}
 	
+	/*
+	 * 스프링의 컨트롤러에서는 예외의 발생을 하나의 이벤트로 보고, 이 이벤트를 자동으로 감지하여
+	 * 에러를 처리할 수 있는 @ExceptionHandler를 지원해줌
+	 * 
+	 * 현재 컨트롤러에 명시된 요청을 처리하는 모든 메서드내에서
+	 * BoardException이 발생하면 이를 자동으로 감지하여, 아래의 메서드를 호출해줌
+	 * 이 때 메서드를 호출해주면서, 매개변수로 예외 객체의 인스턴스를 자동으로 넘겨줌..
+	 */
+	@ExceptionHandler(BoardException.class)
+	public ModelAndView handle(BoardException e) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg", e.getMessage());
+		mav.setViewName("error/result");
+		return mav;
+	}
 }

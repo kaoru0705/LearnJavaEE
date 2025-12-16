@@ -14,11 +14,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.ch.shop.controller.shop.BoardController;
-import com.ch.shop.model.board.BoardDAO;
-import com.ch.shop.model.board.BoardService;
+import com.ch.shop.model.board.MybatisBoardDAO;
+import com.ch.shop.model.board.BoardServiceImpl;
 
 /*
  * 이 클래스는 로직을 작성하기 위함이 아니라, 애플리케이션에서 사용할 빈(객체) 들 및 그들간의 관계(weaving)을 명시하기 위한 
@@ -35,7 +37,7 @@ import com.ch.shop.model.board.BoardService;
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
 @ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
 
-public class UserWebConfig {
+public class UserWebConfig extends WebMvcConfigurerAdapter{
 	
 	// DispatcherServlet이 하위 컨트롤러로부터 반환받은 결과 페이지에 대한 정보는 사실 완전한 JSP 경로가 아니므로,
 	// 이를 해석할 수 있는 자인 ViewResolver에게 맡겨야 하는데, 이 ViewResolver 중 유달리 접두어와 접미어 방식을 이해하는 
@@ -123,4 +125,36 @@ public class UserWebConfig {
 //	public BoardService boardService(BoardDAO boardDAO) {
 //		return new BoardService(boardDAO);
 //	}
+	
+	// DispatcherServlet은 컨트롤러에 대한 매핑만 수행하면 되며, 정적자원(css, js, html, image 등)에 대해서는 직접 처리하지 않게 하기
+	// DispatcherServlet이 관여하지 않는다.
+	/*
+	 *	<servlet-mapping>
+        	<servlet-name>default</servlet-name>
+        	<url-pattern>/</url-pattern>
+    	</servlet-mapping>
+    	
+    	<servlet>
+        	<servlet-name>default</servlet-name>
+        	<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        	<init-param>
+            	<param-name>debug</param-name>
+            	<param-value>0</param-value>
+        	</init-param>
+        	<init-param>
+            	<param-name>listings</param-name>
+            	<param-value>false</param-value>
+        	</init-param>
+        	<load-on-startup>1</load-on-startup>
+    	</servlet>
+    	web.xml in Tomcat
+    	이거랑 web.xml DispatcherServlet가 먼저 관여해서 /resources/adminlte/index.html를 못 찾았다.
+	 */
+	// WebMvcConfigurerAdapter 이걸 상속 받아라
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		
+		//registry.addResourceHandler("브라우저로 접근할 주소").addResourceLocations("웹애플리케이션을 기준으로 실제 정적자원이 있는 위치");
+		// 여기서는 /resources/adminlte/index.html -> /static/adminlte/index.html
+		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
+	}
 }
