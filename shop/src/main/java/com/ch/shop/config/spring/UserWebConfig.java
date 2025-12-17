@@ -33,7 +33,7 @@ import com.ch.shop.model.board.BoardServiceImpl;
 // 인스턴스를 자동으로 만들어준다
 // MVC에서의 Controller는 @Controller 를 붙임
 // MVC에서의 DAO는 @Repository 를 붙임
-// MVC에서의 DAO는 @Service 를 붙임
+// MVC에서의 Service는 @Service 를 붙임
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
 @ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
 

@@ -1,4 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.ch.shop.dto.TopCategory" %>
+<%
+	List<TopCategory> topList = (List)request.getAttribute("topList");
+	out.print(topList);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,20 +56,56 @@
         	<!--  card card-info card card-primary -warning 이런 식으로 색을 정할 수 있다.-->
 	            <div class="card card-info">
 	              <div class="card-header">
-	                <h3 class="card-title">Quick Example</h3>
+	                <h3 class="card-title">Product Registration</h3>
 	              </div>
 	              <!-- /.card-header -->
 	              <!-- form start -->
 	              <form>
+	              		
 	                <div class="card-body">
+	                
+	                	<div class="form-group row">
+		              		<div class="col-md-6">
+			              		<select class="form-control">
+		                          <option>option 1</option>
+		                        </select>
+		              		</div>
+	
+		              		<div class="col-md-6">
+			              		<select class="form-control">
+		                          <option>option 1</option>
+		                        </select>
+		              		</div>
+	              		</div>
+	              		
 	                  <div class="form-group">
-	                    <label for="exampleInputEmail1">Email address</label>
-	                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+	                    <input type="text" class="form-control" name="product_name" placeholder="상품명">
 	                  </div>
+	                  
 	                  <div class="form-group">
-	                    <label for="exampleInputPassword1">Password</label>
-	                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+	                    <input type="text" class="form-control" name="brand" placeholder="브랜드">
 	                  </div>
+	                  
+	                  <div class="form-group">
+	                    <input type="number" class="form-control" name="price" placeholder="가격(숫자로 입력)">
+	                  </div>
+	                  
+	                  <div class="form-group">
+	                    <input type="number" class="form-control" name="discount" placeholder="할인가(숫자로 입력)">
+	                  </div>
+	                  
+	                  <div class="form-group">
+	                    <input type="text" class="form-control" name="introuduce" placeholder="간단소개">
+	                  </div>
+	                  
+	                  <div class="form-group">
+	                    <textarea class="form-control" name="detail" placeholder="상품상세"></textarea>
+	                  </div>
+
+	                  <div class="form-group">
+	                    <textarea id="summernote" class="form-control" name="detail" placeholder="상품상세"></textarea>
+	                  </div>
+	                                    	              	                  
 	                  <div class="form-group">
 	                    <label for="exampleInputFile">File input</label>
 	                    <div class="input-group">
@@ -75,10 +117,6 @@
 	                        <span class="input-group-text">Upload</span>
 	                      </div>
 	                    </div>
-	                  </div>
-	                  <div class="form-check">
-	                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-	                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
 	                  </div>
 	                </div>
 	                <!-- /.card-body -->
@@ -108,6 +146,10 @@
 </div>
 <!-- ./wrapper -->
 	<%@ include file="../inc/footer_link.jsp" %>
-
+	<script>
+	$(()=>{
+		$("#summernote").summernote();
+	})
+	</script>
 </body>
 </html>

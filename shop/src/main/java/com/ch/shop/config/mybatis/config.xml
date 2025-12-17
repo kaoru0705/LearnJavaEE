@@ -5,6 +5,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type = "com.ch.shop.dto.Board" alias = "Board"/>
+		<typeAlias type = "com.ch.shop.dto.TopCategory" alias = "TopCategory"/>
+		<typeAlias type = "com.ch.shop.dto.SubCategory" alias = "SubCategroy"/>
 	</typeAliases>
 
 <!-- 더이상 spring이 UserWebConfig에서 주도하므로 필요 없다.
@@ -22,5 +24,6 @@
 		등록해야 함 -->
 	<mappers>
 		<mapper resource="com/ch/shop/config/mybatis/BoardMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/TopCategoryMapper.xml" />
 	</mappers>
 </configuration>
