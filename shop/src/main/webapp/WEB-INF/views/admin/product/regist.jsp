@@ -66,8 +66,10 @@
 	                
 	                	<div class="form-group row">
 		              		<div class="col-md-6">
-			              		<select class="form-control">
-		                          <option>option 1</option>
+			              		<select class="form-control" name="topcategory">
+			              			<%for(TopCategory topCategory : topList){ %>
+		                          		<option value="<%=topCategory.getTopcategory_id()%>"><%=topCategory.getTopname() %></option>
+		                          	<%} %>
 		                        </select>
 		              		</div>
 	
@@ -147,8 +149,37 @@
 <!-- ./wrapper -->
 	<%@ include file="../inc/footer_link.jsp" %>
 	<script>
+	
+	function getSubCategory(){
+		//JQuery의 비동기 통신
+		$.ajax({
+			url:"/admin/subcategory/list?topcategory_id="+$("select[name='topcategory']").val(),		// 하위 카테고리에 대한 요청을 받을 수 있는 자 = 
+			method: "GET",
+			
+			// 요청 후 서버에서 응답이 도착했을 때 도착할 속성 및 콜백함수 정의
+			// 서버의 응답이 200번대이면 아래의 success에 명시된 익명함수가 동작하고,
+			// result : 서버에 보낸 데이터, status 서버의 상태, xhr XMLHttpRequest 객체
+			success:function(result, status, xhr){
+				
+			},
+			// 서버의 응답이 300번대 이상이면, 즉, 문제가 있을 경우 error 속성에 명시된 익명함수가 동작함
+			error:function(xhr, status, err){
+				
+			}
+			
+		});
+	}
+	
 	$(()=>{
 		$("#summernote").summernote();
+		
+		// 상위 카테고리의 select 상자의 값을 변경할 때, 비동기방식으로 즉, 새로고침 없이 하위 카테고리를 출력해주면
+		// 유저들이 불편함을 겪지 않게 된다.
+		// 지금까지 js 순수 코드를 이용하여 비동기 통신을 수행했지만, 이번 프로그램에서는 Jquery가 지원하는 비동기 통신 방법을 써보자
+		
+		$("select[name='topcategory']").change(()=>{
+			getSubCategory();
+		});
 	})
 	</script>
 </body>
