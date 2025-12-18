@@ -9,6 +9,7 @@
   <title>AdminLTE 3 | Dashboard</title>
 
 	<%@ include file="../inc/head_link.jsp" %>
+	<script src="/static/adminlte/custom/js/PreviewImg.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -102,13 +103,17 @@
 	                    <label for="exampleInputFile">File input</label>
 	                    <div class="input-group">
 	                      <div class="custom-file">
-	                        <input type="file" class="custom-file-input" id="exampleInputFile">
+	                        <input type="file" class="custom-file-input" id="product-img" multiple>
 	                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
 	                      </div>
 	                      <div class="input-group-append">
 	                        <span class="input-group-text">Upload</span>
 	                      </div>
 	                    </div>
+	                  </div>
+	                  
+	                  <div class="form-group row">
+	                  	<div class="col-md-12" id="product-preview"></div>
 	                  </div>
 	                </div>
 	                <!-- /.card-body -->
@@ -190,6 +195,23 @@
 			});
 		}
 		
+		// 자바스크립트의 이벤트 객체 정보 안에 포함된 유사 배열 객체를 이용하여 화면에, 유저가 선택한 이미지를 그려보자
+		function preview(imgList){
+			for(let i = 0; i < imgList.length; i++){
+				let reader = new FileReader();	// 순수 자바스크립트가 아닌 브라우저 API
+				
+				// 이미지가 아래의 메서드에서 다 읽혀지면 호출되는 콜백함수 처리
+				// 또한 읽혀진 파일 정보는 매개변수로 전달되어진다..
+				reader.onload = function(e){
+					// 우리가 만든 클래스로부터 인스턴스 생성하기!!
+					console.log(e.target);
+					let previewImg = new PreviewImg(document.getElementById("product-preview"), imgList[i], e.target.result, 100, 100	);
+				}
+				
+				reader.readAsDataURL(imgList[i]);		// 지정한 파일 객체를 읽어들이는 메서드
+			}
+		}
+		
 		$(()=>{
 			$("#summernote").summernote();
 			
@@ -197,10 +219,18 @@
 			// 유저들이 불편함을 겪지 않게 된다.
 			// 지금까지 js 순수 코드를 이용하여 비동기 통신을 수행했지만, 이번 프로그램에서는 Jquery가 지원하는 비동기 통신 방법을 써보자
 			getTopCategory();
-			
 			$("select[name='topcategory']").change(()=>{
 				getSubCategory();
 			});
+			
+			// 유저가 이미지 컴포넌트에서 이미지를 변경할 때를 처리하는 이벤트 연결
+			$("#product-img").change((e)=>{
+				// 사용자가 이미지 컴포넌트를 통해 이미지를 선택하면, 선택한 갯수의 따라 배열로 모아서 반환해주는데,
+				// 이때 이미지 정보가 담겨있는 FileList라는 객체는, 순수 자바스크립트언어에서 지원하는 객체가 아니라,
+				// 크롬과 같은 브라우저 Api 제공하는 객체이다. 특히 FileList(readOnly)는 읽기전용이므로, 개발자가 수정하거나 삭제할 수 없다.
+				console.log("이미지 바꿨어?", e.target.files);
+				preview(e.target.files);
+			})
 		})
 	</script>
 </body>
