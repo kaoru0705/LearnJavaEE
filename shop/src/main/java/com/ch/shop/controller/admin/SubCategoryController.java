@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ch.shop.dto.SubCategory;
 import com.ch.shop.model.subcategory.SubCategoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +23,10 @@ public class SubCategoryController {
 	// 목록 요청 처리
 	// 주의) 클라이언트가 비동기 요청을 시도할 경우, 서버는 절대로 HTML 문서를 원하는 것이 아니므로,
 	// 데이터를 보내줘야 한다.. 특히 개발 프로그래밍에서 표준적으로 많이 사용하는 형식이 바로 json 문자열이므로, 적극 사용!
-	@GetMapping("/admin/subcategory/list")
-	public void getList(int topcategory_id) {
+	@GetMapping("/subcategory/list")
+	@ResponseBody	// 리턴된 데이터를 응답 정보로 바로 쓰세요!(DispatcherServlet에게..)
+							// 또한 이 @ResponseBody를 적용하면, JSON MessageConvert를 자동적용
+	public List<SubCategory> getList(int topcategory_id) {
 		
 		List subList = subCategoryService.getList(topcategory_id);
 		
@@ -30,5 +34,11 @@ public class SubCategoryController {
 		
 		// 자바객체를 JSON 문자열로 개발자가 직접 바꾸려면, 고생한다...
 		// 따라서 자바분야의 라이브러리 중 jackson 라이브러리를 이용하면, 자바객체와 JSON 문자열 간의 변환을 자동으로 해줌
+		
+		// jackson을 사용하려면 ModleAndView를 사용하면 안된다. jsp 매핑
+		// 클라이언트가 비동기 요청을 시도했으므로, 서버측의 하위 컨트롤러는 jsp 매팽을 해서는 안되며, DispatcherServlet에게
+		// 더 이상 return 시킨 정보에 대해 jsp 매핑이 아니라, 반환시킨 값 그 자체를 응답 정보로 사용하라고 부탁해야 함
+		
+		return subList;
 	}
 }

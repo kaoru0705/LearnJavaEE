@@ -1,5 +1,7 @@
 package com.ch.shop.config.spring;
 
+import java.util.List;
+
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -35,7 +39,7 @@ import com.ch.shop.model.board.BoardServiceImpl;
 // MVC에서의 DAO는 @Repository 를 붙임
 // MVC에서의 Service는 @Service 를 붙임
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
-@ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
+@ComponentScan(basePackages = {"com.ch.shop.controller.shop", "com.ch.shop.model"})
 
 public class UserWebConfig extends WebMvcConfigurerAdapter{
 	
@@ -156,5 +160,11 @@ public class UserWebConfig extends WebMvcConfigurerAdapter{
 		//registry.addResourceHandler("브라우저로 접근할 주소").addResourceLocations("웹애플리케이션을 기준으로 실제 정적자원이 있는 위치");
 		// 여기서는 /resources/adminlte/index.html -> /static/adminlte/index.html
 		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
+	}
+	
+	// Jackson 라이브러리 사용을 설정
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(new MappingJackson2HttpMessageConverter());	// Jackson 객체를 넣기
 	}
 }
