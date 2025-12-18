@@ -139,26 +139,33 @@
 <!-- ./wrapper -->
 	<%@ include file="../inc/footer_link.jsp" %>
 	<script>
+	
+	// 이 함수는 상위, 하위를 모두 처리해야 하므로, 호출 시 상위를 원하는지, 하위를 원하는지 구분해줘야 한다.
+	function printCategory(category, list){
+		let tag = "<option value='0'>카테고리 선택</option>";
+		for(let i = 0; i < list.length; i++){
+			if(category=="topcategory"){
+				tag += "<option value='"+list[i].topcategory_id+"'>"+list[i].topname+"</option>"	// 기존 <option> 태그에 누적
+			}else{
+				tag += "<option value='"+list[i].subcategory_id+"'>"+list[i].subname+"</option>"	// 기존 <option> 태그에 누적
+			}
+		}
+		$("select[name='"+category+"']").html(tag);
+	}
+	
 		function getTopCategory(){
 			$.ajax({
 				url:"/admin/topcategory/list",
 				method:"GET",
 				
 				success:function(result, status, xhr){
-					
+					printCategory("topcategory", result);
+					console.log(result);
 				},
 				error:function(xhr, status, err){
 					
 				}
 			})
-		}
-	
-		function printSubCategory(subList){
-			let tag = "<option value='0'>하위 카테고리 선택</option>";
-			for(let i = 0; i < subList.length; i++){
-				tag += "<option>"+subList[i].subname+"</option>"	// 기존 <option> 태그에 누적
-			}
-			$("select[name='subcategory']").html(tag);
 		}
 	
 		function getSubCategory(){
@@ -173,8 +180,7 @@
 				success:function(result, status, xhr){
 					// 스프링에서 문자열을 전송 시 content-type을 json으로 전송했기 때문에, 클라이언트 측인 자바스크립트에서
 					// 볃도로 JSON.parse() 과정이 필요없게 되었음(편해졌다)
-					console.log(result[0].subname);
-					printSubCategory(result);	// 자바스크립트의 객체로 이루어진 배열 전달
+					printCategory("subcategory", result);	// 자바스크립트의 객체로 이루어진 배열 전달
 				},
 				// 서버의 응답이 300번대 이상이면, 즉, 문제가 있을 경우 error 속성에 명시된 익명함수가 동작함
 				error:function(xhr, status, err){
