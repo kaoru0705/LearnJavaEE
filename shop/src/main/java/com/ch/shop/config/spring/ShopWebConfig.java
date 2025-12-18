@@ -26,10 +26,7 @@ import com.ch.shop.controller.shop.BoardController;
 import com.ch.shop.model.board.MybatisBoardDAO;
 import com.ch.shop.model.board.BoardServiceImpl;
 
-/*
- * 이 클래스는 로직을 작성하기 위함이 아니라, 애플리케이션에서 사용할 빈(객체) 들 및 그들간의 관계(weaving)을 명시하기 위한 
- * 설정 목적의 클래스이며, 쇼핑몰의 일반 유저들이 보게 되는 애플리케이션쪽 빈들을 관리한다.
- */
+
 @Configuration	// 단지 xml을 대신한 설정용 클래스에 불과해!!
 @EnableWebMvc		// 필수 설정(스프링이 지원하는 MVC 프레임워크를 사용하기 위한 어노테이션)
 // 일일이 빈으로 등록할 필요가 없는 많이 알려진 빈들을 가리켜
@@ -39,7 +36,7 @@ import com.ch.shop.model.board.BoardServiceImpl;
 // MVC에서의 DAO는 @Repository 를 붙임
 // MVC에서의 Service는 @Service 를 붙임
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
-@ComponentScan(basePackages = {"com.ch.shop.controller.shop", "com.ch.shop.model"})
+@ComponentScan(basePackages = {"com.ch.shop.controller.shop"})
 
 public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	
@@ -70,4 +67,5 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(new MappingJackson2HttpMessageConverter());	// Jackson 객체를 넣기
 	}
+	
 }

@@ -2,6 +2,38 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>shop</display-name>
 	
+	
+	<!--
+		서버가 가동될 때를 감지하는 리스너 등록
+		ServletContext에 대한 초기설정을 위해서는 서버가 가동되는 시점에 동작하는 리스너를 이용해야 함
+	 -->
+<!--
+	<context-param>
+	 	<param-name>contextClass</param-name>
+	 	<param-value>모델객체를명시해놓은자바설정클래스</param-value>
+	 </context-param>
+	 
+		<listener>
+	 	<listener-class>com.ch.shop.config.spring.MyListener</listener-class>
+	 </listener
+-->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	 <context-param>
+	 	<param-name>contextConfigLocation</param-name>
+	 	<param-value>com.ch.shop.config.spring.RootConfig</param-value>
+	 </context-param>
+	 
+	 <!--
+	 	애플리케이션이 가동되는 시점에  ServletContext를 얻어와, AnnotationConfigApplicationContext 컨테이어네
+	 	설정 파일을 이용하여 번들을 생성하게 하려고...
+	 -->
+	 <listener>
+	 	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	 </listener>
+	
 	<!-- 
 		MVC에서 모델영역은 모든 요청 서블릿들 간 공유가 되어야 하는 공통기능이므로, 특정 서블릿의 수준으로 등록하면 안된다..
 		이유) 예 - 관리자용 서블릿에 등록해버리면, 쇼핑몰 유저가 톰켓 가동과 동시에 먼저 접근하게 될 경우 모델 객체들이
