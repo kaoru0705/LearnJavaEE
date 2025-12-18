@@ -39,7 +39,7 @@ import com.ch.shop.model.board.BoardServiceImpl;
 // MVC에서의 DAO는 @Repository 를 붙임
 // MVC에서의 Service는 @Service 를 붙임
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
-@ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
+@ComponentScan(basePackages = {"com.ch.shop.controller.shop", "com.ch.shop.model"})
 
 public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	
@@ -56,104 +56,7 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 		return rv;
 	}
 	
-	/*
-	 * 스프링이 MVC 프레임워크 중 컨트롤러 영역만을 지원하는 것이 아니라, 데이터베이스 관련 제어도 지원하므로,
-	 * 지금까지 순수하게 사용해왔던 mybatis를 스프링이 지원하는 mybatis로 전환해본다.
-	 * 스프링이 지원하는 데이터 연동 기술을 사용하려면, spring jdbc 라이브러리를 추가해야 한다...
-	 * spring jdbc 검색 
-	 */
 	
-	/*----------------------------------------------------------------
-	 * 1) 개발자가 사용하고 싶은 데이터소스를 결정
-	 * 		- 톰캣이 지원하는 JNDI를 사용할 예정
-	 *----------------------------------------------------------------*/
-	public DataSource dataSource() throws NamingException{
-		JndiTemplate jndi = new JndiTemplate();
-		return jndi.lookup("java:comp/env/jndi/mysql", DataSource.class);
-	}
-	
-	/*----------------------------------------------------------------
-	 * 2) 트랜잭션 매니저 등록
-	 * 		- 스프링은 개발자가 사용하는 기술이 JDBC, Mybatis, Hibernate, JPA 이건 상관없이
-	 * 			일관된 방법으로 트랜잭션을 처리할 수 있는 방법을 제공해주는데, 개발자는 자신이 사용하는 기술에 따라
-	 * 			적절한 트랜잭션 매니저를 등록해야 한다.
-	 * 			예) JDBC 사용 시 - DataSourceTransactionManager를 빈으로 등록해야 함
-	 * 			예) Hibernate 사용 시 - HibernateTransactionManager를 빈으로 등록해야 함
-	 * 			예) Mybatis 사용 시 - DataSourceTransactionManager를 빈으로 등록해야 함
-	 * 										특히 Mybatis의 경우 JDBC와 동일한 DataSourceTransactionManager를 사용하는 이유는?
-	 * 										사실 Mybatis는 내부적으로, JDBC를 사용하기 때문임...
-	 * 			그리고 이 모든 트랜잭션 매니저의 최상단 객체가 바로 PlatformTransactionManager 이다.
-	 *----------------------------------------------------------------*/
-	@Bean
-	public PlatformTransactionManager transactionManager(SqlSessionFactory sqlSessionFactory) {
-		return new DataSourceTransactionManager(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource());
-	}
-	
-	
-	/*----------------------------------------------------------------
-	 * 3) SqlSession을 관리하는 mybatis의 SqlSessionFactory(순수 mybatis에서 SqlSession들을 다루는)를 빈으로 등록
-	 *----------------------------------------------------------------*/
-	@Bean
-	public SqlSessionFactory sqlSessionFactory() throws Exception{
-		
-		// 순수 mybatis 프레임워크 자체에서 지원하는 객체가 아니라, mybatis-spring에서 지원하는 객체인
-		// SqlSessionFactoryBean (끝에 Bean)을 이용하여 설정 xml 파일을 로드한다.
-		
-		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		
-		// 패키지에 포함된 파일의 유형이 클래스가 아닌 경우 더 이상 패키지로 표현하지 말고, 일반 디렉토리로 취급해야 한다..
-		sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("com/ch/shop/config/mybatis/config.xml"));
-		
-		sqlSessionFactoryBean.setDataSource(dataSource());
-		
-		return sqlSessionFactoryBean.getObject();
-	}
-	
-	/*----------------------------------------------------------------
-	 * 4) SqlSessionTemplate 빈으로 등록
-	 * mybatis 사용 시 쿼리문 수행을 위해서는 SqlSession을 이용했으나, mybatis-spring에서는 SqlSessionTemplate 객체를 사용해야 함
-	 *----------------------------------------------------------------*/
-	@Bean
-	public SqlSessionTemplate sqlSessionTemplate() throws Exception{
-		return new SqlSessionTemplate(sqlSessionFactory());
-	}
-	
-	// 스프링프레임웍을 지배하는 개발원리 중 하나인 DI를 구현하려면 개발자는 사용할 객체들을 미리 빈으로 등록해야 한다..
-	
-	// Autowired를 안 했다면 weaving을 해야 한다.
-//	@Bean
-//	public BoardDAO boardDAO() {
-//		return new BoardDAO();
-//	}
-//	@Bean
-//	public BoardService boardService(BoardDAO boardDAO) {
-//		return new BoardService(boardDAO);
-//	}
-	
-	// DispatcherServlet은 컨트롤러에 대한 매핑만 수행하면 되며, 정적자원(css, js, html, image 등)에 대해서는 직접 처리하지 않게 하기
-	// DispatcherServlet이 관여하지 않는다.
-	/*
-	 *	<servlet-mapping>
-        	<servlet-name>default</servlet-name>
-        	<url-pattern>/</url-pattern>
-    	</servlet-mapping>
-    	
-    	<servlet>
-        	<servlet-name>default</servlet-name>
-        	<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
-        	<init-param>
-            	<param-name>debug</param-name>
-            	<param-value>0</param-value>
-        	</init-param>
-        	<init-param>
-            	<param-name>listings</param-name>
-            	<param-value>false</param-value>
-        	</init-param>
-        	<load-on-startup>1</load-on-startup>
-    	</servlet>
-    	web.xml in Tomcat가 있는데 
-    	web.xml DispatcherServlet이 먼저 관여해서 /resources/adminlte/index.html를 못 찾았다.
-	 */
 	// WebMvcConfigurerAdapter 이걸 상속 받아라
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		
