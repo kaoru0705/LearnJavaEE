@@ -17,7 +17,7 @@ public class TopCategoryController {
 	@Autowired
 	private TopCategoryService topCategoryService;
 	
-	@GetMapping("/admin/topcategory/list")
+	@GetMapping("/topcategory/list")
 	@ResponseBody
 	public List<TopCategory> getList(){
 		return topCategoryService.getList();

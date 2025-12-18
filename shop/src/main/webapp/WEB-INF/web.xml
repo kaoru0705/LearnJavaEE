@@ -7,7 +7,7 @@
 		서버가 가동될 때를 감지하는 리스너 등록
 		ServletContext에 대한 초기설정을 위해서는 서버가 가동되는 시점에 동작하는 리스너를 이용해야 함
 	 -->
-<!--
+<!-- 연습
 	<context-param>
 	 	<param-name>contextClass</param-name>
 	 	<param-value>모델객체를명시해놓은자바설정클래스</param-value>
@@ -29,6 +29,7 @@
 	 <!--
 	 	애플리케이션이 가동되는 시점에  ServletContext를 얻어와, AnnotationConfigApplicationContext 컨테이어네
 	 	설정 파일을 이용하여 번들을 생성하게 하려고...
+	 	MyListener를 안 만들어도 그냥 있다.
 	 -->
 	 <listener>
 	 	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -102,7 +103,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>admin-dispatcher</servlet-name>
-		<url-pattern>/admin/*</url-pattern>
+		<url-pattern>/admin/*</url-pattern>		<!-- /* 이후의 값이 controller에 적용되므로 controller /admin을 붙이면 안된다 -->
 	</servlet-mapping>
 	
 	<!--  관리자가 아닌 일반 사용자들의 요청을 처리할 DispatcherServlet 매핑 -->

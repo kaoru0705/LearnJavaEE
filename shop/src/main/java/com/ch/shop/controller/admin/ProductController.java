@@ -19,7 +19,7 @@ public class ProductController {
 	private TopCategoryService topCategoryService;
 	
 	// 상품 등록폼 요청 처리
-	@GetMapping("/admin/product/registform")
+	@GetMapping("/product/registform")
 	public String getRegistForm(Model model) {
 		// 3단계: 상품페이지에 출력할 상위카테고리 가져오기
 		//List topList = topCategoryService.getList();

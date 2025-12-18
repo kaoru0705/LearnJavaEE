@@ -69,6 +69,6 @@ public class AdminWebConfig extends WebMvcConfigurerAdapter{
 	// Jackson 라이브러리 사용을 설정
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new MappingJackson2HttpMessageConverter());	// Jackson 객체를 넣기
+		converters.add(new MappingJackson2HttpMessageConverter());		// Jackson 객체를 넣기
 	}
 }
