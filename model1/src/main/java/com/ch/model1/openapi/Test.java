@@ -45,11 +45,13 @@ public class Test {
         // 우리가 받은 데이터를 json 검증기에서 확인했기에, 문자열을 자바 객체로 자동변환하는 라이브러리인 jackson을 사용해보자
         
         ObjectMapper mapper = new ObjectMapper();
+        System.out.println(sb.toString());
         // 첫 번째 매개변수엔 서버로부터 가져온 JSON 문자열을 넣고, 두 번째 매개변수엔 그 결과를 받을 DTO를 대입해야 한다.
         ApiResponse data = mapper.readValue(sb.toString(), ApiResponse.class);	
          
         // 이제 모든 데이터가 각각 자동으로 채워진 상태이며 데이터에 대한 접근은 최상위 객체로부터 점차적으로 접근하면 된다.
         String placeNm =data.getResponse().getBody().getItems().getItem().get(0).getPlaceNm();
+        System.out.println(data);
         System.out.println(placeNm);
         
         //System.out.println(sb.toString());
