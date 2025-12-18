@@ -20,7 +20,7 @@
 		즉, 프론트(맨 앞)에 유일한 컨트롤러 하나를 둔다.
 	-->
 	<servlet>
-		<servlet-name>dispatcher</servlet-name>
+		<servlet-name>admin-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		
 		<!-- init-param 이란? 이 서블릿의 인스턴스가 최초의 생성되어질 때, 호출되는 생명주기 메서드인 init() 메서드 안으로
@@ -39,11 +39,32 @@
 		 
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>com.ch.shop.config.spring.UserWebConfig</param-value>
+			<param-value>com.ch.shop.config.spring.AdminWebConfig</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
+		<servlet-name>admin-dispatcher</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
+	</servlet-mapping>
+	
+	<!--  관리자가 아닌 일반 사용자들의 요청을 처리할 DispatcherServlet 매핑 -->
+	<servlet>
+		<servlet-name>shop-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		
+		 <init-param>
+		 	<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		 </init-param>
+		 
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>com.ch.shop.config.spring.ShopWebConfig</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>shop-dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
 </web-app>

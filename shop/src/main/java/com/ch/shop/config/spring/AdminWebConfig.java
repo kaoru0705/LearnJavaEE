@@ -41,7 +41,7 @@ import com.ch.shop.model.board.BoardServiceImpl;
 // MVC에서의 특정 분류가 딱히 없음에도 자동으로 올리고 싶다면 @Component
 @ComponentScan(basePackages = {"com.ch.shop.controller", "com.ch.shop.model"})
 
-public class UserWebConfig extends WebMvcConfigurerAdapter{
+public class AdminWebConfig extends WebMvcConfigurerAdapter{
 	
 	// DispatcherServlet이 하위 컨트롤러로부터 반환받은 결과 페이지에 대한 정보는 사실 완전한 JSP 경로가 아니므로,
 	// 이를 해석할 수 있는 자인 ViewResolver에게 맡겨야 하는데, 이 ViewResolver 중 유달리 접두어와 접미어 방식을 이해하는 
