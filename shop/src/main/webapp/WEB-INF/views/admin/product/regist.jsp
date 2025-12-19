@@ -57,7 +57,7 @@
 	              </div>
 	              <!-- /.card-header -->
 	              <!-- form start -->
-	              <form>
+	              <form id = "product-form">
 	                <div class="card-body">
 						
 						<div class="form-group row">
@@ -264,8 +264,55 @@
 		/*----------------------------------------------------
 			지금까지는 파일을 업로드 수행은 동기방식으로만 시도했었음..
 			비동기 방식으로도 파일을 업로드 할 수 있다..
+			폼양식에 바이너리 포함되었을 경우 비동기로 전송하려면, 브라우저 자체에서 제공하는 API인 FormData 를 사용할 수 있다.
+			FormData 자체적으로 자동으로 바이너리 파일 전송 시 사용되는 인코딩 방식인 multipart/form-data가 처리되어 있다.
 		------------------------------------------------------*/
 		function regist(){
+			
+			// 파라미터를 채울 때는 append() 메서드 사용함
+			// formData.append("product_name", $("input[name='product_name']").val());
+			// 개발자가 일일이 파라미터를 지정하면 Form의 파라미터 수가 많을 경우 코드량이 많아지므로,
+			// FormData에 기존의 Form을 대입하자!!
+			let formData = new FormData(document.getElementById("product-form"));		// $("#product-form") 적용불가
+			
+			formData.delete("photo");	// 비동기 방식이므로, 새로고침이 발생하지 않기 때문에, 등록버튼을 여러번 누를 경우
+													// formDaa에 photo 파라미터가 계속 누적됨.. 따라서 등록 버튼을 누를 때마다,
+													// 기존의 이미지 쌓여있던 이미지 파라미터를 제거해버리자
+													
+			
+			// 사용자가 선택한 이미지가 배열만큼 formData에 추가하기
+			for(let i = 0; i < selectedFile.length; i++){
+				formData.append("photo", selectedFile[i] );
+			}
+			formData.append("subCategory.subcategory_id", $("select[name='subcategory']").val());
+			
+			// 비동기 요청이기 때문에 JQuery Ajax 사용하기
+			$.ajax({
+				url:"/admin/product/regist",
+				method: "POST",
+				data: formData,
+				/*
+					processData 속성 의미:
+					JQuery AJAX는 파라미터 전송 시 원래 JSON 문자열로 전송함
+					{name: "zino", age: "20"} 을 anme=zino&age=20로 자동 변환해주는데, 우리의 경우 formData를 이용하기 때문에
+					전송할 데이터에 바이너리 파일이 포함되어 있다. 따라서 바이너리 파일을 대상으로 자동 문자열 변환을 허용하면 에러가 난다.
+					즉, 올바르지 않은 형식의 데이터 전송이 되므로 JQuery로 하여금 문자열 자동 변환을 하지 말라고 막는 속성.
+				*/
+				processData: false,
+				
+				/*
+					contentType 속성 의미:
+					JQuery AJAX에게 POST 전송을 맡기면 자동으로 contentType:application/x-www-form-urlencoded; charset=UTF-8
+					변경하게 되는데, 우리의 경우 이미지와 같은 바이너리 파일이 포함되어 있으므로 JQuery로 하여금 자동으로 인코딩을 지정하지 못하게 금지...
+				*/
+				contentType: false,
+				success:function(result, status, xhr){
+					
+				},
+				error:function(xhr, status, err){
+					
+				}
+			})
 			
 		}
 		
