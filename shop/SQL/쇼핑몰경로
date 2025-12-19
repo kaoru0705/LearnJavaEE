@@ -45,3 +45,25 @@ insert into subcategory(subname, topcategory_id) values('케리어', 5);
 insert into subcategory(subname, topcategory_id) values('노트북가방', 5);
 insert into subcategory(subname, topcategory_id) values('핸드백', 5);
 insert into subcategory(subname, topcategory_id) values('에코백', 5);
+
+create table color(
+	color_id int primary key auto_increment
+	, color_name varchar(15)
+);
+
+create table size(
+	size_id int primary key auto_increment
+	, size_name varchar(15)
+);
+
+insert into color(color_name) values('navy');
+insert into color(color_name) values('white');
+insert into color(color_name) values('pink');
+insert into color(color_name) values('yellow');
+insert into color(color_name) values('black');
+
+insert into size(size_name) values('XS');
+insert into size(size_name) values('S');
+insert into size(size_name) values('M');
+insert into size(size_name) values('L');
+insert into size(size_name) values('XL');

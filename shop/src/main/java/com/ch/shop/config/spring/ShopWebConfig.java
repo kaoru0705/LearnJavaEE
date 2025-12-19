@@ -39,33 +39,6 @@ import com.ch.shop.model.board.BoardServiceImpl;
 @ComponentScan(basePackages = {"com.ch.shop.controller.shop"})
 
 public class ShopWebConfig extends WebMvcConfigurerAdapter{
-	
-	// DispatcherServlet이 하위 컨트롤러로부터 반환받은 결과 페이지에 대한 정보는 사실 완전한 JSP 경로가 아니므로,
-	// 이를 해석할 수 있는 자인 ViewResolver에게 맡겨야 하는데, 이 ViewResolver 중 유달리 접두어와 접미어 방식을 이해하는 
-	// ViewResolver를 InternalResourceViewResolver라고 한다.. 개발자는 이 객체에게 접두어와 접미어을 사전에 등록해 놓아야 한다.
-	@Bean
-	public InternalResourceViewResolver viewResolver() {
-		InternalResourceViewResolver rv = new InternalResourceViewResolver();
-		// 접두어 등록
-		rv.setPrefix("/WEB-INF/views/");
-		// 접미어 등록
-		rv.setSuffix(".jsp");
-		return rv;
-	}
-	
-	
-	// WebMvcConfigurerAdapter 이걸 상속 받아라
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		
-		//registry.addResourceHandler("브라우저로 접근할 주소").addResourceLocations("웹애플리케이션을 기준으로 실제 정적자원이 있는 위치");
-		// 여기서는 /resources/adminlte/index.html -> /static/adminlte/index.html
-		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
-	}
-	
-	// Jackson 라이브러리 사용을 설정
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new MappingJackson2HttpMessageConverter());	// Jackson 객체를 넣기
-	}
+
 	
 }

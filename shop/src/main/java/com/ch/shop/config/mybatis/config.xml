@@ -7,6 +7,8 @@
 		<typeAlias type = "com.ch.shop.dto.Board" alias = "Board"/>
 		<typeAlias type = "com.ch.shop.dto.TopCategory" alias = "TopCategory"/>
 		<typeAlias type = "com.ch.shop.dto.SubCategory" alias = "SubCategory"/>
+		<typeAlias type = "com.ch.shop.dto.Color" alias = "Color"/>
+		<typeAlias type = "com.ch.shop.dto.Size" alias = "Size"/>
 	</typeAliases>
 
 <!-- 더이상 spring이 UserWebConfig에서 주도하므로 필요 없다.
@@ -26,5 +28,7 @@
 		<mapper resource="com/ch/shop/config/mybatis/BoardMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/TopCategoryMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/SubCategoryMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/ColorMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/SizeMapper.xml" />
 	</mappers>
 </configuration>

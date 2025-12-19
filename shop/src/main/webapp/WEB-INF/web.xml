@@ -5,7 +5,7 @@
 	
 	<!--
 		서버가 가동될 때를 감지하는 리스너 등록
-		ServletContext에 대한 초기설정을 위해서는 서버가 가동되는 시점에 동작하는 리스너를 이용해야 함
+		ServletContext(application)에 대한 초기설정을 위해서는 서버가 가동되는 시점에 동작하는 리스너를 이용해야 함
 	 -->
 <!-- 연습
 	<context-param>
@@ -27,7 +27,7 @@
 	 </context-param>
 	 
 	 <!--
-	 	애플리케이션이 가동되는 시점에  ServletContext를 얻어와, AnnotationConfigApplicationContext 컨테이어네
+	 	애플리케이션이 가동되는 시점에  ServletContext(application의 자료형)를 얻어와, AnnotationConfigApplicationContext 스프링 컨테이어네
 	 	설정 파일을 이용하여 번들을 생성하게 하려고...
 	 	MyListener를 안 만들어도 그냥 있다.
 	 -->
