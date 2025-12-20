@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<p>안녕하세요 person list.jsp예요!</p>
 </body>
 </html>
