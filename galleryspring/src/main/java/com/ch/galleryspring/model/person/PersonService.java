@@ -2,6 +2,8 @@ package com.ch.galleryspring.model.person;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface PersonService {
-	public void regist(List nameList, List imgList);
+	public void regist(List<String> nameList, List<MultipartFile> imgList);
 }

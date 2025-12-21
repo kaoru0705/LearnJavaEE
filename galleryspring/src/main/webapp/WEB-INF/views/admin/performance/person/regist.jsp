@@ -15,6 +15,7 @@
 		    $(".input_row").each(function (){
 		        const name = $(this).find("input[name='person_name']").val();
 		        const fileInput = $(this).find("input[type='file']")[0];
+		        /*https://www.w3schools.com/jsref/dom_obj_fileupload.asp*/
 		        const file = fileInput.files[0];
 	
 		        if (!name) return;
@@ -32,7 +33,11 @@
 				processData: false,
 				contentType: false,
 				success:function(result, status, xhr){
-					
+					if(result === "success"){
+						alert("인물 등록 성공");
+					} else{
+						alert("인물 등록 실패");
+					}
 				},
 				error:function(xhr, status, err){
 					
@@ -79,9 +84,9 @@
 			})
 			/* https://www.w3schools.com/jquery/event_on.asp */
 			$("#input_area").on("change", "input[type=file]", function(e){
-				console.log("this ", this);
-				console.log("this.files", this.files);
-				console.log("e.target.files", e.target.files);
+				//console.log("this ", this);
+				//console.log("this.files", this.files);
+				//console.log("e.target.files", e.target.files);
 				
 				let file = this.files[0];
 				

@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 
-@ComponentScan(basePackages = {"com.ch.galleryspring.controller"})
+@ComponentScan(basePackages = {"com.ch.galleryspring.controller", "com.ch.galleryspring.model"})
 public class UserWebConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
