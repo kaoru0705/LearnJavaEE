@@ -2,10 +2,10 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		
+		<typeAlias type = "com.ch.galleryspring.dto.Person" alias = "Person"/>
 	</typeAliases>
 	
 	<mappers>
-		
+		<mapper resource = "com/ch/galleryspring/config/mybatis/PersonMapper.xml"/>
 	</mappers>
 </configuration>

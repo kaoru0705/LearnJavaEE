@@ -220,15 +220,15 @@
 			for(let i = 0; i < selectedFile.length; i++){
 				let reader = new FileReader();	// 순수 자바스크립트가 아닌 브라우저 API
 				
-				// 이미지가 아래의 메서드에서 다 읽혀지면 호출되는 콜백함수 처리
-				// 또한 읽혀진 파일 정보는 매개변수로 전달되어진다..
+				// 이미지가 아래의 메서드에서 파일이 다 읽혀지면(reader.readAsDataURL) 호출되는 콜백함수 처리
+				// 또한 읽혀진 파일 정보는 매개변수(e)로 전달되어진다..
 				reader.onload = function(e){
 					// 우리가 만든 클래스로부터 인스턴스 생성하기!!
-					console.log(e.target);
+					console.log("e.targert ", e.target);
 					let previewImg = new PreviewImg(document.getElementById("product-preview"), selectedFile[i], e.target.result, 100, 100);
 				}
 				
-				reader.readAsDataURL(imgList[i]);		// 지정한 파일 객체를 읽어들이는 메서드
+				reader.readAsDataURL(imgList[i]);		// 지정한 파일 객체를 읽어들이는 메서드 이 파일을 DataURL 형태로 읽어줘
 			}
 		}
 		
@@ -276,7 +276,7 @@
 			let formData = new FormData(document.getElementById("product-form"));		// $("#product-form") 적용불가
 			
 			formData.delete("photo");	// 비동기 방식이므로, 새로고침이 발생하지 않기 때문에, 등록버튼을 여러번 누를 경우
-													// formDaa에 photo 파라미터가 계속 누적됨.. 따라서 등록 버튼을 누를 때마다,
+													// formData에 photo 파라미터가 계속 누적됨.. 따라서 등록 버튼을 누를 때마다,
 													// 기존의 이미지 쌓여있던 이미지 파라미터를 제거해버리자
 													
 			

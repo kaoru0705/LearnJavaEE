@@ -7,6 +7,7 @@ class PreviewImg{
 		this.width = width;
 		this.height = height;
 		
+		
 		this.wrapper = document.createElement("div");
 		this.header = document.createElement("div");
 		this.img = document.createElement("img");
@@ -35,7 +36,6 @@ class PreviewImg{
 		// X자에 이벤트 연결
 		this.header.addEventListener("click", (e)=>{
 			console.log("지울거야?");
-			
 			// 링크를 누를 때마다 스크롤이 자꾸 원상태로 돌아오는 현상의 이유?
 			// a tag를 사용자가 클릭하면 기본적으로 y축을 0으로 위치시키는 특징때문임..
 			// 해결책? 기본 특징을 제거하자
@@ -53,5 +53,6 @@ class PreviewImg{
 		// 화면에서 제거되었다고 안심하면 안 된다!
 		// 이유? 제거된 최종 결과를 결국 서버로 전송할 것이므로, 화면에서 제거했다면 원본 배열도 함께 제거해야 한다.
 		selectedFile.splice(1, selectedFile.indexOf(this.file));
+		console.log("제거 후 파일 ", selectedFile);
 	}
 }
