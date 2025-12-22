@@ -10,6 +10,7 @@
 		<typeAlias type = "com.ch.shop.dto.Color" alias = "Color"/>
 		<typeAlias type = "com.ch.shop.dto.Size" alias = "Size"/>
 		<typeAlias type = "com.ch.shop.dto.Product" alias = "Product"/>
+		<typeAlias type = "com.ch.shop.dto.ProductColor" alias = "ProductColor"/>
 	</typeAliases>
 
 <!-- 더이상 spring이 UserWebConfig에서 주도하므로 필요 없다.
@@ -32,5 +33,6 @@
 		<mapper resource="com/ch/shop/config/mybatis/ColorMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/SizeMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/ProductMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/ProductColorMapper.xml" />
 	</mappers>
 </configuration>

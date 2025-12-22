@@ -17,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // 모든 서블릿이 접근할 수 있는 객체인 ServletContext 수준에서의 스프링컨테이너가 이 클래스를 읽어들여 번들의 인스턴스를 관리해야 한다..
 @Configuration	// xml을 대신할 거야!
 @ComponentScan(basePackages = {"com.ch.shop.model"})
+@EnableTransactionManagement
 public class RootConfig extends WebMvcConfigurerAdapter{
 
 	// DispatcherServlet이 하위 컨트롤러로부터 반환받은 결과 페이지에 대한 정보는 사실 완전한 JSP 경로가 아니므로,

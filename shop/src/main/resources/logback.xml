@@ -43,5 +43,5 @@
 			위에서 root 로그레벨을 선언하였다 할지라도, 아래의 DEBUG 로그가 우선적용된다.
 	 -->
 	<!-- <logger name="어떤 클래스에 대해서 적용할지 패키지" level="DEBUG"/> -->
-	<logger name="com.ch.shop.controller" level="DEBUG"/>
+	<logger name="com.ch.shop" level="DEBUG"/>
 </configuration>
