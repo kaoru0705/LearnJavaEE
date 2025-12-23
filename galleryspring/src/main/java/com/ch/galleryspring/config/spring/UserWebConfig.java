@@ -1,5 +1,7 @@
 package com.ch.galleryspring.config.spring;
 
+import java.util.List;
+
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -22,7 +26,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 
-@ComponentScan(basePackages = {"com.ch.galleryspring.controller", "com.ch.galleryspring.model"})
+@ComponentScan(basePackages = {"com.ch.galleryspring.controller", "com.ch.galleryspring.model", "com.ch.galleryspring.util"})
 public class UserWebConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
@@ -32,7 +36,14 @@ public class UserWebConfig extends WebMvcConfigurerAdapter{
 		rv.setSuffix(".jsp");
 		return rv;
 	}
+
+	// Jackson 라이브러리 사용을 설정 @ResponseBody
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(new MappingJackson2HttpMessageConverter());	// Jackson 객체를 넣기
+	}
 	
+	@Bean
 	public DataSource dataSource() throws NamingException{
 		JndiTemplate jndi = new JndiTemplate();
 		return jndi.lookup("java:comp/env/jndi/mysql_myuser", DataSource.class);

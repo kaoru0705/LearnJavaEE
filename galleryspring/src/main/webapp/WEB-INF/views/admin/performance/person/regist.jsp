@@ -33,14 +33,11 @@
 				processData: false,
 				contentType: false,
 				success:function(result, status, xhr){
-					if(result === "success"){
-						alert("인물 등록 성공");
-					} else{
-						alert("인물 등록 실패");
-					}
+					alert(result.message); 
 				},
 				error:function(xhr, status, err){
-					
+					let obj = JSON.parse(xhr.responseText);
+					alert(obj.message);
 				}
 			})		    
 		}

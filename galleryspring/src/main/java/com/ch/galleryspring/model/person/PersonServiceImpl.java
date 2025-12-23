@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ch.galleryspring.dto.Person;
+import com.ch.galleryspring.exception.PersonException;
 import com.ch.galleryspring.util.FileUtil;
 
 /* DB transaction RuntimeException 발생 rollback */
@@ -21,7 +22,7 @@ public class PersonServiceImpl implements PersonService{
 	PersonDAO personDAO;
 	
 	@Override
-	public void regist(List<String> nameList, List<MultipartFile> imgList) {
+	public void regist(List<String> nameList, List<MultipartFile> imgList) throws PersonException{
 		for(int i = 0; i < nameList.size(); i++) {
 			String name = nameList.get(i);
 			
@@ -46,7 +47,7 @@ public class PersonServiceImpl implements PersonService{
 					FileUtil.deleteFile(url);
 				}
 				
-				throw new RuntimeException("인물 등록 실패", e);
+				throw new PersonException("인물 등록 실패", e);
 			}
 
 		}

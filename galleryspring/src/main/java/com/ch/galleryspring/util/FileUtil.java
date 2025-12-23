@@ -1,6 +1,5 @@
 package com.ch.galleryspring.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,8 +8,13 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ch.galleryspring.exception.UploadException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FileUtil {
-	public static String saveFile(String absDir, MultipartFile img) throws Exception {
+	public static String saveFile(String absDir, MultipartFile img) throws UploadException {
 		/* Universally Unique Idenfitier */
 
 		String oriName = img.getOriginalFilename();
@@ -20,11 +24,15 @@ public class FileUtil {
 		
 		// path: C:/galleryspring/person
 		Path path = Paths.get(absDir, fileName);
-		// person까지의 directory 만들기
-		Files.createDirectories(path.getParent());
 		
 		
-		img.transferTo(path.toFile());
+		try {
+			// person까지의 directory 만들기
+			Files.createDirectories(path.getParent());
+			img.transferTo(path.toFile());
+		} catch(Exception e) {
+			throw new UploadException("file 저장 실패", e);
+		}
 		
 		String url = getRelative(absDir)+ fileName;
 		
@@ -50,6 +58,7 @@ public class FileUtil {
 			Files.deleteIfExists(path);
 		} catch (IOException e) {
 			e.printStackTrace();
+			log.debug("이미지 삭제 실패 " + path);
 		}
 	}
 	
