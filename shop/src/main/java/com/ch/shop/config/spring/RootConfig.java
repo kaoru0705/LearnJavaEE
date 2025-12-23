@@ -26,7 +26,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // 특히, 이 클래스에 등록될 번들은 비즈니스 로직을 처리하는 모델영역의 번들이므로, 서블릿 수준의 스프링컨테이너가 사용해서는 안되며
 // 모든 서블릿이 접근할 수 있는 객체인 ServletContext 수준에서의 스프링컨테이너가 이 클래스를 읽어들여 번들의 인스턴스를 관리해야 한다..
 @Configuration	// xml을 대신할 거야!
-@ComponentScan(basePackages = {"com.ch.shop.model"})
+@ComponentScan(basePackages = {"com.ch.shop.model", "com.ch.shop.util"})
 @EnableTransactionManagement
 public class RootConfig extends WebMvcConfigurerAdapter{
 

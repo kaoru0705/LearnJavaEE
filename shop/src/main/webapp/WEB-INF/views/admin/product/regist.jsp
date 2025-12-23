@@ -128,6 +128,7 @@
 	
 	                <div class="card-footer">
 	                  <button type="button" class="btn btn-info">Submit</button>
+	                  <button type="button" class="btn btn-info">상품목록</button>
 	                </div>
 	              </form>
 	            </div>
@@ -306,11 +307,20 @@
 					변경하게 되는데, 우리의 경우 이미지와 같은 바이너리 파일이 포함되어 있으므로 JQuery로 하여금 자동으로 인코딩을 지정하지 못하게 금지...
 				*/
 				contentType: false,
+				
+				// 서버의 응답 코드가 200(성공)일 경우 아래의 success 속성에 명시된 콜백함수가 동작함
 				success:function(result, status, xhr){
-					
+					// 서버측에서 응답한 데이터 형식이 순수 문자열일 경우, js의 객체 리터럴로 변환해야, 점찍고 쓸 수 있다.
+					// 그러기 위해서는 문자열을 --> 객체로 JSON.parse() 로 처리
+					//let obj = JSON.parse(result);
+					//alert(obj.message);
+					//console.log(result);
+					alert(result.message); 
 				},
+				// 서버 측에서 응답한 응답 코드가 에러인 경우 (300 이상인 경우 아래의 error 속성에 명시된 콜백함수 호출)
 				error:function(xhr, status, err){
-					
+					let obj = JSON.parse(xhr.responseText);
+					alert(obj.message);
 				}
 			})
 			
@@ -345,9 +355,14 @@
 				
 			})
 			
-			$(".card-footer button").click(()=>{
+			$($(".card-footer button")[0]).click(()=>{
 				regist();
 			});
+			
+			$($(".card-footer button")[1]).click(()=>{
+				location.href="/admin/product/list";
+			});
+			
 		})
 	</script>
 </body>
