@@ -138,10 +138,26 @@ public class ProductController {
 		return body;
 	}
 	
-	//상품 목록 요청 처리
+	// 동기 상품 목록 요청 처리
 	@GetMapping("/product/list")
-	public String getListPage() {
+	public String getListPage(Model model) {
+		// 3단계: 모델이 일시키기
+		List productList = productService.getList();
+		model.addAttribute("productList", productList);	// 4단계 결과 저장
+		
 		return "admin/product/list";
+	}
+	
+	// 비동기 상품 목록 요청 처리
+	@GetMapping("/product/async/list")
+	@ResponseBody		// @ResponseBody를 명시하면 DispatcherServlet이 응답 결과를 ViewResolver에게 의뢰하지 않음
+								// 결과를 JSP로 보여줄 일이 없는 비동기 요청인 경우 사용함
+	public List<Product> getList(Model model) {
+		// 3단계: 모델이 일시키기
+		List productList = productService.getList();
+		// 별도의 디자인 페이지에서 결과를 보여주는 방식이 아니라, 데이터를 JSON 문자열로 응답해버리는 처리를 해야 하므로
+		// 4단계: 저장하기는 생략해야 한다!!
+		return productList;
 	}
 	
 	// 스프링에서는 컨트롤러의 요청 처리 메서드들 중 예외가 발생할 경우, @ExceptionHandler가 명시된 메서드가
@@ -156,8 +172,7 @@ public class ProductController {
 		Map<String, String> body = new HashMap<>();
 		body.put("message", "상품등록 실패");
 		
-		// 클라이언트에게 응답코드를 보내지 않으면, 클라이언트는 성공이라고 생각함
-		
+		// 클라이언트에게 응답코드를 보내지 않으면, 클라이언트는 성공이라고 생각함 return body 였으면 성공
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
 	}
 }
