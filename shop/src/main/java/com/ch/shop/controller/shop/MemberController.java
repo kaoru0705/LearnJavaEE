@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.ch.shop.dto.GoogleUser;
 import com.ch.shop.dto.OAuthClient;
 import com.ch.shop.dto.OAuthTokenResponse;
 import com.ch.shop.model.topcategory.TopCategoryService;
@@ -116,6 +118,15 @@ public class MemberController {
 		
 		log.debug("구글로부터 받은 엑세스 토큰은 {}", access_token);
 		
+		// 회원정보 가져오기
+		// 구글에 요청을 시도하려면 역시나 이번에도 Http 프로토콜의 형식을 갖추어야 함
+		HttpHeaders userInfoHeaders = new HttpHeaders();
+		// 내가 바로 토큰을 가진 자임을 알리는 헤더 속성 값을 넣어야 함
+		userInfoHeaders.add("Authorization", "Bearer " + access_token);
+		HttpEntity<String> userInfoRequest = new HttpEntity<>("", userInfoHeaders);
+		ResponseEntity<GoogleUser> userInfoResponse = restTemplate.exchange(google.getUserInfoUrl(), HttpMethod.GET, userInfoRequest, GoogleUser.class);		// 서버로부터 데이터를 가져오기이므로, exchange() 사용
+		
+		log.debug("사용자 정보는 {}", userInfoResponse);
 		
 		return null;
 	}
