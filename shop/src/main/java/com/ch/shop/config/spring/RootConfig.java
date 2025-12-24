@@ -51,6 +51,7 @@ public class RootConfig extends WebMvcConfigurerAdapter{
 		//registry.addResourceHandler("브라우저로 접근할 주소").addResourceLocations("웹애플리케이션을 기준으로 실제 정적자원이 있는 위치");
 		// 여기서는 /resources/adminlte/index.html -> /static/adminlte/index.html
 		registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/photo/**").addResourceLocations("file:/C:/shopdata/product/");
 	}
 	
 	// Jackson 라이브러리 사용을 설정 @ResponseBody
