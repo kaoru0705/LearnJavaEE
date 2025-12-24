@@ -15,6 +15,7 @@ public class Product {
 	private int discount;
 	private List<Color> colorList;		// 색상
 	private List<Size> sizeList;		// 사이즈
+	private List<ProductImg> productImgList;		// 상품 이미지 리스트
 	private String introduce;
 	private String detail;	
 	private SubCategory subCategory;		// 하위 카테고리
