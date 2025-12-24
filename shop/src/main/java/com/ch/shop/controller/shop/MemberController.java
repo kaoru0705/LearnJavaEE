@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.ch.shop.dto.OAuthClient;
+import com.ch.shop.dto.OAuthTokenResponse;
 import com.ch.shop.model.topcategory.TopCategoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -89,9 +91,10 @@ public class MemberController {
 		// 구글로부터 받은 임시코드와 나의 정보(client id, client secret) 를 조합하여 구글에게 보내자... (토큰 받으려고)
 		// 이때, 구글과 같은 프로바이더와 데이터를 주고 받기 위해서는 HTTP 통신규약을 지켜서 말을 걸 때는 머리, 몸을 구성하여 요청을 시도해야 함
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<String, String>();	// 몸체
-		param.add("code", code);		// 구글로부터 발급받은 임시코드를 그대로 추
-		param.add("client_id", google.getClientId());		// 클라이언트 아이디 추가
-		param.add("client_secret", google.getClientSecret());		// 클라이언트 시크릿 추가
+		param.add("grant_type", "authorization_code");			// 임시 코드를 이용하여 토큰을 요청하겠다는 것을 명시
+		param.add("code", code);											// 구글로부터 발급받은 임시코드를 그대로 추
+		param.add("client_id", google.getClientId());				// 클라이언트 아이디 추가
+		param.add("client_secret", google.getClientSecret());	// 클라이언트 시크릿 추가
 		param.add("redirect_uri", google.getRedirectUri());		// callback uri
 		
 		HttpHeaders headers = new HttpHeaders();	// 머리
@@ -104,7 +107,15 @@ public class MemberController {
 		// 구글에 요청 시작!!!, 스프링에서는 Http요청 후 그 응답 정보를 java 객체와 자동으로 매핑해주는 편리한 객체를 지원해 주는데,
 		// 그 객체가 바로 RestTemplate (Http 요청 능력 + jackson 능력)
 		//restTemplate.postForEntity("구글의 토큰 발급 주소", "머리와 몸을 합친 요청 객체", "결과를 받을 클래스");
-		restTemplate.postForEntity(google.getTokenUrl(), request, null);
+		ResponseEntity<OAuthTokenResponse> response = restTemplate.postForEntity(google.getTokenUrl(), request, OAuthTokenResponse.class);
+		log.debug("구글로부터 받은 응답 정보는 {}", response.getBody());
+		
+		// 얻어진 토큰으로 구글에 회원정보를 요청해보기
+		OAuthTokenResponse responseBody= response.getBody();
+		String access_token = responseBody.getAccess_token();
+		
+		log.debug("구글로부터 받은 엑세스 토큰은 {}", access_token);
+		
 		
 		return null;
 	}
