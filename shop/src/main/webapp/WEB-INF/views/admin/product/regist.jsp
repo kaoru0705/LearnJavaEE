@@ -62,65 +62,65 @@
 						
 						<div class="form-group row">
 							<div class="col-md-6">
-		                        <select class="form-control" name="topcategory"></select>
-	                      	</div>
-	                      	
+								<select class="form-control" name="topcategory"></select>
+						    </div>
+						                 	
 							<div class="col-md-6">
-		                        <select class="form-control" name="subcategory"></select>
-	                      	</div>
+								<select class="form-control" name="subcategory"></select>
+						    </div>
 						</div>	                      		
                       							
-	                  <div class="form-group">
-	                    <input type="text" class="form-control"  name="product_name" placeholder="상품명 ">
-	                  </div>
-	                  
-	                  <div class="form-group">
-	                    <input type="text" class="form-control"  name="brand" placeholder="브랜드 ">
-	                  </div>
-	                  
-	                  <div class="form-group">
-	                    <input type="number" class="form-control"  name="price" placeholder="가격(숫자로 입력) ">
-	                  </div>
-	                  
-	                  <div class="form-group">
-	                    <input type="number" class="form-control"  name="discount" placeholder="할인가(숫자로 입력) ">
-	                  </div>
-	                  
-					<div class="form-group row">
-						<div class="col-md-6">
-							<select multiple class="form-control" name="color"></select>
+						<div class="form-group">
+						  <input type="text" class="form-control"  name="product_name" placeholder="상품명 ">
 						</div>
-						                	
-						<div class="col-md-6">
-							<select multiple class="form-control" name="size"></select>
+						
+						<div class="form-group">
+						  <input type="text" class="form-control"  name="brand" placeholder="브랜드 ">
 						</div>
-					</div>
-	                  
-	                  <div class="form-group">
-	                    <input type="text" class="form-control"  name="introduce" placeholder="간단소개">
-	                  </div>
-	                  
-	                  <div class="form-group">
-	                    <textarea id="summernote" class="form-control"  name="detail" placeholder="간단소개"></textarea>
-	                  </div>
-
-	                  
-	                  <div class="form-group">
-	                    <label for="exampleInputFile">File input</label>
-	                    <div class="input-group">
-	                      <div class="custom-file">
-	                        <input type="file" class="custom-file-input" id="product-img" multiple>
-	                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-	                      </div>
-	                      <div class="input-group-append">
-	                        <span class="input-group-text">Upload</span>
-	                      </div>
-	                    </div>
-	                  </div>
-	                  
-	                  <div class="form-group row">
-	                  	<div class="col-md-12" id="product-preview"></div>
-	                  </div>
+						
+						<div class="form-group">
+						  <input type="number" class="form-control"  name="price" placeholder="가격(숫자로 입력) ">
+						</div>
+						
+						<div class="form-group">
+						  <input type="number" class="form-control"  name="discount" placeholder="할인가(숫자로 입력) ">
+						</div>
+						              
+						<div class="form-group row">
+							<div class="col-md-6">
+								<select multiple class="form-control" name="color"></select>
+							</div>
+							                	
+							<div class="col-md-6">
+								<select multiple class="form-control" name="size"></select>
+							</div>
+						</div>
+						              
+						<div class="form-group">
+						  <input type="text" class="form-control"  name="introduce" placeholder="간단소개">
+						</div>
+						
+						<div class="form-group">
+						  <textarea id="summernote" class="form-control"  name="detail" placeholder="간단소개"></textarea>
+						</div>
+						
+						
+						<div class="form-group">
+						  <label for="exampleInputFile">File input</label>
+						  <div class="input-group">
+						    <div class="custom-file">
+						      <input type="file" class="custom-file-input" id="product-img" multiple>
+						      <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+						    </div>
+						    <div class="input-group-append">
+						      <span class="input-group-text">Upload</span>
+						    </div>
+						  </div>
+						</div>
+						
+						<div class="form-group row">
+							<div class="col-md-12" id="product-preview"></div>
+						</div>
 	                  
 	           
 	                </div>
