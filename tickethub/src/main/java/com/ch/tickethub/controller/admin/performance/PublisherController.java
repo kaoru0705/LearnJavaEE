@@ -14,17 +14,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ch.tickethub.dto.Place;
-import com.ch.tickethub.exception.PersonException;
-import com.ch.tickethub.exception.PlaceException;
+import com.ch.tickethub.dto.Publisher;
 import com.ch.tickethub.exception.PublisherException;
-import com.ch.tickethub.exception.UploadException;
-import com.ch.tickethub.model.person.PersonService;
-import com.ch.tickethub.model.place.PlaceService;
+import com.ch.tickethub.model.publisher.PublisherService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PublisherController {
 	
 	@Autowired
-	PlaceService placeService;
+	PublisherService publisherService;
 
 	@GetMapping("/performance/publisher")
 	public String person() {
@@ -52,18 +46,16 @@ public class PublisherController {
 	@ResponseBody
 	/* 복잡한 List는 그냥 @RequestBody JSON이 GOAT
 	 *  */
-	public Map<String, String> regist(@RequestBody List<Place> placeList) {
+	public Map<String, String> regist(@RequestBody List<Publisher> publisherList) {
 		
-		for(Place place : placeList) {
-			log.debug("공연장소이름 " + place.getPlace_name());
-			log.debug("주소 " + place.getAddress());
-			log.debug("위도 " + place.getLatitude());
-			log.debug("경도  " + place.getLongitude());
+		for(Publisher publisher : publisherList) {
+			log.debug("주최/기획 " + publisher.getPublisher_name());
+			log.debug("전화번호 " + publisher.getPublisher_phone());
 		}
 
 		
 		try {
-			placeService.regist(placeList);
+			publisherService.regist(publisherList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

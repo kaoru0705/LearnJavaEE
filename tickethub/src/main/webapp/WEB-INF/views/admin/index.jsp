@@ -681,6 +681,21 @@
 					}
 				});
 			});
+			
+			// 주최/기획 관리 클릭 이벤트
+			$($(".performance .nav-item")[3]).click(function(e){
+				e.preventDefault();
+				
+				
+				$.ajax({
+					url:"/admin/performance/work",
+					method:"GET",
+					success:function(result){
+						console.log("작품 관리 클릭됨!!");
+						$(".content-wrapper").html(result);
+					}
+				});
+			});
 		});
   </script>
 </body>

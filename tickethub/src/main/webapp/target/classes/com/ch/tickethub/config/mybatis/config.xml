@@ -4,12 +4,10 @@
 	<typeAliases>
 		<typeAlias type = "com.ch.tickethub.dto.Person" alias = "Person"/>
 		<typeAlias type = "com.ch.tickethub.dto.Place" alias = "Place"/>
-		<typeAlias type = "com.ch.tickethub.dto.Publisher" alias = "Publisher"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource = "com/ch/tickethub/config/mybatis/PersonMapper.xml"/>
 		<mapper resource = "com/ch/tickethub/config/mybatis/PlaceMapper.xml"/>
-		<mapper resource = "com/ch/tickethub/config/mybatis/PublisherMapper.xml"/>
 	</mappers>
 </configuration>
