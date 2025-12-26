@@ -21,13 +21,13 @@
 		이 시점부터는 개발자가 나서서 수동으로 매핑을 시도할 수 있다..
 	 -->
 	 <resultMap id="productMap" type="Product">
-	 	<id column="product_id" 				property="product_id"/>
-	 	<result column="product_name" 	property="product_name"/>
+	 	<id column="product_id" 			property="product_id"/>
+	 	<result column="product_name" 		property="product_name"/>
 	 	<result column="brand" 				property="brand"/>
 	 	<result column="price" 				property="price"/>
 	 	<result column="discount" 			property="discount"/>
 	 	<result column="introduce" 			property="introduce"/>
-	 	<result column="detail" 				property="detail"/>
+	 	<result column="detail" 			property="detail"/>
 	 	<!--
 	 		다른 테이블의 레코드 1건을 가져오기
 	 		association 이란? 부모의 레코드를 가져오는 기능을 말하며, 자식과 부모의 1:1 관계에서 사용

@@ -75,8 +75,8 @@ public class PlaceController {
 	}
 	
 
-	@GetMapping("/performance/place/list")
-	public String getListForm() {
+	@GetMapping("/performance/place/listpage")
+	public String getListPage() {
 		
 		return "admin/performance/place/list";
 	}

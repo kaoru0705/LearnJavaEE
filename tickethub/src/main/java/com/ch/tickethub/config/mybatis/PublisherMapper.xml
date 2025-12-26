@@ -5,9 +5,21 @@
 		insert into publisher(publisher_name, publisher_phone)
 		values(#{publisher_name}, #{publisher_phone})
 	</insert>
+	
 	<select id="selectAll" resultType="Publisher">
-		select publisher_name, publisher_phone from publisher
+		select publisher_id, publisher_name, publisher_phone from publisher
 		order by publisher_id desc
+	</select>
+	
+	<select id="selectByContainedName" parameterType="String" resultType="Publisher">
+		select publisher_id, publisher_name, publisher_phone from publisher
+		where publisher_name like concat('%', #{name}, '%')
+		order by publisher_id desc
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Publisher">
+		select publisher_id, publisher_name, publisher_phone from publisher
+		where publisher_id = #{publisher_id}
 	</select>
 	
 </mapper>

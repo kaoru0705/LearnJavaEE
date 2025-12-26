@@ -23,4 +23,9 @@ public class PublisherServiceImpl implements PublisherService{
 			publisherDAO.insert(publisher);			
 		}
 	}
+
+	@Override
+	public List getList() {
+		return publisherDAO.selectAll();
+	}
 }

@@ -68,11 +68,19 @@ public class PublisherController {
 	}
 	
 
-	@GetMapping("/performance/publisher/list")
-	public String getListForm() {
+	@GetMapping("/performance/publisher/listpage")
+	public String getListPage() {
 		
 		return "admin/performance/publisher/list";
 	}
+	
+	@GetMapping("/performance/publisher/list")
+	@ResponseBody
+	public List<Publisher> getList() {
+	
+		return publisherService.getList();
+	}
+	
 	
 	@ExceptionHandler({PublisherException.class, MissingServletRequestParameterException.class})
 	@ResponseBody

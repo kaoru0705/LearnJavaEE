@@ -46,11 +46,13 @@
 		function previewImage(file, row) {
 		    const reader = new FileReader();
 		    
+			// 기존 이미지 있으면 제거 자손 중에서 찾는 method인 find()
+	        row.find("img").remove();
+			
 	        const previewContainer = row.find(".preview-box");
 	        if(!file) return;
 	        
 		    reader.onload = function (e) {
-		        // 기존 이미지 있으면 제거 자손 중에서 찾는 method인 find()
 	
 		        const img = $("<img>")
 		            .attr("src", e.target.result)

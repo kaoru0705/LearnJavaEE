@@ -33,3 +33,5 @@
 <script src="/static/adminlte/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/static/adminlte/dist/js/pages/dashboard.js"></script>
+<!-- select2를 사용하기 위해서는 추가해야 됨. -->
+<script src="/static/adminlte/plugins/select2/js/select2.full.min.js"></script>

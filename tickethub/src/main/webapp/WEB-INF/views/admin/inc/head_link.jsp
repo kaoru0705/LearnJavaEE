@@ -19,3 +19,7 @@
   <link rel="stylesheet" href="/static/adminlte/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/static/adminlte/plugins/summernote/summernote-bs4.min.css">
+  
+  	<!-- select2를 사용하기 위해 추가함 -->
+  	<link rel="stylesheet" href="/static/adminlte/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="/static/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
