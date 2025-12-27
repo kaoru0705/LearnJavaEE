@@ -696,6 +696,21 @@
 					}
 				});
 			});
+			
+			// 주최/기획 관리 클릭 이벤트
+			$($(".performance .nav-item")[4]).click(function(e){
+				e.preventDefault();
+				
+				
+				$.ajax({
+					url:"/admin/performance/round",
+					method:"GET",
+					success:function(result){
+						console.log("회차 관리 클릭됨!!");
+						$(".content-wrapper").html(result);
+					}
+				});
+			});
 		});
   </script>
 </body>

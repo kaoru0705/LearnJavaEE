@@ -44,19 +44,19 @@ public class WorkController {
 	@ResponseBody
 	public Map<String, String> regist(Work work, MultipartFile work_poster_img, MultipartFile work_content_img){
 
-		log.debug("work_title " + work.getWork_title());
-		log.debug("director " + work.getDirector());
-		log.debug("age_limit " + work.getAge_limit());
-		log.debug("work_price " + work.getWork_price());
-		log.debug("running_time " + work.getRunning_time());
-		log.debug("work_type " + work.getWork_type());
-		log.debug("ticket_start_date " + work.getTicket_start_date());
-		log.debug("work_start_date " + work.getWork_start_date());
-		log.debug("work_end_date " + work.getWork_end_date());
-		log.debug("장르는 " + work.getGenre().getGenre_id());
-		log.debug("주최/기획은 " + work.getPublisher().getPublisher_id());
-		log.debug("포스터 이미지는 " + work_poster_img.getOriginalFilename());
-		log.debug("내용 이미지는 " + work_content_img.getOriginalFilename());
+//		log.debug("work_title " + work.getWork_title());
+//		log.debug("director " + work.getDirector());
+//		log.debug("age_limit " + work.getAge_limit());
+//		log.debug("work_price " + work.getWork_price());
+//		log.debug("running_time " + work.getRunning_time());
+//		log.debug("work_type " + work.getWork_type());
+//		log.debug("ticket_start_date " + work.getTicket_start_date());
+//		log.debug("work_start_date " + work.getWork_start_date());
+//		log.debug("work_end_date " + work.getWork_end_date());
+//		log.debug("장르는 " + work.getGenre().getGenre_id());
+//		log.debug("주최/기획은 " + work.getPublisher().getPublisher_id());
+//		log.debug("포스터 이미지는 " + work_poster_img.getOriginalFilename());
+//		log.debug("내용 이미지는 " + work_content_img.getOriginalFilename());
 		
 		try {
 			workService.regist(work, work_poster_img, work_content_img);
