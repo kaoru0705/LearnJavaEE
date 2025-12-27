@@ -18,6 +18,7 @@
 		        const latitude = parseFloat($(this).find("input[name='latitude']").val());
 		        const longitude = parseFloat($(this).find("input[name='longitude']").val());
 				
+		        // 빈 문자열은 falsy 취급
 		        if(!placeName || !address || isNaN(latitude) || isNaN(longitude)){
 		        	return;
 		        }

@@ -27,7 +27,6 @@
 		<result column="ticket_start_date"	property="ticket_start_date"/>	
 		<result column="work_start_date"	property="work_start_date"/>
 		<result column="work_end_date"		property="work_end_date"/>
-		<result column="is_cancelled"		property="is_cancelled"/>
 		<result column="work_type"			property="work_type"/>
 		
 	 	<association column="genre_id" property="genre"  javaType="Genre"
@@ -43,7 +42,7 @@
 		, DATE_FORMAT(ticket_start_date, '%Y-%m-%d %H:%i') as ticket_start_date
 		, DATE_FORMAT(work_start_date, '%Y-%m-%d') as work_start_date
 		, DATE_FORMAT(work_end_date, '%Y-%m-%d') as work_end_date
-		, work_type, is_cancelled
+		, work_type
 		, genre_id, publisher_id
 		from work
 	</select>

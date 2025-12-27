@@ -282,7 +282,7 @@
 													
 			
 			// 사용자가 선택한 이미지가 배열만큼 formData에 추가하기
-			for(let i = 0; i < selectedFile.length; i++){
+			for(let i = 0; i < selectedFile.length; i++){n
 				formData.append("photo", selectedFile[i] );
 			}
 			formData.append("subCategory.subcategory_id", $("select[name='subcategory']").val());

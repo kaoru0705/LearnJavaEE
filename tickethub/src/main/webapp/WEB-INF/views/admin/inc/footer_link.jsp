@@ -19,7 +19,9 @@
 <!-- jQuery Knob Chart -->
 <script src="/static/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
-<script src="/static/adminlte/plugins/moment/moment.min.js"></script>
+<!-- timepicker 내가 추가함 대신 moment.min.js를 주석처리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+<!-- <script src="/static/adminlte/plugins/moment/moment.min.js"></script> -->
 <script src="/static/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="/static/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -33,5 +35,6 @@
 <script src="/static/adminlte/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/static/adminlte/dist/js/pages/dashboard.js"></script>
+
 <!-- select2를 사용하기 위해서는 추가해야 됨. -->
 <script src="/static/adminlte/plugins/select2/js/select2.full.min.js"></script>

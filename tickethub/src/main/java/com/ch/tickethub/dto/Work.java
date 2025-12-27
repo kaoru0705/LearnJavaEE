@@ -19,7 +19,6 @@ public class Work {
 	private String work_end_date; 		// yyyy-MM-dd
 	
 	private String work_type;				// round(회차) period(상시)
-	private Boolean is_cancelled;
 	
 	private Genre genre;
 	private Publisher publisher;

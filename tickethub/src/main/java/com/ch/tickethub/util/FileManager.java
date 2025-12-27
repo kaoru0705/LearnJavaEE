@@ -30,7 +30,7 @@ public class FileManager {
 		// 모든 프로그래밍 언어에서는 디렉토리도 파일로 취급된다...
 		File file = new File(path);
 		
-		if(!file.mkdir()) {
+		if(!file.mkdirs()) {
 			throw new DirectoryException("디렉토리 생성 실패");
 		}
 	}
@@ -56,7 +56,7 @@ public class FileManager {
 		// 임시 디렉토리 또는 메모리상의 파일정보를 이용하여, 실제 디스크에 저장
 		try {
 			mf.transferTo(file);
-			Thread.sleep(10);	// 일부러 시간을 지연시킨다.. 이유? 파일명을 생성하는 밀리세컨드보다 업로드 처리가 더 빠르면, 파일명의 중복
+			//Thread.sleep(10);	// 일부러 시간을 지연시킨다.. 이유? 파일명을 생성하는 밀리세컨드보다 업로드 처리가 더 빠르면, 파일명의 중복 난 UUID 쓸 거라 상관 없다.
 		} catch(Exception e) {
 			throw new UploadException("file 저장 실패", e);
 		}
