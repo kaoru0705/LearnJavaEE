@@ -81,6 +81,12 @@ public class PlaceController {
 		return "admin/performance/place/list";
 	}
 	
+	@GetMapping("/performance/place/list")
+	@ResponseBody
+	public List<Place> getList(){
+		return placeService.getList();
+	}
+	
 	@ExceptionHandler({PlaceException.class, MissingServletRequestParameterException.class})
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> handle(Exception e){

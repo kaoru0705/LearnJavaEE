@@ -25,4 +25,10 @@ public class PlaceServiceImpl implements PlaceService{
 		
 	}
 
+
+	@Override
+	public List getList() {
+		return placeDAO.selectAll();
+	}
+
 }

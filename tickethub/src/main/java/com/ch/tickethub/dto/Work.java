@@ -1,5 +1,7 @@
 package com.ch.tickethub.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -22,5 +24,7 @@ public class Work {
 	
 	private Genre genre;
 	private Publisher publisher;
+	
+	private List<Round> roundList;
 	
 }

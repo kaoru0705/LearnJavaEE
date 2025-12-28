@@ -1,5 +1,7 @@
 package com.ch.tickethub.model.place;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,6 +24,11 @@ public class MybatisPlaceDAO implements PlaceDAO{
 			throw new PlaceException("장소 등록 실패", e);
 		}
 		
+	}
+
+	@Override
+	public List selectAll() {
+		return sqlSessionTemplate.selectList("Place.selectAll");
 	}
 
 }

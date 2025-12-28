@@ -84,6 +84,7 @@
 	                      <th>브랜드</th>
 	                      <th>가격</th>
 	                      <th>할인가</th>
+	                      <!-- <th>상품이미지가 가진 상품 </th> 이런 건 null 읽어오지 않았다 읽어도 순환구조로 모순-->
 	                    </tr>
 	                  </thead>
 	                  <tbody>
@@ -103,6 +104,7 @@
 	                      <td><%=product.getBrand() %></td>
 	                      <td><%=product.getPrice() %></td>
 	                      <td><%=product.getDiscount() %></td>
+	                      <!-- <td><%-- <%=productImg.getProduct().getProduct_id() %> --%></td> -->
 	                    </tr>
 	                    <%} %>
 	                  </tbody>

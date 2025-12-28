@@ -7,6 +7,7 @@
 		<typeAlias type = "com.ch.tickethub.dto.Publisher" alias = "Publisher"/>
 		<typeAlias type = "com.ch.tickethub.dto.Work" alias = "Work"/>
 		<typeAlias type = "com.ch.tickethub.dto.Genre" alias = "Genre"/>
+		<typeAlias type = "com.ch.tickethub.dto.Round" alias = "Round"/>
 	</typeAliases>
 
 	<mappers>
@@ -15,5 +16,7 @@
 		<mapper resource = "com/ch/tickethub/config/mybatis/PublisherMapper.xml"/>
 		<mapper resource = "com/ch/tickethub/config/mybatis/WorkMapper.xml"/>
 		<mapper resource = "com/ch/tickethub/config/mybatis/GenreMapper.xml"/>
+		<mapper resource = "com/ch/tickethub/config/mybatis/RoundMapper.xml"/>
 	</mappers>
+	
 </configuration>

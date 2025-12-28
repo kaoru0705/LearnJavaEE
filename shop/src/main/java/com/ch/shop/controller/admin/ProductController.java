@@ -72,6 +72,7 @@ public class ProductController {
 		log.debug("브랜드 " + product.getBrand());
 		log.debug("가격 " + product.getPrice());
 		log.debug("할인가격 " + product.getDiscount());
+		log.debug("넘겨받은 첫 번째 사진 " + product.getPhoto()[0].getOriginalFilename());
 		
 		List colorList = new ArrayList();
 		

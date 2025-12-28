@@ -1,6 +1,7 @@
 package com.ch.tickethub.controller.admin.performance;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,13 @@ public class WorkController {
 	public String getListPage() {
 		
 		return "admin/performance/work/list";
+	}
+	
+	@GetMapping("/performance/work/list")
+	@ResponseBody
+	public List<Work> getList(){
+		
+		return workService.getList(); 
 	}
 	
 	// MissingServletRequestParameterException.class 값을 제대로 입력 받지 못했을 때의 에러. 난 이것도 처리했다.

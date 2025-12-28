@@ -34,6 +34,13 @@
 
 	 	<association column="publisher_id" property="publisher"  javaType="Publisher"
 	 	select = "Publisher.select"/>
+	 	
+	 	<collection column="work_id"
+	 		select="Round.selectByWorkId"
+	 		property="roundList"
+	 		javaType="java.util.List"
+	 		ofType="Round"
+	 	/>
 	</resultMap>
 	
 	<select id="selectAll" resultMap="workMap">
