@@ -119,8 +119,8 @@ insert into provider(provider_name) values('naver');
 insert into provider(provider_name) values('kakao');
 insert into provider(provider_name) values('homepage');
 
-#now()와 같은 CURRENT_TIMESTAMP
-#, updated timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP 업데이트되면 현재시간으로 바뀜
+# now()와 같은 CURRENT_TIMESTAMP
+# , updated timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP 업데이트되면 현재시간으로 바뀜
 
 create table member(
 	member_id int primary key auto_increment

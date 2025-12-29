@@ -316,9 +316,10 @@ public class MemberController {
 		 log.debug("카카오 프로필 닉네임 = {}", kakaoAccount.getProfile().getNickname());
 		 
 		 Member member = new Member(); // empty
-		 member.setName(kakaoAccount.getProfile().getNickname());
 		 
 		 Provider provider = providerService.selectByName(client.getProvider());
+		 member.setProvider_userid(String.valueOf(kakaoUserResponse.getId()));
+		 member.setName(kakaoAccount.getProfile().getNickname());
 		 member.setProvider(provider);
 		 memberService.registOrUpdate(member);
 		 

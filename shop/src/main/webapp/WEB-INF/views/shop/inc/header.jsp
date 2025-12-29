@@ -40,8 +40,8 @@
                             <a href="/member/loginform">Register</a>
                             <%}else{ %>
                             <a href="/member/loginform">MyPage</a>
-                            <a href="/member/loginform"><%Member member = (Member)session.getAttribute("member");%></a>
-                            <a href="#"><%=member.getName() %></a>
+                            <%Member member = (Member)session.getAttribute("member");%>
+                            <a href="/member/loginform"><%=member.getName() %></a>
                             <%} %>
                         </div>
                         <ul class="header__right__widget">
