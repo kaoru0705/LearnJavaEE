@@ -1,0 +1,17 @@
+package com.ch.shop.dto;
+
+import lombok.Data;
+
+/*
+ {
+ 	"resultcode": "00",
+ 	"message": "success",
+ 	"resposne":NaverUser 객체
+ }
+ */
+@Data
+public class NaverUserResponse {
+	private String resultcode;
+	private String message;
+	private NaverUser response;
+}

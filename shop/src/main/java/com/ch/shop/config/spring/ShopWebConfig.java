@@ -45,6 +45,32 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	public String googleClientSecret(JndiTemplate jndiTemplate) throws Exception{
 		return (String)jndiTemplate.lookup("java:comp/env/google/client/secret");
 	}
+
+	/*-------------------------------------------------------------------------------
+	  Naver
+	 --------------------------------------------------------------------------------- */
+	@Bean
+	public String naverClientId(JndiTemplate jndiTemplate) throws Exception{
+		return (String)jndiTemplate.lookup("java:comp/env/naver/client/id");
+	}
+	
+	@Bean
+	public String naverClientSecret(JndiTemplate jndiTemplate) throws Exception{
+		return (String)jndiTemplate.lookup("java:comp/env/naver/client/secret");
+	}
+
+	/*-------------------------------------------------------------------------------
+	  Kakao
+	 --------------------------------------------------------------------------------- */
+	@Bean
+	public String kakaoClientId(JndiTemplate jndiTemplate) throws Exception{
+		return (String)jndiTemplate.lookup("java:comp/env/kakao/client/id");
+	}
+	
+	@Bean
+	public String kakaoClientSecret(JndiTemplate jndiTemplate) throws Exception{
+		return (String)jndiTemplate.lookup("java:comp/env/kakao/client/secret");
+	}
 	
 	/*
 	 * OAuth 로그인 시 사용되는 환경 변수(요청주소, 콜백주소.. 등등)는 객체로 담아서 관리하면 유지하기 좋다.
@@ -53,8 +79,11 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public Map<String, OAuthClient> oauthClients(
 				@Qualifier("googleClientId") String googleClientId,
-				@Qualifier("googleClientSecret") String googleClientSecret
-		
+				@Qualifier("googleClientSecret") String googleClientSecret,
+				@Qualifier("naverClientId") String naverClientId,
+				@Qualifier("naverClientSecret") String naverClientSecret,
+				@Qualifier("kakaoClientId") String kakaoClientId,
+				@Qualifier("kakaoClientSecret") String kakaoClientSecret
 			){
 		
 		// 구글, 네이버, 카카오를 각각 OAuthClient 인스턴스 담은 후, 다시 Map에 모아두자
@@ -65,19 +94,39 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 		google.setProvider("google");
 		google.setClientId(googleClientId);
 		google.setClientSecret(googleClientSecret);
-		google.setAuthorizeUrl("https://accounts.google.com/o/oauth2/v2/auth");		// gogle api 문서에 나와있다.
+		google.setAuthorizeUrl("https://accounts.google.com/o/oauth2/v2/auth");		// google api 문서에 나와있다.
 		google.setTokenUrl("https://oauth2.googleapis.com/token");		// 토큰을 요청할 주소
 		google.setUserInfoUrl("https://openidconnect.googleapis.com/v1/userinfo");
-		google.setScope("openid email profile");		// 사용자에 대한 정보의 접근 범위
-		google.setRedirectUri("http://localhost:8888/login/callback/google");
+		google.setScope("name email profile");		// 사용자에 대한 정보의 접근 범위
+		google.setRedirectUri("http://localhost:8888/login/callback/naver");
 		
 		map.put("google", google);
 		
 		// 네이버 등록
+		OAuthClient naver = new OAuthClient();
+		naver.setProvider("naver");
+		naver.setClientId(naverClientId);
+		naver.setClientSecret(naverClientSecret);
+		naver.setAuthorizeUrl("https://nid.naver.com/oauth2.0/authorize");
+		naver.setTokenUrl("https://nid.naver.com/oauth2.0/token");		// 토큰을 요청할 주소
+		naver.setUserInfoUrl("https://openapi.naver.com/v1/nid/me");
+		naver.setScope("name email");		// 사용자에 대한 정보의 접근 범위
+		naver.setRedirectUri("http://localhost:8888/login/callback/naver");
 		
+		map.put("naver", naver);
 		
 		// 카카오 등록
+		OAuthClient kakao = new OAuthClient();
+		kakao.setProvider("kakao");
+		kakao.setClientId(kakaoClientId);
+		kakao.setClientSecret(kakaoClientSecret);
+		kakao.setAuthorizeUrl("https://kauth.kakao.com/oauth/authorize");
+		kakao.setTokenUrl("https://kauth.kakao.com/oauth/token");
+		kakao.setUserInfoUrl("https://kapi.kakao.com/v2/user/me");
+		kakao.setScope("profile_nickname");		// 사용자에 대한 정보의 접근 범위
+		kakao.setRedirectUri("http://localhost:8888/login/callback/kakao");
 		
+		map.put("kakao", kakao);
 		
 		return map;
 	}
