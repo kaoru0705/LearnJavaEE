@@ -7,7 +7,7 @@
 		values(#{round_date}, #{round_start_time}, #{work.work_id}, #{place.place_id})
 	</insert>
 	
-	<select id="selectByWorkId" parameterType="int">
+	<select id="selectByWorkId" parameterType="int" resultType="Round">
 		select * from round where work_id = #{work_id}
 	</select>
 	
