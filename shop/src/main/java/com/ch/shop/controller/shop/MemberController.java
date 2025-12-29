@@ -57,7 +57,8 @@ public class MemberController {
 	@ResponseBody //이 어노테이션을 설정하면, DispatcherServlet은 jsp 와의 매핑을 시도하지 않고 반환값 그대로 응답정보로 보낸다.
 	public String getAuthUrl(@PathVariable("provider") String provider) throws Exception{
 		OAuthClient oAuthClient=oauthClients.get(provider);
-		log.debug(provider+"의 로그인 요청 url은 " +oAuthClient.getAuthorizeUrl());
+		
+		log.debug(provider+"의 로그인 요청 url은 {}", oAuthClient.getAuthorizeUrl());
 		
 		// 이 주소를 이용하여 , 브라우저 사용자는 프로바이더에게 로그인을 요청해야 하는데 이때 요청 파라미터를 갖추어야 
 		// 로그인 절차가 성공할수 있다.
@@ -81,7 +82,7 @@ public class MemberController {
 	 개발자가 등록해놓은 callback 주소로 임시코드(Authorize code)를 발급한다.
 	  -----------------------------------------------------------*/
 	@GetMapping("/login/callback/google")
-	public String handleCallback(String code) {
+	public String handleGoogleCallback(String code) {
 		/*----------------------------------------------------------
 		 구글이 보내온 인증 코드를 이용하여, 나의 clientId, client Secret을 조합하여, token을 요청하자!
 		 결국 개발자가 원하는 것은 사용자의 정보이므로, 이 정보를 얻기 위해서는 토큰이 필요하므로...
