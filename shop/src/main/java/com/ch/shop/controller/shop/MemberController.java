@@ -4,6 +4,8 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -91,7 +93,7 @@ public class MemberController {
 	 개발자가 등록해놓은 callback 주소로 임시코드(Authorize code)를 발급한다.
 	  -----------------------------------------------------------*/
 	@GetMapping("/login/callback/google")
-	public String handleGoogleCallback(String code) {
+	public String handleGoogleCallback(String code, HttpSession session) {
 		/*----------------------------------------------------------
 		 구글이 보내온 인증 코드를 이용하여, 나의 clientId, client Secret을 조합하여, token을 요청하자!
 		 결국 개발자가 원하는 것은 사용자의 정보이므로, 이 정보를 얻기 위해서는 토큰이 필요하므로...
@@ -157,6 +159,17 @@ public class MemberController {
 		member.setProvider(provider);
 		memberService.registOrUpdate(member);
 		
-		return null;
+		//List topList=topCategoryService.getList();
+		//model.addAttribute("topList", topList);
+		//return "shop/index";		// 뻘 짓이다.
+		
+		// 로그인에 성공하면, 브라우저를 종료할 때까지는 자신의 정보를 접근할 수 있는 혜택을 부여해야 하므로,
+		// 세션의 회원 정보를 담아둬야 한다...
+		// jsp의 내장객체 중 세션을 담당하는 내장객체명은 session이고, 서블릿에서 자료형은 HttpSession이다.
+		// jsp의 내장객체 중 요청정보를 담당하는 내장객체명은 request이고, 서블릿에서 자료형은 HttpServletRequest이다.
+		
+		session.setAttribute("member", member);
+		
+		return "redirect:/";		// 회원 로그인이 처리되면, 쇼핑몰의 메인으로 보내기
 	}
 }

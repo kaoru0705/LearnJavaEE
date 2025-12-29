@@ -29,7 +29,12 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = {"com.ch.shop.model", "com.ch.shop.util"})
 @EnableTransactionManagement
 public class RootConfig extends WebMvcConfigurerAdapter{
-
+	/*context.xml 등에 명시된 외부 자원을 JNDI 방식으로 읽어들일 수 있는 스프링의 객체*/ 
+	@Bean
+	public JndiTemplate jndiTemplate() {
+		return new JndiTemplate();
+	}
+	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver rv = new InternalResourceViewResolver();
@@ -75,8 +80,21 @@ public class RootConfig extends WebMvcConfigurerAdapter{
 		return sqlSessionFactoryBean.getObject();
 	}
 	
+	/*-------------------------------------------
+	  4) SqlSessionTemplat 빈 등록
+	  mybatis 사용 시 쿼리문 수행을 위해서는 SqlSession을 수행
+	 ------------------------------------------*/
+	
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception{
 		return new SqlSessionTemplate(sqlSessionFactory);
+	}
+	
+	/*-------------------------------------------
+	  메일에 사용될 비밀번호를 가진 빈 등록
+	 ------------------------------------------*/
+	@Bean
+	public String emailPassword(JndiTemplate jndiTemplate) throws Exception{
+		return (String)jndiTemplate.lookup("java:comp/env/email/app/password");
 	}
 }

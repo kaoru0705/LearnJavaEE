@@ -14,6 +14,12 @@ public class MybatisMemberDAO implements MemberDAO{
 	SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
+	public Member findByProvider(Member member) {
+		
+		return sqlSessionTemplate.selectOne("Member.findByProvider", member);
+	}
+	
+	@Override
 	public void insert(Member member) throws MemberException{		// 서비스에게 예외 전달
 		try {
 			sqlSessionTemplate.insert("Member.insert", member);
@@ -22,5 +28,18 @@ public class MybatisMemberDAO implements MemberDAO{
 			throw new MemberException("회원 insert 실패", e);
 		}
 	}
+
+	@Override
+	public void update(Member member) throws MemberException{
+		try {
+			sqlSessionTemplate.update("Member.update", member);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			throw new MemberException("회원 정보 수정 실패", e);
+		}
+		
+	}
+
 	
 }
