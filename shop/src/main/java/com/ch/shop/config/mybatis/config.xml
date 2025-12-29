@@ -13,6 +13,8 @@
 		<typeAlias type = "com.ch.shop.dto.ProductColor" alias = "ProductColor"/>
 		<typeAlias type = "com.ch.shop.dto.ProductSize" alias = "ProductSize"/>
 		<typeAlias type = "com.ch.shop.dto.ProductImg" alias = "ProductImg"/>
+		<typeAlias type = "com.ch.shop.dto.Provider" alias = "Provider"/>
+		<typeAlias type = "com.ch.shop.dto.Member" alias = "Member"/>
 		
 	</typeAliases>
 
@@ -39,5 +41,7 @@
 		<mapper resource="com/ch/shop/config/mybatis/ProductColorMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/ProductSizeMapper.xml" />
 		<mapper resource="com/ch/shop/config/mybatis/ProductImgMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/ProviderMapper.xml" />
+		<mapper resource="com/ch/shop/config/mybatis/MemberMapper.xml" />
 	</mappers>
 </configuration>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+	
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="Member">
+		insert into member(home_id, home_pass, provider_userid, name, email, provider_id)
+		values(#{home_id}, #{home_pass}, #{provider_userid}, #{name}, #{email}, #{provider.provider_id})
+	</insert>
+	
+</mapper>

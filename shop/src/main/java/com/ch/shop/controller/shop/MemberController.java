@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.ch.shop.dto.GoogleUser;
+import com.ch.shop.dto.Member;
 import com.ch.shop.dto.OAuthClient;
 import com.ch.shop.dto.OAuthTokenResponse;
+import com.ch.shop.dto.Provider;
+import com.ch.shop.model.member.MemberService;
 import com.ch.shop.model.topcategory.TopCategoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +42,12 @@ public class MemberController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private ProviderService providerService;
 	
 	
 	//회원 로그인폼 요청 처리
@@ -129,6 +138,8 @@ public class MemberController {
 		
 		log.debug("사용자 정보는 {}", userInfoResponse);
 		
+		GoogleUser user = userInfoResponse.getBody();
+		
 		/*----------------------------------------------------------
 		 얻어진 유저 정보를 이용하여 할일
 		 
@@ -136,6 +147,15 @@ public class MemberController {
 		 	있다면 로그인 세션만 부여하고 홈페이지 메인으로 보내기
 		 	없다면? member 테이블에 insert하고 세션부여하고 홈페이지 메인으로 보내기
 		  -----------------------------------------------------------*/
+		Member member = new Member();	// empty
+		member.setProvider_userid(user.getId());
+		member.setName(user.getName());
+		member.setEmail(user.getEmail());
+		
+		// select * from provider where provider_name='google'
+		Provider provider = providerService.selectByName("google");
+		member.setProvider(provider);
+		memberService.registOrUpdate(member);
 		
 		return null;
 	}
