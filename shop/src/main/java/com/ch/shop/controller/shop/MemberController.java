@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.ch.shop.dto.GoogleUser;
+import com.ch.shop.dto.KakaoAccount;
+import com.ch.shop.dto.KakaoUserResponse;
 import com.ch.shop.dto.Member;
 import com.ch.shop.dto.NaverUser;
 import com.ch.shop.dto.NaverUserResponse;
@@ -259,7 +261,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	// 네이버 로그인 요청 처리(콜백 함수 처리)
+	
 	@GetMapping("/login/callback/kakao")
 	public String handleKakaoLogin(String code, HttpSession session) {
 		log.debug("카카오에서 발급한 임시코드는 {}", code);
@@ -299,37 +301,35 @@ public class MemberController {
 		String access_token = responseBody.getAccess_token();
 		log.debug("카카오의 토큰은 {}", access_token);
 
-		/*
-		 * HttpHeaders userInfoHeaders = new HttpHeaders();
-		 * userInfoHeaders.add("Authorization", "Bearer " + access_token);
-		 * 
-		 * HttpEntity<String> userInfoRequest = new HttpEntity<>("", userInfoHeaders);
-		 * // 몸은 비워넣고, 몸과 머리 합쳐 요청 보내기 // GET 방식으로 사용자 정보 요청하기
-		 * //restTemplate.exchange(client.getUserInfoUrl(), HttpMethod.GET,
-		 * userInfoRequest, 매핑될 클래스); ResponseEntity<NaverUserResponse>
-		 * userInfoResponse= restTemplate.exchange(client.getUserInfoUrl(),
-		 * HttpMethod.GET, userInfoRequest, NaverUserResponse.class);
-		 * 
-		 * NaverUserResponse naverUserResponse = userInfoResponse.getBody(); NaverUser
-		 * naverUser = naverUserResponse.getResponse();
-		 * 
-		 * log.debug("고유 id = {}", naverUser.getId()); log.debug("이름 = {}",
-		 * naverUser.getName()); log.debug("email = {}", naverUser.getEmail());
-		 * 
-		 * Member member = new Member(); // empty
-		 * member.setProvider_userid(naverUser.getId());
-		 * member.setName(naverUser.getName()); member.setEmail(naverUser.getEmail());
-		 * 
-		 * // select * from provider where provider_name='naver' Provider provider =
-		 * providerService.selectByName(client.getProvider());
-		 * member.setProvider(provider); memberService.registOrUpdate(member);
-		 * 
-		 * ------------------------------------------------ 3) 로그인 처리 - 최초의 로그인 시도자는
-		 * 회원가입을 처리 - 기존 가입자는, 로그인만 처리 (회원정보 업데이트) - 세션에 회원정보 저장
-		 * ------------------------------------------------
-		 * 
-		 * session.setAttribute("member", member);
+
+		 HttpHeaders userInfoHeaders = new HttpHeaders();
+		 userInfoHeaders.add("Authorization", "Bearer " + access_token);
+		 
+		 HttpEntity<String> userInfoRequest = new HttpEntity<>("", userInfoHeaders);
+		 // 몸은 비워넣고, 몸과 머리 합쳐 요청 보내기 // GET 방식으로 사용자 정보 요청하기
+		 //restTemplate.exchange(client.getUserInfoUrl(), HttpMethod.GET, userInfoRequest, 매핑될 클래스);
+		 ResponseEntity<KakaoUserResponse> userInfoResponse= restTemplate.exchange(client.getUserInfoUrl(), HttpMethod.GET, userInfoRequest, KakaoUserResponse.class);
+		 
+		 KakaoUserResponse kakaoUserResponse = userInfoResponse.getBody();
+		 KakaoAccount kakaoAccount = kakaoUserResponse.getKakao_account();
+		 
+		 log.debug("카카오 프로필 닉네임 = {}", kakaoAccount.getProfile().getNickname());
+		 
+		 Member member = new Member(); // empty
+		 member.setName(kakaoAccount.getProfile().getNickname());
+		 
+		 Provider provider = providerService.selectByName(client.getProvider());
+		 member.setProvider(provider);
+		 memberService.registOrUpdate(member);
+		 
+		 /*
+		  ------------------------------------------------ 
+		 3) 로그인 처리 - 최초의 로그인 시도자는
+		 회원가입을 처리 - 기존 가입자는, 로그인만 처리 (회원정보 업데이트) - 세션에 회원정보 저장
+		  ------------------------------------------------
 		 */
+		 
+		  session.setAttribute("member", member);	
 
 		return "redirect:/";
 	}

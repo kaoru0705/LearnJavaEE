@@ -27,7 +27,9 @@ public class MemberServiceImpl implements MemberService{
 		
 		if(obj == null) {
 			memberDAO.insert(member);		// 회원가입이 안되어 있을 경우만..
-			mailSender.send(member.getEmail(), "패션삽 회원가입을 축하드립니다", "감사합니다.");
+			if(member.getEmail() != null) {
+				mailSender.send(member.getEmail(), "패션삽 회원가입을 축하드립니다", "감사합니다.");				
+			}
 			log.debug("신규 회원 가입 처리");
 			// 이메일 발송 예정 (카카오의 경우만 제외..)
 			
