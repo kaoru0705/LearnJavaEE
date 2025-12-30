@@ -8,15 +8,17 @@
 </head>
 <body>
 	<script>
-		let workList;
+		//let workList;
+		let workMap = {};
 		let currentWork;
+		let roundIdx = 0;
 	
 		// 이 함수는 상위, 하위를 모두 처리해야 하므로, 호출 시 상위를 원하는지, 하위를 원하는지 구분해줘야 한다.
 		function printCategory(title, category, list){
 			let tag = "<option value=''>"+title+"</option>";
 			for(let i = 0; i < list.length; i++){
 				if(category=="work.work_id"){
-					tag += "<option value='"+list[i].work_id+"'>"+list[i].work_title+"("+list[i].running_time+"분)"+"</option>";
+					tag += "<option value='"+list[i].work_id+"'>"+list[i].work_title+"[ 러닝타임: "+list[i].running_time+"분 ]"+"</option>";
 				}else if(category=="place.place_id"){
 					tag += "<option value='"+list[i].place_id+"'>"+list[i].place_name+"</option>";
 				}
@@ -52,7 +54,9 @@
 					// select2는 placeholder를 쓴다. title은 ""
 					printCategory("", "work.work_id", result);
 					
-					workList = result;
+					result.forEach(work=>{
+						workMap[work.work_id] = work;
+					});
 					
 				    // Select2 초기화
 				    $("select[name='work.work_id']").select2({
@@ -79,6 +83,8 @@
 					// select2는 placeholder를 쓴다. title은 ""
 					printCategory("", "place.place_id", result);
 					
+					// workList = result
+					
 				    // Select2 초기화
 				    $("select[name='place.place_id']").select2({
 				        theme: 'bootstrap4',
@@ -95,10 +101,51 @@
 			});
 		}
 
+		function add() {
+		    roundIdx++; // 새로운 회차를 위한 번호 증가
+		    
+		    let row = `
+		        <div class="form-group row">
+		            <div class="col-md-11">
+		                <label>회차 시작 시간</label>
+		                <div class="input-group date" id="round_start_time_` + roundIdx + `" data-target-input="nearest">
+		                    <input type="text" class="form-control datetimepicker-input" 
+		                           data-target="#round_start_time_` + roundIdx + `" name="round_start_time" />
+		                    <div class="input-group-append" data-target="#round_start_time_` + roundIdx + `" data-toggle="datetimepicker">
+		                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-md-1">
+		                <button type="button" class="btn btn-outline-danger remove" style="margin-top: 32px;">X</button>
+		            </div>
+		        </div>
+		    `;
+
+		    $(".card-body").append(row);
+		    
+		    $("#round_start_time_" + roundIdx).datetimepicker({
+		        icons: { time: 'far fa-clock' },
+		        format: 'HH:mm',
+		        locale: 'ko',
+		        ignoreReadonly: true
+		    });
+		}
+
 		$(()=>{
 
 			getWork();
 			getPlace();
+			
+			$("#append").click(()=>{
+				add();
+				
+
+			})
+
+			$(".card-body").on("click", ".remove", function(){
+				$(this).closest(".form-group").remove();
+			})
 			
 			
 			$("#regist").click(()=>{
@@ -108,12 +155,15 @@
 			// 화살표 함수는 자신의 this를 갖지 않고 상위 스코프의 this를 그대로 물러 받는다.
 			// 반면에 일반 함수에서의 this는 함수를 호출한 주체다.
 			$("select[name='work.work_id']").change(function(e) {
-			    for(let work of workList){
+				/*
+				for(let work of workList){
 			    	if(work.work_id == $(this).val()){
 			    		currentWork = work;
 			    		break;
 			    	}
 			    }
+			    */
+			    currentWork = workMap[$(this).val()];
 			    console.log(currentWork);
 			    
 			    $("#round_date").datetimepicker('minDate', currentWork.work_start_date);
@@ -129,44 +179,8 @@
 				locale: 'ko',
 				dayViewHeaderFormat: 'YYYY년 MMMM'
 			})
-
-/* 		    $("#ticket_start_date").datetimepicker({
-		        icons: { time: 'far fa-clock' },
-		        format: 'YYYY-MM-DD HH:mm',
-		        locale: 'ko',
-		        dayViewHeaderFormat: 'YYYY년 MMMM',	// 년 월 순서로
-		        ignoreReadonly: true
-		    });
 			
-		 	// 시작일 초기화
-		    $("#work_start_date").datetimepicker({
-		        format: 'YYYY-MM-DD',
-		        locale: 'ko',
-		        dayViewHeaderFormat: 'YYYY년 MMMM'
-		    });
 
-		    // 종료일 초기화
-		    $("#work_end_date").datetimepicker({
-		        format: 'YYYY-MM-DD',
-		        locale: 'ko',
-		        dayViewHeaderFormat: 'YYYY년 MMMM',
-		        useCurrent: false // 시작일 선택 전까지 자동 선택 방지
-		    });
-
-		    $("#ticket_start_date").on("change.datetimepicker", function (e) {
-		        $("#work_start_date").datetimepicker('minDate', e.date);
-		    });
-
-		    // 시작일이 바뀌면 종료일의 선택 가능 범위를 제한
-		    $("#work_start_date").on("change.datetimepicker", function (e) {
-		        $("#work_end_date").datetimepicker('minDate', e.date);
-		        $("#ticket_start_date").datetimepicker('maxDate', e.date);
-		    });
-
-		    // 종료일이 바뀌면 시작일의 선택 가능 범위를 제한
-		    $("#work_end_date").on("change.datetimepicker", function (e) {
-		        $("#work_start_date").datetimepicker('maxDate', e.date);
-		    }); */
 		})
 	</script>
 	<div class="container-fluid mt-5">
@@ -195,23 +209,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
-								<div class="col-md-11">
-							        <label>회차 시작 시간</label>
-							        <div class="input-group date" id="round_start_time" data-target-input="nearest">
-							            <input type="text" class="form-control datetimepicker-input" data-target="#round_start_time" name="round_start_time" />
-							            <div class="input-group-append" data-target="#round_start_time" data-toggle="datetimepicker">
-							                <div class="input-group-text"><i class="far fa-clock"></i></div>
-							            </div>
-								    </div>
-								</div>
-								<div class="col-md-1">
-									<button type="button" class = "btn btn-outline-danger remove">X</button>
-								</div>
-							</div>
 						</div>
 						<div class="card-footer text-center">
-							<button type="button" id="append" class="btn btn-outline-info">추가하기</button>
+							<button type="button" id="append" class="btn btn-outline-info">시작시간 추가하기</button>
 							<button type="button" id="regist" class="btn btn-success">등록</button>
 						</div>
 					</form>
