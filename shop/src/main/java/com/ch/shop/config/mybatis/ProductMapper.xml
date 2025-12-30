@@ -53,7 +53,7 @@
 	 		ofType="Color"
 	 	/>
 	 	
-	 	<!-- 상품에 소속된 사이즈 가져와서, colorList 속성에 채워넣기 -->
+	 	<!-- 상품에 소속된 사이즈 가져와서, sizeList 속성에 채워넣기 -->
 	 	<collection column="product_id"
 	 		select="Size.selectByProductId"
 	 		property="sizeList"
