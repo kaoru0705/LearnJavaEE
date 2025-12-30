@@ -9,6 +9,7 @@
 <body>
 	<script>
 		let workList;
+		let currentWork;
 	
 		// 이 함수는 상위, 하위를 모두 처리해야 하므로, 호출 시 상위를 원하는지, 하위를 원하는지 구분해줘야 한다.
 		function printCategory(title, category, list){
@@ -104,12 +105,30 @@
 				registForm();
 			});
 			
-			$("select[name='work.work_id']").change();
-			
+			// 화살표 함수는 자신의 this를 갖지 않고 상위 스코프의 this를 그대로 물러 받는다.
+			// 반면에 일반 함수에서의 this는 함수를 호출한 주체다.
+			$("select[name='work.work_id']").change(function(e) {
+			    for(let work of workList){
+			    	if(work.work_id == $(this).val()){
+			    		currentWork = work;
+			    		break;
+			    	}
+			    }
+			    console.log(currentWork);
+			    
+			    $("#round_date").datetimepicker('minDate', currentWork.work_start_date);
+			    $("#round_date").datetimepicker('maxDate', currentWork.work_end_date);
+			});
 			
 			
 			// 한국어 로케일 설정 (moment.js가 로드되어 있어야 함)
 		    moment.locale('ko');
+			
+			$("#round_date").datetimepicker({
+				format: 'YYYY-MM-DD',
+				locale: 'ko',
+				dayViewHeaderFormat: 'YYYY년 MMMM'
+			})
 
 /* 		    $("#ticket_start_date").datetimepicker({
 		        icons: { time: 'far fa-clock' },

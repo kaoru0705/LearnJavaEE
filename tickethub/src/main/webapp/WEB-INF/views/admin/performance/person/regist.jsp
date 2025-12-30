@@ -25,6 +25,13 @@
 		        formData.append("person_name", name);
 	
 		        formData.append("profile_img", file);
+		        
+		        /*
+		        	{
+					    "person_name": ["강동훈1", "강동훈2"],
+					    "profile_img": [File객체1, File객체2]
+					}
+		        */
 		    });
 			
 			console.log(formData);
