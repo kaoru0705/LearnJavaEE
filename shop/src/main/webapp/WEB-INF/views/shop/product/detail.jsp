@@ -1,3 +1,6 @@
+<%@page import="com.ch.shop.dto.Size"%>
+<%@page import="com.ch.shop.dto.Color"%>
+<%@page import="com.ch.shop.dto.ProductImg"%>
 <%@page import="com.ch.shop.util.MoneyConverter"%>
 <%@page import="com.ch.shop.dto.Product"%>
 <%@page import="com.ch.shop.dto.SubCategory"%>
@@ -58,26 +61,34 @@
                 <div class="col-lg-6">
                     <div class="product__details__pic">
                         <div class="product__details__pic__left product__thumb nice-scroll" tabindex="1" style="overflow-y: hidden; outline: none;">
+                        	<%for(ProductImg productImg : product.getProductImgList()){ %>
                             <a class="pt active" href="#product-1">
-                                <img src="img/product/details/thumb-1.jpg" alt="">
+                                <img src="/photo/p<%=product.getProduct_id() %>/<%=productImg.getFilename() %>" alt="">
                             </a>
-                            <a class="pt" href="#product-2">
-                                <img src="img/product/details/thumb-2.jpg" alt="">
-                            </a>
-                            <a class="pt" href="#product-3">
-                                <img src="img/product/details/thumb-3.jpg" alt="">
-                            </a>
-                            <a class="pt" href="#product-4">
-                                <img src="img/product/details/thumb-4.jpg" alt="">
-                            </a>
+							<%} %>
                         </div>
                         <div class="product__details__slider__content">
                             <div class="product__details__pic__slider owl-carousel owl-loaded">
-                                
-                                
-                                
-                                
-                            <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 1324px;"><div class="owl-item active" style="width: 331px;"><img data-hash="product-1" class="product__big__img" src="img/product/details/product-1.jpg" alt=""></div><div class="owl-item" style="width: 331px;"><img data-hash="product-2" class="product__big__img" src="img/product/details/product-3.jpg" alt=""></div><div class="owl-item" style="width: 331px;"><img data-hash="product-3" class="product__big__img" src="img/product/details/product-2.jpg" alt=""></div><div class="owl-item" style="width: 331px;"><img data-hash="product-4" class="product__big__img" src="img/product/details/product-4.jpg" alt=""></div></div></div><div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i class="arrow_carrot-left"></i></button><button type="button" role="presentation" class="owl-next"><i class="arrow_carrot-right"></i></button></div><div class="owl-dots disabled"></div></div>
+	                            <div class="owl-stage-outer">
+		                            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 1324px;">
+		                            	<%for(ProductImg productImg : product.getProductImgList()) {%>
+			                            <div class="owl-item active" style="width: 331px;">
+			                            	<img data-hash="product-1" class="product__big__img" src="/photo/p<%=product.getProduct_id() %>/<%=productImg.getFilename() %>" alt="">
+			                            </div>
+			                            <%} %>
+		                            </div>
+	                            </div>
+	                            <div class="owl-nav">
+		                            <button type="button" role="presentation" class="owl-prev disabled">
+		                            	<i class="arrow_carrot-left"></i>
+		                            </button>
+		                            <button type="button" role="presentation" class="owl-next">
+		                            	<i class="arrow_carrot-right"></i>
+		                            </button>
+	                            </div>
+	                            <div class="owl-dots disabled">
+	                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,39 +134,23 @@
                                 <li>
                                     <span>Available color:</span>
                                     <div class="color__checkbox">
-                                        <label for="red">
-                                            <input type="radio" name="color__radio" id="red" checked="">
+                                    	<%for(Color color : product.getColorList()) {%>
+                                        <label for="<%=color.getColor_name()%>">
+                                            <input type="radio" name="color__radio" id="<%=color.getColor_name() %>" checked="">
                                             <span class="checkmark"></span>
                                         </label>
-                                        <label for="black">
-                                            <input type="radio" name="color__radio" id="black">
-                                            <span class="checkmark black-bg"></span>
-                                        </label>
-                                        <label for="grey">
-                                            <input type="radio" name="color__radio" id="grey">
-                                            <span class="checkmark grey-bg"></span>
-                                        </label>
+                                        <%} %>
                                     </div>
                                 </li>
                                 <li>
                                     <span>Available size:</span>
                                     <div class="size__btn">
-                                        <label for="xs-btn" class="active">
-                                            <input type="radio" id="xs-btn">
-                                            xs
+                                    	<%for(Size size: product.getSizeList()) {%>
+                                        <label for="<%=size.getSize_name() %>-btn" class="active">
+                                            <input type="radio" id="<%=size.getSize_name() %>-btn">
+                                            <%=size.getSize_name() %>
                                         </label>
-                                        <label for="s-btn">
-                                            <input type="radio" id="s-btn">
-                                            s
-                                        </label>
-                                        <label for="m-btn">
-                                            <input type="radio" id="m-btn">
-                                            m
-                                        </label>
-                                        <label for="l-btn">
-                                            <input type="radio" id="l-btn">
-                                            l
-                                        </label>
+                                        <%} %>
                                     </div>
                                 </li>
                                 <li>

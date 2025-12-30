@@ -44,6 +44,23 @@
 	 		javaType="java.util.List"
 	 		ofType="ProductImg"	
 	 	/>
+	 	
+	 	<!-- 상품에 소속된 색상 가져와서, colorList 속성에 채워넣기 -->
+	 	<collection column="product_id"
+	 		select="Color.selectByProductId"
+	 		property="colorList"
+	 		javaType="java.util.List"
+	 		ofType="Color"
+	 	/>
+	 	
+	 	<!-- 상품에 소속된 사이즈 가져와서, colorList 속성에 채워넣기 -->
+	 	<collection column="product_id"
+	 		select="Size.selectByProductId"
+	 		property="sizeList"
+	 		javaType="java.util.List"
+	 		ofType="Size"
+	 	/>
+	 	
 	 </resultMap>
 	
 	<!-- 공통 쿼리를 정의 -->
