@@ -1,6 +1,7 @@
 package com.ch.tickethub.controller.admin.performance;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ch.tickethub.dto.Work;
+import com.ch.tickethub.dto.Round;
 import com.ch.tickethub.exception.RoundException;
 import com.ch.tickethub.exception.UploadException;
 
@@ -40,8 +41,14 @@ public class RoundController {
 	
 	@PostMapping("/performance/round/regist")
 	@ResponseBody
-	public Map<String, String> regist(Work work, MultipartFile work_poster_img, MultipartFile work_content_img){
-
+	public Map<String, String> regist(Round round, @RequestParam("round_start_time") List<String> roundStartTimeList){
+		log.debug("round_date " + round.getRound_date());
+		log.debug("place_id " + round.getPlace().getPlace_id());
+		log.debug("work_id " + round.getWork().getWork_id());
+		
+		for(String roundStartTime : roundStartTimeList) {
+			log.debug("round_start_time " + roundStartTime);
+		}
 		
 		Map<String, String> body = new HashMap<>();
 		body.put("message", "회차 등록 성공");

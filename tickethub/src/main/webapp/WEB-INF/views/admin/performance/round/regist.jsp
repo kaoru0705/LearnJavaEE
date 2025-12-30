@@ -12,6 +12,7 @@
 		let workMap = {};
 		let currentWork;
 		let roundIdx = 0;
+		
 	
 		// 이 함수는 상위, 하위를 모두 처리해야 하므로, 호출 시 상위를 원하는지, 하위를 원하는지 구분해줘야 한다.
 		function printCategory(title, category, list){
@@ -26,15 +27,89 @@
 			$("select[name='"+category+"']").html(tag);
 		}
 		
+		function validateRoundTimes(){
+			let roundTimes = [];
+			let roundTimeForms = $("input[name='round_start_time']");
+			let runningTime = parseInt(currentWork.running_time);
+			let roundDate = $("input[name='round_date']").val();
+			
+			roundTimeForms.each(function(){
+				roundTimes.push($(this).val());
+			});
+			
+			if(roundTimes.length == 0){
+				alert("round_start_time 0개");
+				return false;
+			}
+			
+			for(let round of currentWork.roundList){
+				if(round.round_date == roundDate){
+					roundTimes.push(round.round_start_time);
+				}
+			}
+			
+			
+			roundTimes.sort();
+			
+			function toMinutes(time){
+				const [h, m] = time.split(":");
+				
+				return parseInt(h) * 60 + parseInt(m);
+			}
+			
+			for(let i = 0; i < roundTimes.length - 1; i++){
+				if(toMinutes(roundTimes[i]) + runningTime >= toMinutes(roundTimes[i+1])){
+					alert(roundTimes[i] + "이 " + roundTimes[i+1] + "과 충돌합니다." );
+					return false;
+				} 
+			}
+			
+			return true;
+		}
+		
 		function registForm(){
+/* 			let roundList = [];
+			let roundTimes = [];
+			
+		    const workId = $("select[name='work.work_id']").val();
+		    const placeId = $("select[name='place.place_id']").val();
+		    const roundDate = $("#round_date input").val();
+		    
+		    roundList.push({
+		    	"work.work_id": workId,
+		    	"place.place_id": placeId,
+		    	round_date: roundDate
+		    });
+		    
+		    console.log(roundList);
+		    
+		    console.log(JSON.stringify(roundList));
+		     */
+		    
+		    
 		    let formData = new FormData(document.getElementById("form"));
 		    
+		    // 입력 걸러 내기
+			for(let[key, value] of formData.entries()){
+				if(!value) {
+					alert(key + " 누락된 입력!");
+					return false;
+				} else{
+					console.log(key + " value = " + value);
+				}
+			}
+		    
+		    if(!validateRoundTimes()){
+		    	return false;	
+		    }
+		    
+		    // send로 보내는 건 동기 방식이므로 formData든 json이든 둘 중 하나를 써야 한다.
 			$.ajax({
 				url: "/admin/performance/round/regist",
 				method: "POST",
-				data: formData,
 				processData: false,
 				contentType: false,
+				data: formData,
 				success:function(result, status, xhr){
 					alert(result.message); 
 				},
