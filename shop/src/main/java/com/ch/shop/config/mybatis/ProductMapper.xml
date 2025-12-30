@@ -73,4 +73,9 @@
 		</where>
 	</select>
 	
+	<!-- 상품 한 건 가져오기 -->
+	<select id="select" parameterType="int" resultMap="productMap">
+		<include refid="sql_select"/>
+		where product_id =#{product_id}
+	</select>
 </mapper>

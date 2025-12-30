@@ -38,4 +38,9 @@ public class MybatisProductDAO implements ProductDAO{
 		return sqlSessionTemplate.selectList("Product.selectBySubCategoryId", subcategory_id);
 	}
 
+	@Override
+	public Product select(int product_id) {
+		return sqlSessionTemplate.selectOne("Product.select", product_id);
+	}
+
 }

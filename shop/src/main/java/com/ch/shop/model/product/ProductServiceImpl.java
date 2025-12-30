@@ -147,4 +147,9 @@ public class ProductServiceImpl implements ProductService{
 		return productDAO.selectBySubCategoryId(subcategory_id);
 	}
 
+	@Override
+	public Product select(int product_id) {
+		return productDAO.select(product_id);
+	}
+
 }
