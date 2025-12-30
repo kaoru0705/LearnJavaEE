@@ -1,4 +1,4 @@
-package com.ch.shop.controller.shop;
+package com.ch.shop.model.member;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ch.shop.dto.Provider;
-import com.ch.shop.model.member.ProviderDAO;
 
 @Service
 public class ProviderServiceImpl implements ProviderService{

@@ -3,9 +3,6 @@
 <%@page import="com.ch.shop.dto.TopCategory" %>
 <!DOCTYPE html>
 <html lang="zxx">
-<%
-	List <TopCategory> topList = (List)request.getAttribute("topList");
-%>
 
 <head>
     <meta charset="UTF-8">

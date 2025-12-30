@@ -142,4 +142,9 @@ public class ProductServiceImpl implements ProductService{
 		return productDAO.selectAll();
 	}
 
+	@Override
+	public List selectBySubCategoryId(int subcategory_id) {
+		return productDAO.selectBySubCategoryId(subcategory_id);
+	}
+
 }

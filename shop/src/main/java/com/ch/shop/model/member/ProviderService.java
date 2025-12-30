@@ -1,4 +1,4 @@
-package com.ch.shop.controller.shop;
+package com.ch.shop.model.member;
 
 import java.util.List;
 

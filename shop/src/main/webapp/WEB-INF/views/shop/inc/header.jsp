@@ -1,7 +1,10 @@
+<%@page import="java.util.List"%>
 <%@page import="com.ch.shop.dto.TopCategory"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.ch.shop.dto.Member" %>
-
+<%
+	List <TopCategory> topList = (List)request.getAttribute("topList");
+%>
     <header class="header">
         <div class="container-fluid">
             <div class="row">
@@ -17,8 +20,7 @@
                             <%for(TopCategory topCategory : topList){ %>
                             	<li><a href="#"><%=topCategory.getTopname()%></a></li>
                             <%} %>
-                            <li><a href="#">Menâs</a></li>
-                            <li><a href="./shop.html">Shop</a></li>
+                            <li><a href="/product/list">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./product-details.html">Product Details</a></li>

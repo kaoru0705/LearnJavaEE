@@ -31,6 +31,7 @@ import com.ch.shop.dto.OAuthClient;
 import com.ch.shop.dto.OAuthTokenResponse;
 import com.ch.shop.dto.Provider;
 import com.ch.shop.model.member.MemberService;
+import com.ch.shop.model.member.ProviderService;
 import com.ch.shop.model.topcategory.TopCategoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class MemberController {
-	@Autowired
-	private TopCategoryService topCategoryService;
+//	@Autowired
+//	private TopCategoryService topCategoryService;
 
 	@Autowired
 	private Map<String, OAuthClient> oauthClients;
@@ -58,10 +59,8 @@ public class MemberController {
 	// 회원 로그인폼 요청 처리
 	@GetMapping("/member/loginform")
 	public String getLoginForm(Model model) {
-		List topList = topCategoryService.getList();// 3단계
-
-		// 4단계 결과 페이지로 가져갈것이 있따.
-		model.addAttribute("topList", topList);
+//		List topList = topCategoryService.getList();// 3단계
+//		model.addAttribute("topList", topList);	// 4단계 결과 페이지로 가져갈것이 있다.
 		return "shop/member/login";
 	}
 
