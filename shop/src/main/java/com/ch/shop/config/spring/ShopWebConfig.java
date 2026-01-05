@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.ch.shop.controller.shop.LoginCheckInterceptor;
 import com.ch.shop.dto.OAuthClient;
 
 
@@ -32,6 +34,33 @@ public class ShopWebConfig extends WebMvcConfigurerAdapter{
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+	
+	/*-------------------------------------------------------------------------------
+	  로그인 체크용 인터셉터 등록
+	 --------------------------------------------------------------------------------- */
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// .addPathPatterns("/**"); 모든 요청을 관여하겠다.
+		registry.addInterceptor(new LoginCheckInterceptor())
+			.addPathPatterns("/**")
+			// 로그인 체크 제외될 명단
+			.excludePathPatterns(
+					"/",
+					"/member/loginform",
+					"/member/logout",
+					"/oauth2/authorize/google",
+					"/oauth2/authorize/naver",
+					"/oauth2/authorize/kakao",
+					"/login/callback/google",
+					"/login/callback/naver",
+					"/login/callback/kakao",
+					"/static/**",
+					"/product/list",
+					"/product/detail"
+			);
+	}
+	
+	
 	
 	/*-------------------------------------------------------------------------------
 	  Google
