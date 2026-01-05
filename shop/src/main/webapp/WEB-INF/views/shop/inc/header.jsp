@@ -43,7 +43,7 @@
                             <%}else{ %>
                             <a href="/member/loginform">MyPage</a>
                             <%Member member = (Member)session.getAttribute("member");%>
-                            <a href="/member/loginform"><%=member.getName() %></a>
+                            <a href="/member/logout">로그아웃</a>
                             <%} %>
                         </div>
                         <ul class="header__right__widget">
@@ -51,7 +51,7 @@
                             <li><a href="#"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span>
+                            <li><a href="/cart/main"><span class="icon_bag_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
                         </ul>
