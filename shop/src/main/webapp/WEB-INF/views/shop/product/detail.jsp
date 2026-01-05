@@ -113,7 +113,7 @@
                                     <input type="text" value="1">
                                 <span class="inc qtybtn">+</span></div>
                             </div>
-                            <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <a href="javascript:addCart(<%=product.getProduct_id() %>)" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
                             <ul>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
@@ -483,7 +483,59 @@
 	
 	<!-- Js Plugins -->
 	<%@ include file="../inc/footer_link.jsp" %>
-
+	
+	<script>
+	
+	// 전통적으로 콜백 함수를 사용 시, 유지보수를 저해하는 현상... callback hell
+/* 	 	addEventListener("load", function(){
+		$("#bt").click(function(){
+			$.ajax({
+				url:"",
+				method:"",
+				success:function(result, status, xhr){
+					$.ajax("/comments/list", function(){
+						success:function(result, status, xhr){
+							$.ajax("/like", function(){
+								
+							});						
+						}
+						error:function(xhr, status, err){
+							
+						}
+					});
+				}
+				error:function(xhr, status, err){
+					
+				}
+			});
+		}); */
+	
+	function addCart(product_id){
+		// 장바구니 담기 요청을 비동기 방식으로 진행
+		let p = new Promise(function(resolve, reject){
+			$.ajax({
+				url:"/cart/add?product_id=" + product_id,
+				method:"GET",
+				success:function(result, status, xhr){
+					// 비동기 요청이 성공했음을 Promise에게 알려주어야 하므로, resolve() 호출
+					resolve();
+				},
+				error:function(xhr, status, err){
+					// 비동기 요청이 실패했음을 Promise에게 알려주어야 하므로, reject() 호출
+					reject();
+				}
+			});
+		});
+		
+		p.then(function(){
+			console.log("장바구니 담기 성공!");
+		});
+		
+		p.catch(function(){
+			console.log("장바구니 담기 실패!");
+		});
+	}
+	</script>
 </body>
 
 </html>
