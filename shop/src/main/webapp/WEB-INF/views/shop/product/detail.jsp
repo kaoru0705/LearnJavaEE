@@ -92,7 +92,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <form id="detail-form">
+                	<!-- 장바구니에 담을 상품명과 가격은  현재 텍스트에 불과하기 때문에 전송 시
+                		파라미터를 처리할 때 젖ㅂ근용으로 사용될 히든 컴포넌트를 정의
+                		특히, JQuery Ajax를 사용 시 파라미터화를 자동으로 처리할 수 있다. (serialize() 사용 가능)s
+                	-->
+                	<input type="hidden" name="product_id" value="<%=product.getProduct_id() %>">
+                	<input type="hidden" name="product_name" value="<%=product.getProduct_name() %>">
+                	<input type="hidden" name="price" value="<%=product.getPrice() %>">
+                	
+	                <div class="col-lg-6">
                     <div class="product__details__text">
                         <h3><%=product.getProduct_name() %><span>Brand: <%=product.getBrand() %></span></h3>
                         <div class="rating">
@@ -109,9 +118,9 @@
                         <div class="product__details__button">
                             <div class="quantity">
                                 <span>Quantity:</span>
-                                <div class="pro-qty"><span class="dec qtybtn">-</span>
-                                    <input type="text" value="1">
-                                <span class="inc qtybtn">+</span></div>
+                                <div class="pro-qty">
+                                    <input type="text" name="ea" value="1">
+                                </div>
                             </div>
                             <a href="javascript:addCart(<%=product.getProduct_id() %>)" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
                             <ul>
@@ -161,6 +170,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
                 <div class="col-lg-12">
                     <div class="product__details__tab">
                         <ul class="nav nav-tabs" role="tablist">
@@ -423,9 +433,9 @@
                                     </td>
                                     <td class="cart__price">$ 55.0</td>
                                     <td class="cart__quantity">
-                                        <div class="pro-qty"><span class="dec qtybtn">-</span>
+                                        <div class="pro-qty"></span>
                                             <input type="text" value="1">
-                                        <span class="inc qtybtn">+</span></div>
+                                        </div>
                                     </td>
                                     <td class="cart__total">$ 110.0</td>
                                     <td class="cart__close"><span class="icon_close"></span></td>
@@ -514,25 +524,31 @@
 		// 장바구니 담기 요청을 비동기 방식으로 진행
 		let p = new Promise(function(resolve, reject){
 			$.ajax({
-				url:"/cart/add?product_id=" + product_id,
-				method:"GET",
+				url:"/cart/add",
+				method:"POST",
+				// 파라미터를 개발자가 일일이 명시하지 않고, form에 속한 컴포넌트를 대상으로 전송할 수 있는 파라미터 문자열로 대신 처리해주는 JQuery Ajax의 기술이 있음
+				data: $("#detail-form").serialize(),
+				//data: "product_id="+product_id+"&product_name="+$("input[name='product_name']").val()+"&price="+$("input[name='price']").val()+"&ea="+$("input[name='ea']").val(),	// post 방식의 전송 시 파라미터 문자열을 대입
 				success:function(result, status, xhr){
 					// 비동기 요청이 성공했음을 Promise에게 알려주어야 하므로, resolve() 호출
 					resolve(result.msg);
 				},
 				error:function(xhr, status, err){
 					// 비동기 요청이 실패했음을 Promise에게 알려주어야 하므로, reject() 호출
-					reject(err);
+					let obj=JSON.parse(xhr.responseText);
+					reject(obj.msg);
 				}
 			});
 		});
 		
 		p.then(function(msg){
-			confirm(msg+"\n장바구니로 이동하시겠어요?");
+			if(confirm(msg+"\n장바구니로 이동하시겠어요?")){
+				location.href="/cart/main"	
+			}
 		});
 		
-		p.catch(function(e){
-			console.log(e);
+		p.catch(function(msg){
+			alert(msg);
 		});
 	}
 	</script>

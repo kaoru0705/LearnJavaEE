@@ -36,6 +36,8 @@ public class MemberServiceImpl implements MemberService{
 			
 		}else {
 			// sns 회원의 경우 자신의 프로필을 변경할 수 있기 때문에, 우리의 mysql도 그 정보에 맞게 동기화 시켜야 함..
+			// 단, 넘겨받은 member에는 member_id가 누락되어있으므로, 기존 회원정보를 가진 객체인 obj로부터 꺼내와서 넣어주면 됨
+			member.setMember_id(obj.getMember_id());
 			memberDAO.update(member);
 			log.debug("기존 회원 업데이트 처리");
 		}

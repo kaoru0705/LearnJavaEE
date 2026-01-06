@@ -1,39 +1,47 @@
 package com.ch.shop.controller.shop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ch.shop.dto.Cart;
 import com.ch.shop.dto.Member;
 import com.ch.shop.dto.ResponseMessage;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class CartController {
 	
-	// 장바구니 메인 요청 처리
+	// 장바구니 목록 요청 처리
 	@GetMapping("/cart/main")
-	public String getMain(HttpSession session) {
+	public String getMain(HttpSession session, Model model) {
+		// 3단계: 세션에 들어있는 cart 라는 key를 갖는 객체들을 List형태로 바꿔서 jsp까지 전달해야 함...
 		
-		String viewName = "";
+		Map<Integer, Cart> cart = (Map)session.getAttribute("cart");
 		
-		// 로그인 세션 처리
-		Member member = (Member)session.getAttribute("member");
+		List cartList = new ArrayList();		// 맵은 순서가 없으므로, 아래의 반복문을 이용하여 꺼내진 Cart DTO를 리스트에 담자!
 		
-		if(member == null) {	// 로그인하지 않은 경우...
-			viewName = "shop/member/login";	// 로그인 폼을 보여줌
-		}else {	// 로그인 한 경우..
-			viewName = "shop/cart/list";
+		for(Map.Entry<Integer, Cart> entry : cart.entrySet()) {
+			log.debug("키는 {}, 값은 {}", entry.getKey(), entry.getValue());
+			cartList.add(entry.getValue());
 		}
 		
-		return viewName;
+		// 4단계: jsp에서 보여질 결과 저장
+		model.addAttribute("cartList", cartList);
+		
+		return "shop/cart/list";
 	}
 	
 	/*
@@ -63,26 +71,40 @@ public class CartController {
 	 	만일 @ResponseBody가 붙어 있지 않으면? DispatcherServlet은 InternalResourceViewResolver에게 리턴된 스트링값을 이용하여 
 	 	실제 jsp를 얻어오려고 할 것이다 ex) WEB-INF/views/등록성공.jsp
 	 */
-	@GetMapping("/cart/add")
+	@PostMapping("/cart/add")
 	@ResponseBody 
-	public ResponseEntity<ResponseMessage> addCart(@RequestParam(defaultValue = "0") int product_id, HttpSession session) {
+	public ResponseEntity<ResponseMessage> addCart(Cart cart, HttpSession session) {
+		// 장바구니에 담게 될 정보 중 누가? 에 해당하는 member_id는 클라이언트의 브라우저로 보안상 넘겨받지 말고,
+		// 세션에서 꺼내서 Cart DTO에 담아주자
+		Member member = (Member)session.getAttribute("member");
+		log.debug("현재 세션의 Member DTO안에 들어있는 member_id = {}", member.getMember_id());
+		cart.setMember_id(member.getMember_id());
 		
-		// 클라이언트가 전송한 상품의 product_id, 갯수를 이용하여 Cart 생성하고 보관...
-		// 그리고 이 생성된 Cart 인스턴스를 세션에 저장...
-		Cart cart = new Cart();
+		log.debug("product_id = {}", cart.getProduct_id());
+		log.debug("product_name = {}", cart.getProduct_name());
+		log.debug("price = {}", cart.getPrice());
+		log.debug("ea = {}", cart.getEa());
 		
-		cart.setProduct_id(product_id);
+		// 세션에 cart라는 키가 존재하는지를 먼저 따져봐서
+		// 없다면 새로 만들고, 있다면 기존 것을 얻어와서 사용하자
+		Map<Integer, Cart> map = null;
+		if(session.getAttribute("cart") == null) {
+			map = new HashMap<>();
+			session.setAttribute("cart", map);
+		}else {		// 이미 있으면 기존 거 꺼내오기
+			map = (Map)session.getAttribute("cart");
+		}
 		
-		cart.setEa(product_id);				// 넘겨 받을 예정
-		cart.setProduct_name(null);		// 상품명을 넘겨 받아야 함
-		cart.setFilename(null);
-		cart.setPrice(0);
+		// 꺼내온 맵내에서도, 이미 등록된 상품이면 갯수만 증가시켜야 하고, 등록되지 않은 상품이면 바로 등록
+		Cart obj= (Cart)map.get(cart.getProduct_id());
+		if(obj == null) {	// 아직 장바구니에 등록된 적이 없는 상품...
+			map.put(cart.getProduct_id(), cart);
+		}else {		// 사용자가 이미 장바구니에 등록한 상품
+			// 새로 등록하지 말고, 즉 대체하지 말고 갯수를 누적(넘겨받은 수만큼)
+			obj.setEa(obj.getEa() + cart.getEa());	// 갯수 누적
+		}
 		
-		Map map = new HashMap<Integer, Cart>();
 		
-		map.put(product_id, cart);
-		
-		session.setAttribute("cart", map);
 		
 		ResponseMessage msg = new ResponseMessage();
 		msg.setMsg("장바구니에 상품이 담겼습니다.");
