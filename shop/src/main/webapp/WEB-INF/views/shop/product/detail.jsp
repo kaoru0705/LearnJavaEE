@@ -518,21 +518,21 @@
 				method:"GET",
 				success:function(result, status, xhr){
 					// 비동기 요청이 성공했음을 Promise에게 알려주어야 하므로, resolve() 호출
-					resolve();
+					resolve(result.msg);
 				},
 				error:function(xhr, status, err){
 					// 비동기 요청이 실패했음을 Promise에게 알려주어야 하므로, reject() 호출
-					reject();
+					reject(err);
 				}
 			});
 		});
 		
-		p.then(function(){
-			console.log("장바구니 담기 성공!");
+		p.then(function(msg){
+			confirm(msg+"\n장바구니로 이동하시겠어요?");
 		});
 		
-		p.catch(function(){
-			console.log("장바구니 담기 실패!");
+		p.catch(function(e){
+			console.log(e);
 		});
 	}
 	</script>
