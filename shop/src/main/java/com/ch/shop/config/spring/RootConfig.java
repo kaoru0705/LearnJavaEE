@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -21,6 +25,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import redis.clients.jedis.JedisPoolConfig;
 
 // 이 클래스는 로직 작성용이 아니라, 전통적으로 사용해왔던 스프링의 번들 등록하는 용도의 xml을 대신하기 위한 자바 클래스이다.
 // 특히, 이 클래스에 등록될 번들은 비즈니스 로직을 처리하는 모델영역의 번들이므로, 서블릿 수준의 스프링컨테이너가 사용해서는 안되며
@@ -96,5 +102,42 @@ public class RootConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public String emailPassword(JndiTemplate jndiTemplate) throws Exception{
 		return (String)jndiTemplate.lookup("java:comp/env/email/app/password");
+	}
+	
+	/*-------------------------------------------
+	  Redis 데이터베이스 관련 빈 등록
+	 ------------------------------------------*/
+	@Bean
+	public JedisPoolConfig jedisPoolConfig() {
+		JedisPoolConfig config = new JedisPoolConfig();
+		config.setMaxTotal(50);
+		config.setMaxIdle(10);
+		config.setMinIdle(5);
+		
+		return config;
+	}
+	
+	@Bean
+	public RedisConnectionFactory redisConnectionFactory() {
+		JedisConnectionFactory factory = new JedisConnectionFactory();
+		factory.setHostName("localhost");		// 접속 ip
+		factory.setPort(6379);		// 접속 port
+		factory.setUsePool(true);
+		factory.setPoolConfig(jedisPoolConfig());
+		
+		return factory;
+	}
+	
+	// 마치 mybatis spring에서의 SqlSessionTemplate과 비슷한 존재..
+	// DAO에서 주입받아서 명령을 수행
+	@Bean
+	public RedisTemplate<String, String> redisTemplate() {
+		RedisTemplate<String, String> template = new RedisTemplate<>();
+		template.setConnectionFactory(redisConnectionFactory());
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setHashKeySerializer(new StringRedisSerializer());
+		template.setHashValueSerializer(new StringRedisSerializer());
+		
+		return template;
 	}
 }
