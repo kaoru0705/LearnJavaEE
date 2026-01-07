@@ -47,6 +47,8 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 		String key = getCartKey(cart.getMember_id());	// 장바구니에 사용될 키
 		
 		try {
+			log.debug("Redis에 들어갈 데이터는 {} {} {}", key, cart.getProduct_id(), cart.getEa());
+			
 			Long qnt = hashOps.increment(key, Integer.toString(cart.getProduct_id()), (long)cart.getEa());
 			
 			if(qnt <= 0) {
@@ -62,25 +64,25 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 	}
 
 	@Override
-	public Map<Integer, Integer> getCart() {
+	public Map<Integer, Integer> getCart(Cart cart) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void update() {
+	public void update(Cart cart) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void remove() {
+	public void remove(Cart cart) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeAll() {
+	public void removeAll(Cart cart) {
 		// TODO Auto-generated method stub
 		
 	}
