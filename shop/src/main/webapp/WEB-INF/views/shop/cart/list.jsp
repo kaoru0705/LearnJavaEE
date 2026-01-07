@@ -1,11 +1,6 @@
-<%@page import="com.ch.shop.dto.Cart"%>
-<%@page import="com.ch.shop.util.MoneyConverter"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="zxx">
-<%
-	List<Cart> cartList = (List)request.getAttribute("cartList");
-%>
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Ashion Template">
@@ -81,24 +76,22 @@
 	                                </tr>
 	                            </thead>
 	                            <tbody>
-	                            	<%for(Cart cart : cartList) {%>
 	                                <tr>
 	                                    <td class="cart__product__item">
 	                                        <img src="img/shop-cart/cp-1.jpg" alt="">
 	                                        <div class="cart__product__item__title">
-	                                            <h6><%=cart.getProduct_name() %></h6>
+	                                            <h6>상품명: 미정</h6>
 	                                        </div>
 	                                    </td>
-	                                    <td class="cart__price"><%=MoneyConverter.format(cart.getPrice()) %></td>
+	                                    <td class="cart__price">가격: 미정</td>
 	                                    <td class="cart__quantity">
 	                                        <div class="pro-qty"><span class="dec qtybtn">-</span>
-	                                            <input type="text" value="<%=cart.getEa()%>">
+	                                            <input type="text" value="0">
 	                                        <span class="inc qtybtn">+</span></div>
 	                                    </td>
-	                                    <td class="cart__total"><%=MoneyConverter.format(cart.getPrice() * cart.getEa()) %></td>
+	                                    <td class="cart__total">서브토탈</td>
 	                                    <td class="cart__close"><span class="icon_close"></span></td>
 	                                </tr>
-	                                <%} %>
 	                            </tbody>
 	                        </table>
 	                    </div>
