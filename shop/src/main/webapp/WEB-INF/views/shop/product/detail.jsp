@@ -527,7 +527,7 @@
 				//url:"/cart/add", // 세션 기반 컨트롤러에 요청
 				url:"/cart/regist",		// redis 기반 컨트롤러에 요청
 				method:"POST",
-				// 파라미터를 개발자가 일일이 명시하지 않고, form에 속한 컴포넌트를 대상으로 전송할 수 있는 파라미터 문자열로 대신 처리해주는 JQuery Ajax의 기술이 있음
+				// 파라미터를 개발자가 일일이 명시하지 않고, form에 속한 컴포넌트를 대상으로 전송할 수 있는 파라미터 문자열(JSON)로 대신 처리해주는 JQuery Ajax의 기술이 있음
 				data: $("#detail-form").serialize(),
 				//data: "product_id="+product_id+"&product_name="+$("input[name='product_name']").val()+"&price="+$("input[name='price']").val()+"&ea="+$("input[name='ea']").val(),	// post 방식의 전송 시 파라미터 문자열을 대입
 				success:function(result, status, xhr){

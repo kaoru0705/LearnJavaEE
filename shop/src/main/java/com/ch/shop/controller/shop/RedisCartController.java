@@ -69,6 +69,25 @@ public class RedisCartController {
 				
 	}
 	
+	// 장바구니 아이템 1건 삭제 요청 처리
+	@PostMapping("/cart/remove")
+	@ResponseBody
+	public ResponseEntity<ResponseMessage> remove(HttpSession session, Cart cart){
+		
+		// 어떤 회원의 장바구니를 삭제할지를 알아야 하므로 member_id
+		Member member = (Member)session.getAttribute("member");
+		cart.setMember_id(member.getMember_id());
+		
+		// 3단계: 일 시키기
+		cartService.remove(cart);
+		
+		// 아래의 클래스를 굳이 사용하는 이유? jackson 라이브러리가 자바 객체를 대상으로 json으로 바꿔주기 때문에...
+		ResponseMessage message = new ResponseMessage();
+		message.setMsg("삭제 성공");
+		
+		return ResponseEntity.ok(message);
+	}
+	
 	
 	// 컨트롤러의 모든 메서드 중, 예외가 발생할 경우엔 무조건 아래의 핸들러 메서드로 실행부가 진입
 	@ExceptionHandler(CartException.class)

@@ -100,7 +100,7 @@
 	                                        <span class="inc qtybtn">+</span></div>
 	                                    </td>
 	                                    <td class="cart__total">{{moneyFormat(cart.price * cart.ea)}}</td>
-	                                    <td class="cart__close"><span class="icon_close"></span></td>
+	                                    <td class="cart__close"><span class="icon_close" @click="removeItem(cart.product_id)"></span></td>
 	                                </tr>
 
 	                                
@@ -177,11 +177,49 @@
 				// 나만의 메서드 정의
 				moneyFormat(price){
 					return format(price);
+				},
+				
+				// 장바구니의 아이템 하나를 제거 요청
+				removeItem(product_id){
+					if(confirm("선택하신 아이템을 삭제하시겠어요? ")){
+						// 비동기 방식 삭제 요청
+						remove(product_id);
+					}
 				}
 			}
 		});
 		
 		let vm=app.mount("#app");
+		
+		// 비동기 삭제 요청(아이템 한 건에 대해...)
+		function remove(product_id){
+			//alert(product_id + " 삭제 예정");
+			
+			let p = new Promise((resolve, reject)=>{
+				$.ajax({
+					url : "/cart/remove",
+					method: "POST",
+					data: {
+						"product_id": product_id
+					},
+					success:function(result, status, xhr){
+						// Promise에게 성공했음을 알려준다..
+						resolve();		// 이 호출로 인해 Promise의 상태값은 fulfilled로 전환
+						console.log("성공 결과 정보", result);
+					},
+					error:function(xhr, status, err){		// 3xx, 4xx, 5xx
+						reject(err);			// 이 호출로 인해 Promise의 상태값은 rejected로 전환
+						console.log("실패 결과 정보", result);			
+					}
+				})
+			})
+			.then(()=>{
+				getList();
+			})
+			.catch((err)=>{
+				console.log(err);
+			});
+		}
 	
 		// 비동기 방식으로 장바구니 목록을 요청하기
 		function getList(){

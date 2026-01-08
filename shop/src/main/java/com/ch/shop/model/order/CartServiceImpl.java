@@ -64,9 +64,8 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public void remove(Cart cart) {
-		// TODO Auto-generated method stub
-		
+	public void remove(Cart cart) throws CartException{
+		redisCartDAO.remove(cart);
 	}
 
 	@Override

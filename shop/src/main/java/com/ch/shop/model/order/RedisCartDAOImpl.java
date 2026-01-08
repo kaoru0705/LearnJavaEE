@@ -100,9 +100,28 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 		
 	}
 
+	// 장바구니에서 상품 1건 삭제
 	@Override
-	public void remove(Cart cart) {
-		// TODO Auto-generated method stub
+	public void remove(Cart cart) throws CartException {
+		
+		String key = getCartKey(cart.getMember_id());
+		// 인수 1 - 누구의 장바구니인지를 결정하는 cart:8
+		// 인수 2 - 어느 필드를 삭제할지를 결정하는 product_id
+		try {
+			Long deletedCount = redisTemplate.opsForHash().delete(key, Integer.toString(cart.getProduct_id()));		// DEL
+			
+			log.debug("삭제 시도 후 결과 수는 {} ", deletedCount);
+			
+			if(deletedCount == null || deletedCount == 0) {
+				throw new CartException("삭제 대상 항목이 존재하지 않습니다.");
+			}
+		} catch(CartException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CartException("장바구니 삭제 과정에 오류 발생", e);
+		}
 		
 	}
 
