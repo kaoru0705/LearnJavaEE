@@ -1,5 +1,7 @@
 package com.ch.shop.controller.shop;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -46,6 +49,26 @@ public class RedisCartController {
 		
 		return ResponseEntity.ok(message);
 	}
+	
+	// 장바구니 페이지 요청 처리
+	@GetMapping("/cart/list")
+	public String getListPage() {
+		
+		return "shop/cart/list";
+	}
+	
+	// 장바구니 목록 요청 처리
+	@GetMapping("/cart/async/list")
+	@ResponseBody		// jackson library 알아서 list -> json 배열로 자동변환(convert)
+	public List getList(HttpSession session) {		// cart 매개변수의 역할? 누구의(member_id)
+		Member member = (Member)session.getAttribute("member");
+		Cart cart = new Cart();
+		cart.setMember_id(member.getMember_id());		// Member DTO로부터 pk 값을 구하여 Cart DTO에 심어주기
+		
+		return cartService.getList(cart);
+				
+	}
+	
 	
 	// 컨트롤러의 모든 메서드 중, 예외가 발생할 경우엔 무조건 아래의 핸들러 메서드로 실행부가 진입
 	@ExceptionHandler(CartException.class)
