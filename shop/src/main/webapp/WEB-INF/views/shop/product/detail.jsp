@@ -94,7 +94,7 @@
                 </div>
                 <form id="detail-form">
                 	<!-- 장바구니에 담을 상품명과 가격은  현재 텍스트에 불과하기 때문에 전송 시
-                		파라미터를 처리할 때 젖ㅂ근용으로 사용될 히든 컴포넌트를 정의
+                		파라미터를 처리할 때 접근용으로 사용될 히든 컴포넌트를 정의
                 		특히, JQuery Ajax를 사용 시 파라미터화를 자동으로 처리할 수 있다. (serialize() 사용 가능)s
                 	-->
                 	<input type="hidden" name="product_id" value="<%=product.getProduct_id() %>">
@@ -544,7 +544,8 @@
 		
 		p.then(function(msg){
 			if(confirm(msg+"\n장바구니로 이동하시겠어요?")){
-				location.href="/cart/main"	
+				//location.href="/cart/main";		세션 기반의 장바구니 목록 요청
+				location.href="/cart/list";		// RedisCartController에게 요청
 			}
 		});
 		
