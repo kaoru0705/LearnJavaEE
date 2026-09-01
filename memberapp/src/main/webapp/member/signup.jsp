@@ -76,7 +76,7 @@ button:hover {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 	/*
-		JQuery의 문법 구조는 그냥 아래아 같이 단순
+		JQuery의 문법 구조는 그냥 아래와 같이 단순
 		형식(Syntax) : $(누구를).어떻게();
 							'누구'를 자리에 올 수 있는 주제는 바로 CSS의 선택자
 	$(document);

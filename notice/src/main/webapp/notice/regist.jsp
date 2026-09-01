@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	// 위의 페이지 지시 영역은 현재 jsp가 Tomcat에 의해 서블릿으로 코딩되어질 때
-	// text/html 부분은 response.setContentTyp("text/html");
+	// text/html 부분은 response.setContentType("text/html");
 	// charset=UTF-8 response.setCharacterEncoding("utf-8");
 %>
 <!DOCTYPE html>
