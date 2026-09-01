@@ -77,22 +77,30 @@
 	                            </thead>
 	                            <tbody>
 	                            
-	                            	<!-- 아래의 div 안에 영역을 Vue의 영향력 하에 두겠다. -->
-	                                <tr v-for="index in cartList">
+	                            	<!-- 아래의 div 안에 영역을 Vue의 영향력 하에 두겠다.
+	                            		아래의 반복문의 앞에 명시한 소괄호의 (인수1, 인수2)
+	                            		인수1: 배열 내에서의 한 요소
+	                            		인수2: 배열의 반복횟수인 index
+	                            		
+	                            		:key의 역할은 VirtualDOM을 효율적으로 처리하기 위해서는 개발자가 반복문 수행 시
+	                            		해당 돔 객체에 유일한 키값을 부여하는 것이 좋다..
+	                            		아래에서는 유일한 값이 상품의 pk이므로, key 값으로 활용함
+	                            	-->
+	                                <tr v-for="(cart, index) in cartList" :key="cart.product_id">
 	                                    <td class="cart__product__item">
 	                                        <img src="img/shop-cart/cp-1.jpg" alt="">
 	                                        <div class="cart__product__item__title">
-	                                            <h6>상품명: 미정</h6>
+	                                            <h6>{{cart.product_name}}</h6>
 	                                        </div>
 	                                    </td>
-	                                    <td class="cart__price">가격: 미정</td>
+	                                    <td class="cart__price">{{moneyFormat(cart.price)}}</td>
 	                                    <td class="cart__quantity">
 	                                        <div class="pro-qty"><span class="dec qtybtn">-</span>
-	                                            <input type="text" value="0">
+	                                            <input type="text" v-model="cart.ea">
 	                                        <span class="inc qtybtn">+</span></div>
 	                                    </td>
-	                                    <td class="cart__total">서브토탈</td>
-	                                    <td class="cart__close"><span class="icon_close"></span></td>
+	                                    <td class="cart__total">{{moneyFormat(cart.price * cart.ea)}}</td>
+	                                    <td class="cart__close"><span class="icon_close" @click="removeItem(cart.product_id)"></span></td>
 	                                </tr>
 
 	                                
@@ -150,6 +158,7 @@
 	<%@ include file="../inc/footer_link.jsp" %>
 	<!-- Vue를 이용하면 개발자가 DOM 렌더링 시 전통적인 DOM 제어보다 훨씬 효율적으로 처리가 가능 -->
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script src="/static/js/lib.js"></script>
 	
 	<script>
 		// 뷰 애플리케이션 객체를 생성하고, 원하는 렌더링 영역인 div="app"와 연결하자 
@@ -157,14 +166,90 @@
 			/* 아래의 data() 메서드는 뷰 영역에서 사용할 데이터를 반환하는 역할 */
 			data() {
 				return {	// 뷰 렌더링 영역에서 사용될 데이터를 반환
-					cartList: 3
+					// 아래의 cartList는 일반 변수가 아니라, data() 함수의 반환대상이 되는 상태변수로써,
+					// Vue 애플리케이션의 렌더링 영역과(즉, MVC에서의 View 영역과 직접적으로 연결되어 있는 변수 - 바인딩(binding) 변수)
+					cartList: 0
+				}
+			},
+			// Vue에서 개발자가 자신만의 메서드를 정의하려면, 아래의 methods 영역에 정의하면 된다.
+			methods:{
+				
+				// 나만의 메서드 정의
+				moneyFormat(price){
+					return format(price);
+				},
+				
+				// 장바구니의 아이템 하나를 제거 요청
+				removeItem(product_id){
+					if(confirm("선택하신 아이템을 삭제하시겠어요? ")){
+						// 비동기 방식 삭제 요청
+						remove(product_id);
+					}
 				}
 			}
 		});
 		
 		let vm=app.mount("#app");
+		
+		// 비동기 삭제 요청(아이템 한 건에 대해...)
+		function remove(product_id){
+			//alert(product_id + " 삭제 예정");
+			
+			let p = new Promise((resolve, reject)=>{
+				$.ajax({
+					url : "/cart/remove",
+					method: "POST",
+					data: {
+						"product_id": product_id
+					},
+					success:function(result, status, xhr){
+						// Promise에게 성공했음을 알려준다..
+						resolve();		// 이 호출로 인해 Promise의 상태값은 fulfilled로 전환
+						console.log("성공 결과 정보", result);
+					},
+					error:function(xhr, status, err){		// 3xx, 4xx, 5xx
+						reject(err);			// 이 호출로 인해 Promise의 상태값은 rejected로 전환
+						console.log("실패 결과 정보", result);			
+					}
+				})
+			})
+			.then(()=>{
+				getList();
+			})
+			.catch((err)=>{
+				console.log(err);
+			});
+		}
 	
-		// 비동기 방식으로 장바구니 목록을 가져오자
+		// 비동기 방식으로 장바구니 목록을 요청하기
+		function getList(){
+			new Promise((resolve, reject) => {
+				// 개발자가 원하는 비동기 작업
+				$.ajax({
+					url : "/cart/async/list",		// RedisCartController에 요청이 들어감
+					method: "GET",
+					success:function(result, status, xhr){
+						resolve(result);		// Promise 객체의 상태값을 fulfilled로 놓기
+						// 개발자가 Promise의 상태를 resolve() 호출에 의해 fulfilled 상태로 놓으면
+						// 비동기 업무가 종료되었을 때, 자동으로 Promise가 지원하는 메서드인 then()을 호출하게 됨
+						// 또한 reject() 호출에 의해서 Promise의 상태가 rejected가 되면, 비동기 로직이 완료된 후 자동으로
+						// Promise가 지원하는 메서드 중 catch()가 호출된다.
+						// 따라서 개발자는 콜백함수에서 로직을 처리하지 않게 되어, 콜백 지옥에서 빠져나올 수 있다.
+					}
+				});
+			}).then((result) => {		// 체이닝 기법(별도의 변수 선언없이 바로 그 다음 메서드를 연결하는 방식)
+				console.log("서버에서 가져온 목록은 ", result);
+				vm.cartList = result;
+			});
+			
+		}
+		
+		
+		$(()=>{
+			getList();
+		});
+		
+		
 		function renderList(){
 			
 		}

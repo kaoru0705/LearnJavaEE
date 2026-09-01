@@ -1,5 +1,6 @@
 package com.ch.shop.model.order;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,18 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 		HashOperations<String, String, String> hashOps = redisTemplate.opsForHash();
 		
 		String key = getCartKey(cart.getMember_id());	// 장바구니에 사용될 키
-		
+		;
 		try {
 			log.debug("Redis에 들어갈 데이터는 {} {} {}", key, cart.getProduct_id(), cart.getEa());
 			
-			Long qnt = hashOps.increment(key, Integer.toString(cart.getProduct_id()), (long)cart.getEa());
+			// cart:1 42 3
+			Long result = hashOps.increment(key, Integer.toString(cart.getProduct_id()), (long)cart.getEa());
+			// increment() 메서드 호출 후 반환되는 result 란? 이 메서드에 의해 반영된 숫자값의 최종값
 			
-			if(qnt <= 0) {
+			if(result <= 0) {
+				// 만일 장바구니에 담겨진 갯수가 0이라면, 굳이 장바구니에 담아놓을 필요가 없으므로, 삭제시키자
+				hashOps.delete(key, Integer.toString(cart.getProduct_id()));
+				
 				throw new CartException("장바구니 수량이 유효하지 않습니다.");
 			}
 		}catch(CartException e) {	// 비즈니스 업무적 예외..(예 - 제대로 들어갔다, 안 들어 갔다..)
@@ -62,11 +68,30 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 		}
 		
 	}
-
+	
+	/*
+		장바구니 목록 처리
+	 */
+	
 	@Override
 	public Map<Integer, Integer> getCart(Cart cart) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String key = getCartKey(cart.getMember_id());
+		
+		// Redis 서버의 명령을 수행하기 위한 객체 얻기
+		HashOperations<String, String, String> hashOps = redisTemplate.opsForHash();
+		
+		// entry Key와 Value로 이루어진 한 쌍
+		Map<String, String> entries = hashOps.entries(key);		// Key Value의 쌍으로 이루어진 엔트리들을 반환
+		
+		// 메서드 반환용 맵
+		Map<Integer, Integer> result = new HashMap<>();
+		
+		for(Map.Entry<String, String> entry : entries.entrySet()) {
+			result.put(Integer.parseInt(entry.getKey()), Integer.parseInt(entry.getValue()));	// product_id 가 key ea가 value
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -75,9 +100,28 @@ public class RedisCartDAOImpl implements RedisCartDAO{
 		
 	}
 
+	// 장바구니에서 상품 1건 삭제
 	@Override
-	public void remove(Cart cart) {
-		// TODO Auto-generated method stub
+	public void remove(Cart cart) throws CartException {
+		
+		String key = getCartKey(cart.getMember_id());
+		// 인수 1 - 누구의 장바구니인지를 결정하는 cart:8
+		// 인수 2 - 어느 필드를 삭제할지를 결정하는 product_id
+		try {
+			Long deletedCount = redisTemplate.opsForHash().delete(key, Integer.toString(cart.getProduct_id()));		// DEL
+			
+			log.debug("삭제 시도 후 결과 수는 {} ", deletedCount);
+			
+			if(deletedCount == null || deletedCount == 0) {
+				throw new CartException("삭제 대상 항목이 존재하지 않습니다.");
+			}
+		} catch(CartException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CartException("장바구니 삭제 과정에 오류 발생", e);
+		}
 		
 	}
 
