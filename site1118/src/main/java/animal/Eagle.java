@@ -21,5 +21,4 @@ public class Eagle extends Bird{
  * 1. 실행할 때 bird와 eagle이 method 영역에 실림
  * 2. Eagle의 인스턴스가 heap영역에 만들어진다. Eagle 멤버 변수가 복사됨
  * 3. Eagle의 영역이 확장되면서 부모가 갖고 있던 Bird 멤버 변수가 복사됨
- *  
  */

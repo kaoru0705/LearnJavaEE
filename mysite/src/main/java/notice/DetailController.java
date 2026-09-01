@@ -1,4 +1,4 @@
-package src.notice;
+package notice;
 
 import java.io.IOException;
 
