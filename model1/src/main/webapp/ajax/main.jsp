@@ -69,7 +69,7 @@
     			let memberList = JSON.parse(xhttp.responseText);	// 문자열을 해석하여 JSON 구문 형식에 맞을 경우만, 객체 리터럴로 전환해준다!
     			// 정말로 obj가 자바스크립트의 인스턴스라면, 객체.속성을 접근할 수 있어야 한다.
     			// 따라서 검증해보자
-    			//console.log("email 은 ", obj.email);
+    			// console.log("email 은 ", obj.email);
     			// console.log("서버로부터 받은 응답 정보는 ", xhttp.responseText);
     			// 서버로부터 전송되어온 문자열을 대상으로 원하는 값 추출하기
     			

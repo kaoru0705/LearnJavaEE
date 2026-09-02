@@ -28,6 +28,7 @@ public class BoardDAO {
 		// 이 메서드 호출 시마다, 접속을 일으키는 것이 아니라, Tomcat이 접속자가 없더라도
 		// 미리 Connection들을 확보해 놓은 커넥션풀(Connection Pool)로부터 대여해보자
 		// 또한 쿼리문 수행이 완료되더라도, 얻어온 Connection 절대로 닫지 말아야 한다. 반납해야 한다.
+		// 이젠 insert 처럼 안 쓴다.
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -95,7 +96,7 @@ public class BoardDAO {
 			
 			// rs는 무조건 이 메서드에서 닫아야 하므로, 외부의 jsp는 디자인을 담당하는 코드이지, ResultSet의 존재를 알 필요도 없고,
 			// 또한 ResultSet db연동기술이므로, 오직 DAO에서만 제어해야 한다.. 따라서 finally에서 rs를 닫는 것은 DAO의 의무이다!!
-			// 모순 - rs를 닫아버린 상태에서 외부 객체에게 전달해주면 외부객체를 이 rs를 사용할 수 없다. close되어 있으므로,
+			// 모순 - rs를 닫아버린 상태에서 외부 객체에게 전달해주면 외부객체는 이 rs를 사용할 수 없다. close되어 있으므로,
 			// 해결책?? rs가 죽어도 상관없는 비슷한 유형의 객체로 데이터를 표현하면 된다...
 			// 		이 문제를 해결하기 위해 필요한 객체들의 조건
 			//		1) 현실에 존재하는 사물을 표현할 수 있는 객체가 필요하다..(예 - 게시물 1건을 담을 수 있는 존재) - BoardDTO

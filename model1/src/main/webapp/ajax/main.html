@@ -76,7 +76,7 @@
     		// 비동기적 요청을 담당하는 XMLHttpRequest 객체를 사용
     		let xhttp = new XMLHttpRequest();
     		
-    		// 서버에 응답으 도달하면 지정한 익명함수가 호출(by javascript)
+    		// 서버에 응답이 도달하면 지정한 익명함수가 호출(by javascript)
     		xhttp.onload=function(){
     			// 서버에서 전송한 json 문자열을 파싱하여 화면에 렌더링!!
     			console.log("서버가 응답한 데이터는 ", this.responseText);

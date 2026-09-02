@@ -50,13 +50,13 @@ input[type=button]:hover {
 	function regist(){
 		// 적용할 속성이 다수일 경우, 한꺼번에 객체로 지정할 수 있는 attr() 지원
 		$("form").attr({
-			action: "/board/regist",		// 이 요청을 받는 javaee 기반 기술은 jsp와 servlet 둘 다 가능하지만, 디자인이 포함되지 않을 경우엔
-												// 굳이 jsp를 사용할 필요가 없다.	어차피 jsp로 작성한다고 하여도, 서블릿으로 변환되어짐...
+			action: "/board/regist",	// 이 요청을 받는 javaee 기반 기술은 jsp와 servlet 둘 다 가능하지만, 디자인이 포함되지 않을 경우엔
+										// 굳이 jsp를 사용할 필요가 없다.	어차피 jsp로 작성한다고 하여도, 서블릿으로 변환되어짐...
 			method: "post",
 		});
 		$("form").submit();		// 이 시점에 전송 요청이 발생!!
 	}
-	
+
 	$(function(){
 		
 		// summernote 연동
